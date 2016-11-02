@@ -203,7 +203,7 @@
   \\ $\beta$: rate at which events happen: ``$\beta$ time until the next event''
   \1 $\lambda = 1/\beta$: shape parameter
   \\ $\mu = \alpha\beta$
-  \\ \sigma^2 = \alpha(\beta^2)
+  \\ $\sigma^2 = \alpha(\beta^2)$
 
 \zzz{Normal Distribution}
   \1 Continuous. Defined in terms of $\mu$ and $\sigma$
@@ -312,7 +312,7 @@
       1 tail left:  & $H_A: \mu     < \mu_0$ \\
       2 tail:       & $H_A: \mu \not= \mu_0$ \\
     \end{tabular}
-  \1 test statistic: $Z_t = \frac{\bar{x} - \mu}{s_\bar{x}}$ where $s_\bar{x} = \frac{s}{\sqrt{n}}$ (standard error)
+  \1 \verb|test statistic: $Z_t = \frac{\bar{x} - \mu}{s_\bar{x}}$ where $s_\bar{x} = \frac{s}{\sqrt{n}}$ (standard error)|
   \1 critical value: $Z_C$ (determined by $\alpha$ level)
     \2 for a 1 tailed test, it's $Z_\alpha$
     \2 for a 2 tailed test, it's $Z_{\alpha/2}$
@@ -321,7 +321,7 @@
 
 \zzz{Proportion Hypothesis}
   \1 $Z_t=\frac{\hat{p}-p_0}{\sqrt{p_0(1-p_0)/n}}$
-  \1 equivalent of $S_\bar{x}$ is $\sqrt{p_0(1-p_0)/n}$
+  \1 \verb|equivalent of $S_\bar{x}$ is $\sqrt{p_0(1-p_0)/n}$|
 
 \zzz{Type 1 Error}
   \1 false positive
@@ -367,7 +367,7 @@ You calculate $Var(\bar{X}-\bar{y})$ differently depending on if the variances o
   \1 $DF = m+n-2$
 
 \zzz{Paired Difference Test}
-  \1 $D_i = X_i - Y_i$ mean difference is \bar{D}
+  \1 \verb|$D_i = X_i - Y_i$ mean difference is \bar{D}|
   \1 test stat: $T = \frac{\bar{D}-\Delta_0}{s_D / \sqrt{n}}$
     \2 $n$ is the number of paired differences, not the number of total observations
 
@@ -443,12 +443,12 @@ You calculate $Var(\bar{X}-\bar{y})$ differently depending on if the variances o
   \1 you can do an ANOVA test for regression
     \2 $DF_{total} = n-2$(because two estimates $\beta_0, \beta_1$)
     \2 $DF_{regression} = 1$
-  \1 hypothesis test: $T = \frac{\hat{\beta}_1 - \Delta_0}{s_\hat{\beta}_1}$
-    \2 $s_\hat{\beta}_1 = \frac{s_\epsilon}{\sqrt{\sum(x-\bar{x})^2}}$ standard error of slope
+  \1 \verb|hypothesis test: $T = \frac{\hat{\beta}_1 - \Delta_0}{s_\hat{\beta}_1}$|
+    \2 \verb|$s_\hat{\beta}_1 = \frac{s_\epsilon}{\sqrt{\sum(x-\bar{x})^2}}$ standard error of slope|
     \2 $H_0$: $\beta_1 = \Delta_0$
     \2 $s_\epsilon = $ estimate of standard deviation of error term
     \2 $\Delta_0$: expected slope (usually 0)
-    \2 confidence interval: $\hat{\beta}_1 \pm t_{\alpha/2, n-2} s_\hat{\beta}_1$
+    \2 \verb|confidence interval: $\hat{\beta}_1 \pm t_{\alpha/2, n-2} s_\hat{\beta}_1$|
   \1 confidence interval for mean response
     \2 mean $y$ value at given value $x^*$
     \2 means that you're $(1-\alpha)100\%$ sure that the mean response will be inside this interval

@@ -30,7 +30,8 @@
 \newcommand{\bksp}{\hspace{-3px}}
 % \newcommand{\zzz}[1]{\upspace \0 \subsection*{#1:} \addcontentsline{toc}   {subsection}{#1} }
 \newcommand{\zzz}[1]{\upspace \0\bksp{\large\textbf{#1:}}\addcontentsline{toc}{subsection}{#1}}
-\newcommand{\zza}[1]{\upspace \1\bksp\textbf{#1:}\addcontentsline{toc}{subsubsection}{#1}}
+% \newcommand{\zza}[1]{\upspace \1\bksp\textbf{#1:}\addcontentsline{toc}{subsubsection}{#1}}
+\newcommand{\zza}[1]{\upspace \1\bksp\textbf{#1:}{subsubsection}{#1}}
 \newcommand{\aaa}{\upspace \1\bksp}
 \newcommand{\bbb}{\upspace \2\bksp}
 \newcommand{\ccc}{\upspace \3\bksp}
@@ -243,7 +244,7 @@ Last Updated: \today
 		Implication  &$p \rightarrow q$, $p \rightarrow q$         &if $p$ then $q$                    \\\hline
 		Biconditional&$p \leftrightarrow q$, $p \leftrightarrow q$ &$p$ if and only if $q$, $p$ iff $q$\\\hline
 	\end{tabular}
-	\\ \\
+	\\
 	\begin{tabular}{|l l l l l l l l l|} \hline
 		$p$ & $q$ & $ \neg p$ & $p \wedge q$ & $p \vee q$ & $p \rightarrow q$ & $p \leftrightarrow q$ & $p$ & $q$ \\ \hline
 		T & T & F & T & T & T & T & T & T \\ \hline
@@ -339,7 +340,8 @@ Last Updated: \today
 		\\ (when there is a single root)
 		\\ same as theorem 1, except find $\alpha$ using
 		\\ $a_n = \alpha_1r_0^n + \alpha_2nr_0^n $
-	\zza{Linear Non-Homogeneous} FIXME
+	\zza{Linear Non-Homogeneous}
+      \1 FIXME
 	\zza{Divide and Conquer Recurrence Relations}
 	\\ (Theorem 1)
 		\bbb $f$ is an increasing function $f(n) = af(n/b) + c$
@@ -421,7 +423,8 @@ Last Updated: \today
 	% ref: http://www.csc.villanova.edu/~japaridz/Archive/1300/lect2.6/sld009.htm
 	\\ $M_{S\circ R} = M_R \odot M_S$
 	\\ Power of relation: $M_{R^n} = M_R^{[n]}$
-	\\ \includegraphics[width=0.8\columnwidth]{boolean_product.png}
+	% \\ \includegraphics[width=0.8\columnwidth]{boolean_product.png}
+    {\large boolean\_product.png has gone missing, maybe eventually I'll fix this}
 \0 \tbf{Closures of Relations}
 	\aaa Closure: $R \cup $ minimum elements to add to $R$ such that it satisfies a given condition.
 	\aaa E.g. The reflexive closure of $R$ is the loopback arrows that are missing, plus $R$ itself.
@@ -458,7 +461,7 @@ Last Updated: \today
 	Simple Directed graph  & directed   & no     & no    \\\hline
 	Directed Multigraph    & directed   & yes    & yes   \\\hline
 	Mixed Graph            & both       & yes    & yes   \\\hline
-\end{tabular} \\
+\end{tabular}
 \noindent
 \\\tbf{Degree} of vertex: $deg(v)$
 	\aaa number of edges connecting to it (one loopback counts twice). 
@@ -483,12 +486,11 @@ Last Updated: \today
 	\aaa for a graph $G = (V,E)$ with $n=|V|$ vertexes, adjacency matrix $m$ is $n\times n$ where
  $m_{i,j} = ( 1\mbox{ if }(V_i,V_j) \in E, 0 \mbox{ otherwise})$
 \0\tbf{Incidence Matrix:}
-	\aaa for a graph $G = (V,E)$ with $n=|V|$ vertexes and $m=|E|$ edges, incidence matrix $m$ is $n\times m$ where 
- $m_{i,j} = ( 1$ if edge $e_j$ is incident with vertex $v_i$, $0$ otherwise$)$
-\\
+	\aaa for a graph $G = (V,E)$ with $n=|V|$ vertexes and $m=|E|$ edges, incidence matrix $m$ is $n\times m$ where $m_{i,j} = ( 1$ if edge $e_j$ is incident with vertex $v_i$, $0$ otherwise$)$
+% \\
 \0\tbf{Graph Isomorphism:} 
 	\aaa Two graphs $G_1 = (V_1,E_1)$ and $G_2 = (V_2,E_2)$ are isomorphic if there exists a one-to-one function $f: V_1 \rightarrow V_2$ such that $\forall ((a,b) \in E_1) ((f(a),f(b))\in E_2 )$. The function $f$ is called an isomorphism
-\\
+% \\
 \\
 \zzz{Trees}
 	\aaa height $h =$ maximum path length starting at root node and ending at a leaf node

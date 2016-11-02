@@ -29,6 +29,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% paper size, orientation, margins %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% allow hboxes to be overfull
+\hfuzz=10in
 % good for on screen-only viewing
 \def \columncount {3}
 \newlength{\papersize}
@@ -225,12 +227,12 @@
   \1 \textbf{Taylor Series Formula:} $\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n$
   \1 Maclaurin series is just the taylor series with $a=0$ (centered at 0)
   \1\begin{tabular}{r c l}
-    $f(x)     $ & $=$ & $\sum a_n x^n$ \\
-    $f'(x)    $ & $=$ & $\sum_{n=1} (n) a_n x^{n-1}$ \\
-    $f'(x)    $ & $=$ & $\sum_{n=0} (n+1) a_{n+1} x^{n}$ \\
-    $f''(x)   $ & $=$ & $\sum_{n=2} n(n-1)a_{n}x^{n-2}$ \\
+    $f(x)     $ & $=$ & $\sum a_n x^n$                    \\
+    $f'(x)    $ & $=$ & $\sum_{n=1} (n) a_n x^{n-1}$      \\
+    $f'(x)    $ & $=$ & $\sum_{n=0} (n+1) a_{n+1} x^{n}$  \\
+    $f''(x)   $ & $=$ & $\sum_{n=2} n(n-1)a_{n}x^{n-2}$   \\
     $f''(x)   $ & $=$ & $\sum_{n=0} (n+2)(n+1)a_{n+2}x^n$ \\
-    $f(x)+g(x)$ & $=$ & $\sum (a_n+b_n)x^n$ \\
+    $f(x)+g(x)$ & $=$ & $\sum (a_n+b_n)x^n$               \\
     \end{tabular}
   \1 solve using: $y''+Py'+Qy=0 \rightarrow \sum[(n+2)(n+1)a_{n+2} + P(n+1)a_{n+1} + Qa_n]x^n=0$
 
@@ -268,7 +270,7 @@
   \1 generally you don't do Laplace transforms by hand, you use a lookup table (same for inverse)
 
 \zzz{Laplace - Unit Step Function}
-  \1 $u(t)=\left\{_{0 : t < 0}^{1 : t > 0}$
+  \1 $u(t)=\{_{0 : t < 0}^{1 : t > 0}$
   \1 $\mathscr{L}[u(t-a)]=\frac{1}{s}e^{-as}$
   \1 $\mathscr{L}[u(t-a)g(t-a)]=G(s)e^{-as}$
 
