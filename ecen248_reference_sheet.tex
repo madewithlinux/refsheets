@@ -1,0 +1,439 @@
+% (c) Copyright 2015 Josh Wright
+\documentclass{article}
+\usepackage{mathrsfs,amsmath,amsthm,latexsym,paralist}
+\usepackage{mathtools} 
+\usepackage{amssymb}   % for \varnothing, \therefore
+\usepackage{centernot} % for \centernot
+\usepackage{geometry}  % for margins
+\usepackage{outlines}  % for outline
+\usepackage{multicol} % for multicolumn layout
+\geometry{letterpaper, landscape, margin=0.5in}
+\newcommand{\upspace}{\vspace{0px}}
+\newcommand{\bksp}{\hspace{-3px}}
+% \newcommand{\zzz}[1]{\upspace \0 \subsection*{#1:} \addcontentsline{toc}   {subsection}{#1} }
+\newcommand{\zzz}[1]{\upspace \0\bksp{\textbf{#1:}}\addcontentsline{toc}{subsection}{#1}}
+\newcommand{\zza}[1]{\upspace \1\bksp\textbf{#1:}\addcontentsline{toc}{subsubsection}{#1}}
+\newcommand{\aaa}{\upspace \1\bksp}
+\newcommand{\bbb}{\upspace \2\bksp}
+\newcommand{\ccc}{\upspace \3\bksp}
+\newcommand{\ddd}{\upspace \4\bksp}
+% makes second-level itemize bullets instead of dashes
+\renewcommand\labelitemii{\labelitemi}	
+
+\begin{document}
+\allowdisplaybreaks
+\begin{multicols*}{2}
+\begin{outline}[compactitem]
+\noindent
+\0 notes.txt
+\noindent \\ 
+\noindent \\ 
+\0 Flip-flop:
+\1     Setup time: minimum time from when input D is stable to rising clock edge
+\2         input must propagate through internal gates
+\1     Hold time: minimum time for D to remain stable after rising clock edge
+\2         input must propagate through internal feedback gates
+\0 D latch:
+\1     sets memory by input whenever clock is high
+\1     (not on rising edge of clock)
+\0 D flop flop
+\1     sets value on rising clock edge
+\2         and thus, only once per clock cycle
+\1     internally it is two d-latches chained together:
+\2         the first with an inverter in front of it's clock
+\2         the second without
+\1     value of D is available at Q immediately after rising clock edge
+\0 T flip flop
+\1     on rising edge of clock toggles state if T (input) is high
+\1     if T is low, keeps current value
+\1     IS edge triggered
+\noindent \\ 
+\0 shift register
+\1     called n-bit shift register
+\2         n is how many bits it stores
+\1     accepts one bit a a time as input
+\2         (this is serial)
+\1     outputs all bits at the same time, one pin for each bit
+\1     also has a out pin for chaining multiple together
+\1     internally it is a chain of flip flops
+\2         previous output goes to next input, so the data shifts down the line
+\0 rotate register
+\1     a shift register with it's output connected to it's input
+\1     rotates the stuff in it's buffer
+\0 universal shift register
+\1     shift register with lots of other functions
+\1     e.g. clear, clock, shift, right, left, load, read, control
+\noindent \\ 
+\0 shifter
+\1     just a different combination of wires that moves the bits over
+\1     can be designed to map one of the edge bits to the filler bits
+\0 barrel shifter
+\1     shifter that can shift any arbitrary number of bits
+\1     barrel shifter with n shifters can shift between 0 and (2\^n-1) bits
+\1     e.g. 3 shifters goes 0-7
+\2         and uses shifters of 1, 2, and 4 bits
+\noindent \\ 
+\0 fraction multiplication approximation in binary
+\1     compute A/3, error < 5%
+\2         each numerator is picked using:
+\3             numerator = (2\^x / desired\_devisor)
+\2         1/3 =~ 1/4,   error: (0.25      - 1/3) = 0.08 -> 25   %
+\2         1/3 =~ 3/8,   error: (0.375     - 1/3) = 0.04 -> 12.5 %
+\2         1/3 =~ 5/16,  error: (0.3125    - 1/3) = 0.02 ->  6   %
+\2         1/3 =~ 11/32, error: (0.0.34375 - 1/3) = 0.01 ->  3   %
+\1     11/32:
+\2         (8+2+1)/32
+\2         (2\^3 + 2\^1 + 2\^0 )/2\^5
+\2         A/3 =~ ( (C<<3) + (C<<1) + (C<<0) )<<5
+\noindent \\ 
+\0 counter
+\1     n-bit counter has n bits
+\2         one design uses n-bit increment-er and n-bit register
+\1     designed to roll over, so that you can chain multiple together
+\2         has an 'overflow' bit for that reason
+\2         overflow is bitwise AND of all output bit numbers
+\3             (AND is highest representable number)
+\2         must have a count pin separate from clock pin
+\3             so that they can be on the same clock when chained
+\1     down-counter counts down instead of up
+\2         it's overflow is bitwise NAND of all register bits
+\1     limit a counter to any arbitrary value:
+\2         make circuit that matches that binary value (outputs 1 only when it gets that value)
+\2         wire the output of that circuit to the reset pin of the counter
+\0 bidirectional counter
+\1     must have different carry bit
+\1     when counting down, you want NOR all inputs as carry (matches 0)
+\noindent \\ 
+\0 parallel vs serial
+\1     parallel
+\2         n-bits wide
+\2         n bits move every clock cycle
+\2         the bus is n wires plus the clock
+\2         usually slower clock than serial
+\1     serial
+\2         one bit wide
+\2         one bit moves every clock cycle
+\1     you can convert serial data to parallel using a shift register and clock divider
+\0 serial addition
+\1     add a number bit by bit
+\1     you store the sum in a shift register because that can accept serial input
+\1     slower than parallel adder, but uses far fewer gates
+\noindent \\ 
+\0 register file
+\1     pins: clock, w\_data, w\_addr, w\_en, r\_data, r\_addr, r\_en
+\1     more than one register in one chip
+\1     writing
+\2         w\_data is wired to all registers
+\3             (buffers are used to make sure the signal doesn't get weak from length)
+\2         w\_addr and w\_en go to a decoder which enables one of the registers
+\1     reading
+\2         the output of every register is wired to the data in port of a driver
+\2         r\_addr is wired to a decoder
+\2         the output of that decoder is wired to the enable port of each driver
+\2         the output of every driver is directly connected to r\_data
+\2         this is safe because the decoder ensures that only one of the drivers is ever active
+\noindent \\ 
+\0 clock divider:
+\1     used to take a fast clock input and output a slower output
+\1     use a count up counter
+\1     if it's a power of 2, you can use an n-bit counter and tc (clock overflow) as clock output
+\1     if it's not a power of 2:
+\2         up counter
+\3             add logic to reset the counter when it reaches the desired number of ticks
+\3             connect divided clock output to that reset
+\2         down counter
+\3             set the load input to the desired number of ticks (as constant inputs)
+\3             wire reset to load
+\3             connect divided clock output to that reset
+\1     the pulse width of the clock output may be different than you expect
+\2         it will be right for the power of 2 case
+\2         but for the other case, it is probably wrong
+\1     there will be a phase difference that is very difficult to fix
+\2         due to gate delay
+\noindent \\ 
+\0 clock timing:
+\1     to find maximum clock speed, use the formula:
+\2         T = (clk->Q) + (max Q->D) + setup time + skew
+\3             T  clock period
+\4                 1/T = clock frequency
+\3             clk->Q: delay of one flip-flop
+\4                 interval of time after clock rising edge where Q has correct value
+\3             max Q->D: most delayed path from ANY flip-flop output to ANY flip-flop input
+\4                 the input/output don't have to be on the same flip-flop
+\3             setup time:
+\4                 length of time after the clock rising edge that D must remain the same value in order for the flip-flop to function
+\3             skew: optional, clock skew of the circuit
+\4                 (if not given, it is 0)
+\noindent \\ 
+\0 metastability
+\1     happens when
+\2         you have asynchronous input (e.g. human pres-able button)
+\2         you break the setup time or hold time
+\1     when output is metastable it is somewhere between 0 and 1
+\2         you can't predict where it is
+\1     fix for button:
+\2         wire it into a synchronizer flip-flop and then to the rest of your circuit
+\3             (because flip-flop uses the same clock as the rest of your circuit)
+\2         maybe more than one synchronizer flip-flop for a very clean signal
+\3             (at the expense of one clock cycle delay each)
+\0 glitching
+\1     outputs that are initially not stable
+\2         e.g. signal flip flops a little before settling on the correct value
+\1     happens because not all inputs get to the logic at the same time due to gate delay and stuff
+\1     fix by putting a d-latch or flip-flop after the output
+\2         called registered output
+\2         this way the output isn't seen until the next clock cycle
+\2         (the output is assumed to be stable by then. If it isn't, you probably need a longer clock cycle)
+\2         you can combine that flip flop into the state register
+\noindent \\ 
+\noindent \\ 
+\0 FSM: Finite State Machine
+\1     usually store the state in a state register
+\2         could also use a collection of flip flops, shift register or whatever
+\1     to prove that two edges are disjunct:
+\2         AND together the boolean expressions, and simplify
+\2         you should end up at 0 because it is never possible to satisfy both transitions
+\1     to prove that one condition is always satisfiable
+\2         OR together all boolean expressions and simplify
+\3             you should get true because one of them is true for every input
+\1     normal state encoding
+\2         assign a number to each state
+\2         use the binary representation of that number
+\2         allows for the smallest register possible
+\1     one-hot encoding
+\2         for n states, use a n-bit register
+\2         each state is n binary bits with one 1 and the rest 0
+\2         may allow for simpler next-state logic
+\0 FSM state reduction
+\1     group states of FSM by what they output
+\1     then, for each input:
+\2         sub-group the groups by next state according to every combination of that input
+\1     after all this, if 2 states are always in the same group, they are duplicates
+\0 FSM -> circuit: (will be on final)
+\1     1. assign each state a value for the state register to hold
+\2         don't worry about optimizations yet
+\1     2. make truth table
+\2         inputs:  current state, inputs to FSM
+\2         outputs: next state, output
+\1     3. design circuit using truth table
+\2         current state + inputs -> next state logic
+\1     if you're asked to match a bit pattern, it is easier to use a shift register
+\1     (or make one out of d-flip-flops)
+\0 FSM reducing states:
+\1     group by z-value
+\1     sub-group by arrows pointing into them
+\1     and then by arrows pointing out
+\1     then any states in the same group are duplicates
+\0 Mealy vs Moore FSM:
+\1     Moore 
+\2         output is dependent on current state only
+\3             when input changes, output does not change until next clock cycle
+\2         output logic can be separated completely from next state logic
+\3             (output logic is then not dependent on inputs)
+\1     Mealy
+\2         outputs on arrows
+\2         output is dependent on state and inputs
+\3             when input changes, output changes asynchronously
+\3             (potentially not to the correct value)
+\2         means outputs are not lined up with clock edges
+\2         Mealy and Moore FSMs can be combined
+\noindent \\ 
+\0 HLFSM: High Level Finite State Machine
+\1     compared to normal FSM:
+\2         multi-bit input/output
+\2         local storage
+\2         arithmetic operations
+\3             (FSM can only do boolean, since everything is 1 bit anyway)
+\2         a state transition can be a more complex expression
+\3             e.g. (in\_reg > 5)
+\1     convention:
+\2         := for assignment
+\2         == for equality comparison
+\2         '0' for single bit value
+\2         0 for integer value
+\2         "00" for multi-byte value
+\3             multi-byte outputs must be local storage
+\noindent \\ 
+\0 RTL Design: Register Transfer Level Design
+\1     high-level description of the logic involved
+\1     uses multi-byte I/O and generic blocks
+\2         multi-byte I/O is like arrays
+\1     like a block diagram
+\2         too complex for a normal FSM, so design with a HLFSM
+\noindent \\ 
+\noindent \\ 
+\0 RAM memory types
+\1     register file
+\2         discussed previously
+\1     SRAM: Static RAM: Random Access Memory
+\2         uses 2 inverters back-to-back
+\1     DRAM: Dynamic RAM
+\2         uses special on-chip capacitors to store data
+\2         data is encoded in the charge of the capacitor, so it is possible to store multiple bits per cell
+\2         requires special chip design, so it's usually a separate chip as everything else
+\2         charge value can decay, so it must be refreshed
+\3             (usually taken care of by the chip firmware)
+\1     size:
+\2         register file: lots of transistors/cell (least dense)
+\2         SRAM: 6 transistors/cell
+\2         DRAM: 1 transistor/cell (most dense)
+\1     Speed:
+\2         register file: fastest
+\2         SRAM
+\2         DRAM: slowest
+\1     RAM has setup/hold times just like flip-flops
+\0 ROM: Read Only Memory
+\1     non-volatile
+\1     can be very fast
+\1     low power
+\1     does not need to be refreshed (like DRAM)
+\1     PROM: Programmable Read Only Memory
+\2         can be written to only once
+\2         implemented using fuses or ant-fuses
+\1     EPROM: Erasable Programmable Read Only Memory
+\2         written to using higher-than-normal voltage
+\2         erased by exposure to UV light
+\3             meaning chip must have a window
+\1     EEPROM: Electrically Erasable Programmable Read Only Memory
+\2         EPROM than can be erased electrically
+\noindent \\ 
+\0 MEMS: Micro Electrical Mechanical System
+\1     tiny chip-sized devices that aren't necessarily gates or stuff
+\1     e.g. gyroscopes
+\noindent \\ 
+\0 Queue
+\1     FIFO: First in, First Out
+\1     visualize as a circle
+\1     contains limited max size elements
+\1     2 pointers: front and rear
+\1     push (write):
+\2         write to address rear
+\2         increment rear
+\1     pop (read):
+\2         read from address front
+\2         increment front
+\2         does not really destroy content, it is still accessible
+\1     if front or rear reaches size:
+\2         next value should be 0
+\1     if rear == front:
+\2         could mean full or empty
+\2         depends if this happens after read or write
+\2         after write: it's full
+\2         after read: it's empty
+\0 \#\#\# making a FSM for a Queue is a good exercise
+\1     should probably do this as studying for the exam
+\noindent \\ 
+\0 RTL tradeoffs
+\1     Latency
+\2         time from data input to data output in seconds
+\1     Throughput
+\2         how many jobs can you input per second
+\1     pipelining
+\2         do things in stages, like an assembly line
+\2         helps with throughput
+\2         does not help with latency
+\2         put a pipeline register in in-between steps
+\2         doesn't make task faster, but you can start a new task before the previous one finishes
+\1     concurrency:
+\2         do things side by side
+\2         helps with throughput but not latency
+\1     it is sometimes possible to do both concurrency and pipelining
+\1     component allocation:
+\2         choice of components used to implement design
+\2         example: if you have 2 states that need multiplication:
+\3             it might be more compact to have them use the same multiplier and simply MUX the inputs
+\3             slightly more delay, many fewer gates
+\1     operator binding:
+\2         how you configure the MUXes in compact allocation
+\2         if you map them efficiently you can reduce delay
+\2         e.g. if one input is used in more than one scenario, arrange the inputs such that that one always has the same port
+\3             and then, you don't need a MUX there at all
+\1     operator scheduling:
+\2         introduce new states to preform operations
+\3             downside is more states
+\3             upside is states do fewer things each
+\3             (which means fewer gates)
+\2         e.g. to reduce the number of multipliers required
+\2         can reduce the longest path through the circuit which allows you to increase the clock speed
+\1     other optimizations:
+\2         serial vs concurrent computation
+\3             datapath: carry-ripple (serial) vs carry-lookahead adder (parallel)
+\noindent \\ 
+\0 chip design types
+\1     full custom
+\2         exactly what it sounds like, gate for gate design
+\2         very hard to make
+\2         takes a long time from design to mass production
+\2         cheapest per chip in large quantities
+\2         most expensive per chip if you're making only one
+\3             (very much in the realm of "Why would you do that?!?")
+\1     standard cell ASIC: Application Specific Integrated Circuit
+\2         has pre laid out cells
+\2         each cell can be made into a gate
+\2         you must still make custom mats to fabricate the circuit
+\2         vs full custom
+\3             easier
+\3             bigger and slower
+\3             more expensive per chip
+\1     gate array
+\2         structured ASIC
+\2         gates are already on the chip, they just need to be wired together
+\2         vs standard cell ASIC
+\3             faster and easier to manufacture
+\3             bigger and slower
+\3             more expensive per chip
+\2         some use only NAND or NOR gates
+\3             since both of those are Turing complete
+\1     FPGA: Field Programmable Gate Array
+\2         like a gate array that you can reprogram on the fly
+\3             at least the original ones were.
+\3             modern ones use lookup tables
+\2         vs gate array
+\3             easier
+\3             slower
+\3             more expensive
+\3             bigger
+\4                 no non-recurring costs
+\1     Single IC's
+\2         like the stuff we did in the first few labs
+\2         does not scale at all
+\1     SPLD: Single Programmable Logic Device
+\2         predates FPGAs
+\2         prefabricated IC with large AND and OR structure
+\2         has programmable nodes before each AND gate
+\3             could be fuse based (not reusable)
+\3             or memory based (reusable)
+\2         used to implement simple logic
+\noindent \\ 
+\0 how a FPGA works
+\1     \#\#\# TODO
+\1     LUT = Look Up Table
+\2         MUX + memory
+\2         example: 3 binary inputs = 8 combinations
+\2         use 8-1 MUX map 8 pre-computed input values
+\2         if a circuit uses more inputs than a LUT can handle, you must cascade to more than one LUT
+\3             (just like you do with gates)
+\3             this is more efficient than larger memories anyway
+\2         it is common for a LUT to have fewer than it's maximum inputs
+\3             thus the extra data is wasted, but that isn't a big deal
+\2         you can also have LUTs with more than one bit outputs
+\1     SM: Switch Matrices
+\2         AKA programmable interconnect
+\2         the way that LUTs are connected together
+\2         also MUX+memory based
+\2         each output is MUXed to an input
+\1     CLB: Configurable Logic Block
+\2         LUT + flip-flop + MUX + memory
+\2         memory programs MUX to output stored (flip flop) value or logic value
+\1     chip layout
+\2         hundreds of  thousands of SMs and CLBs in a grid with wires connecting adjacent blocks
+\0 programming a FPGA
+\1     all memory of all blocks is connected sequentially as one big shift register
+\2         known as a scan chain
+\1     you shift in your configuration (code) that does stuff and then the FPGA is programmed
+\noindent \\ 
+\noindent \\ 
+\0 \#\#\# TODO: processor internals
+\end{outline}
+\end{multicols*}
+\end{document}

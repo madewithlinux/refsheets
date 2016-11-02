@@ -1,0 +1,220 @@
+% Josh_Wright_Resume.tex
+% (c) Copyright 2015 Josh Wright
+\documentclass[12pt]{article}
+\usepackage{verbatim}
+% \usepackage{syntonly}
+\usepackage{ragged2e}
+\usepackage{geometry}
+\usepackage{enumitem} % for longenum
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{outlines} % for outline
+\usepackage{paralist} % for compactitem (compact itemize)
+\usepackage{multicol} % for multicolumn layout
+\geometry{letterpaper, margin=0.5in, top=0.3in}
+% \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
+
+\begin{document}
+% \linespread{0.5}
+\begin{center}
+Math 311 Reference Sheet
+\hfill \textcopyright Josh Wright 2015 \hfill
+Last Updated: \today
+\end{center}
+
+%%%%%%%%%%%%%%%%%%
+%% main section %%
+%%%%%%%%%%%%%%%%%%
+\begin{multicols*}{2}
+\begin{flushleft}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=@}
+% \begin{outline}[compactitem]
+\begin{outline}[longenum]
+
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newlength{\upspacelength}
+\setlength{\upspacelength}{0px}
+\newcommand{\upspace}{\vspace{\upspacelength}}
+% section titles
+\newcommand{\zzz}[1]{\upspace \0 \textbf{#1} }
+% \newcommand{\zzz}[1]{\0 \hspace{-1.25in} \textbf{#1} \vspace{-10px} }
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\upspace \oldOne  }
+\renewcommand{\2}{\upspace \oldTwo  }
+\renewcommand{\3}{\upspace \oldThree}
+\renewcommand{\4}{\upspace \oldFour }
+
+\zzz{Linear Equations}
+  \1 system is inconsistent if it has no solution
+  \1 a system must have either none, one, or infinitely many solutions
+  \1 system is called Homogeneous if all the constant terms (right sides) are 0
+  \1 if coefficient matrix is invertible, there is one unique solution for the system
+
+\zzz{Gaussian Elimination}
+  \1 first put system into matrix form
+  \1 Elementary Operations:
+    \2 multiply a row by a nonzero scalar
+    \2 add row multiplied by scalar to another row
+    \2 swap rows
+  \1 Elementary Operations don't change any of the solutions
+  \1 try to make it into a diagonal matrix
+
+\zzz{Row-Echelon form}
+  \1 all leading entries $\not= 0$, leading entries shift right as you go down
+  \1 from RE form you can use back substitution to get solutions
+  \1 leading entry of row: first non-zero element of row
+  \1 if there is any zero row, then the solution has a free variable
+
+\zzz{Reduced Row-Echelon form}
+  \1 same as RE form, but all leading entries $=1$, each column with a leading entry is zeros everywhere else
+    \2 this isn't always the identity matrix; some columns could be missing leading entries entirely
+
+\zzz{Gauss-Jordan reduction}
+  \1 use Gaussian Elimination to get matrix into Reduced Row-Echelon form
+  \1 if there are columns without leading entries, those are free variables
+  \1 take each row, transform back to equation, get solution
+
+\zzz{Matrix}
+  \1 matrices $A,B \in M_{m,n}(R)$
+  \1 addition, scalar multiplication work like vectors
+    \2 addition is only defined when matrix dimensions match
+  \1 \textbf{Dot Product:} $x*y = x_1y_1 + x_2y_2 + \ldots + x_ny_n = \sum_{k=0}^{n}x_ky_k$
+  \1 \textbf{diagonal matrix:} only diagonal elements are non-zero
+  \1 identity matrix: $I$, diagonal of $1$'s
+    \2 $AI=A$ for any A and properly sized $I$
+  \1 \textbf{Transpose:} just swap the rows and columns
+    \2 represented as $A^T$
+    \2 if $A=A^T$ then $A$ is symmetric
+
+\zzz{Multiplication:} $A_{m \times n}, B_{n \times p}, C=AB$
+  \1 $c_{i,j} = \sum_{k=1}^{n} a_{i,k}b_{k,j}$
+  \1 each element in $C$ is the dot product of that row in $A$ and column in $B$
+  \1 result has as many rows as $A$ and columns as $B$
+  \1 $AB$ is only the same size as $BA$ if they're both square; since the size depends on the matching dimensions of $A$ and $B$
+  \1 if $AB=BA$ then $A$ and $B$ commute
+  \1 $AB(C) = A(BC)$
+  \\ $(A+B)C = AC+BC$
+  \\ $C(A+B) = CA+CB$
+  \\ $(rA)B = A(rB) = r(AB)$
+
+\zzz{Inverse Matrix}
+  \1 $AA^{-1} = A^{-1}A = I$
+  \1 no inverse: singular or non-invertible
+  \1 inverse exists: non-singular or invertible
+  \1 zero matrix is singular
+  \1 inverse of a matrix is unique
+  \1 inverse distributes over matrix multiplication
+  \1 inverse of diagonal matrix: reciprocal of each element
+  \1 inverse of $2\times 2$ matrix $[a,b;c,d]$ is $\frac{1}{ac-bd}[d,-c;-b,a]$
+  \1 find inverse:
+    \2 convert $A$ to Reduced Row-Echelon form
+    \2 apply those same ordered Elementary Operations to $I$ to get $A^{-1}$
+    \2 (you can do these two steps at the same time)
+  \1 \textbf{Elementary Matrix:} any matrix reachable by applying Elementary Operations to $I$
+
+\zzz{These are Equivalent}
+  \1 $A$ is invertible
+  \1 $det(A) \not= 0$
+  \1 $x=0$ is the only solution to the equation $Ax=0$
+  \1 $Ax=b$ has a unique solution for any column vector $b$
+  \1 Row-Echelon form of $A$ has no zero rows
+  \1 Reduced Row-Echelon form of $A$ is $I$
+  \1 the rows/columns of $A$ are linearly independent
+  \1 the columns of $A$ form a Basis of $R^n$
+
+
+\zzz{Determinants}
+  \1 determinant of singleton matrix is single value
+  \1 determinant of $2\times 2$ matrix $[a,b;c,d]$ is $ac-bd$
+  \1 determinant of diagonal matrix is product of diagonal entries
+    \2 same for upper, lower triangular
+  \1 determinant of larger matrix can be broken down by a row or column:
+    \2 for each element $a_{i,j}$, take $a_{i,j}$ times the determinant of  the (smaller) matrix formed by leaving out row $i$, column $j$
+    \2 and use the proper sign by the alternating method
+  \1 Elementary Operation Axioms:
+    \2 D1: multiply row by $r$ $\rightarrow$ multiply det by $r$
+    \2 D2: add scalar multiple of one row to another $\rightarrow$ same det
+    \2 D3: swapping rows of matrix $\rightarrow$ det changes sign
+    \2 D4: $det(I) = 1$
+    \2 C1: if $A,B$ are square and $A$ is obtained by applying Elementary Operations to $B$, then $det(A)=0$ iff $det(B)=0$
+    \2 C2: $det(B)=0$ whenever $B$ has a zero row
+    \2 C3: $det(A)=0$ iff $A$ is not invertible
+  \1 Cramer's rule: explicit formula for solution to system of linear equations, using determinants. Not very useful because determinants.
+
+\zzz{Wronskian}
+  \1 to show linear independence of functions in $C^{\infty}(R)$ (continuously differentiable functions)
+  \1 $W(f_1,f_2,f_3)(x) = $
+    \begin{tabular}{|l l l|}
+      $f_1(x)$ & $f_2(x)$ & $f_3(x)$ \\
+      $f'_1(x)$ & $f'_2(x)$ & $f'_3(x)$ \\
+      $f''_1(x)$ & $f''_2(x)$ & $f''_3(x)$ \\
+    \end{tabular}
+      \2 functions in rows, derivatives down columns
+  \1 if $W(x)$ is not identically $0$, then the functions are linearly independent
+  \1 alternatively (1): take derivatives of the top row until you get something that you can work with to solve
+  \1 alternatively (2): start with $af_1(x)+bf_2(x)+cf_3(x)=0$ and show that the only solution is $a=b=c=0$
+
+% post exam 1
+
+\zzz{Basis}
+  \1 every vector space has a Basis
+  \1 it's like a coordinate system
+  \1 Basis = minimum spanning set = maximum set of linearly independent vectors
+  \1 can get one by adding linearly independent vectors to a too-small set or removing linearly dependent ones from a too-large one
+  \1 \textbf{Dimension:} ($dim(V)$) number of basis vectors for a vector space
+    \2 if $dim(V)<\infty$ then every basis of $V$ is the same size
+
+\zzz{Matrix Spaces}
+  \1 matrix $M_{m,n}:$
+  \1 \textbf{Row Space:} subspace of $R^n$ spanned by rows of $M$
+    \2 \textbf{Rank:} = dimension of row space (number of linearly independent rows)
+    \2 in Row-Echelon form, all non-zero rows are linearly independent
+  \1 \textbf{Column Space:} subspace of $R^m$ spanned by columns of $M$
+  \1 \textbf{Null Space:} $N(A)$: all $x$ such that $Ax=0$
+    \2 solution set of homogeneous equations with coefficients $A$
+    \2 $N(A)$ is subspace of $R^n$
+    \2 Nullity $=dim(N(A))=$ number of free variables
+  \1 for any matrix, rank + nullity = number of columns
+
+\zzz{Change of Basis (Coordinates):}
+  \1 basis $B_1=\{u,v\}$ of $R^2$
+  \1 change basis of $(x,y)$: find $r_1,r_2$ such that $(x,y) = r_1v + r_2u$
+  \1 \textbf{Transition Matrix} $T=(u^T,v^T)$ has columns of $u$ and $v$, and maps $B_1\rightarrow R^2$
+    \2 that is, $T\cdot(^{x'}_{y'}) = (^x_y)$ when $(x,y)=x'u+y'v$
+    \2 inverse works: $T^{-1}\cdot(^x_y) = (^{x'}_{y'})$
+  \1 transition between general bases:
+    \2 basis $B_1,B_2$ with transition matrix $T_1,T_2$
+    \2 $f(x): B_1 \rightarrow B_2 = T_2^{-1}\cdot T_1 \cdot x $
+    \2 $f(x): B_2 \rightarrow B_1 = T_1^{-1}\cdot T_2 \cdot x $
+    \2 more generally, find one basis's coordinates in terms of another's, but then you'll need to solve $n^2$ equations
+
+\zzz{Linear Relations}
+  \1 additivity:  $L(ax+by) = aL(x)+bL(y)$
+  \1 homogeneity: $L(ax) = aL(x)$
+  \1 kernel: all $v$ such that $L(v)=0$
+  \1 range: all possible output values
+
+\zzz{Least Squares}
+  \1 express as overdetermined relation $Ax = b$ (where there are more rows than variables)
+  \1 Then left-multiply both sides by $A^{-1}$, getting $A^{-1}Ax=A^{-1}b$
+  \1 the resulting equation will be fully determined, so solve like normal
+  \1 at the end, you get values for x, which are the needful least squares coefficients
+
+
+
+\end{outline}
+\end{flushleft}
+\end{multicols*}
+\end{document}

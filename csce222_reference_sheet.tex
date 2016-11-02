@@ -1,0 +1,622 @@
+% (c) Copyright 2015 Josh Wright
+\documentclass{article}
+\usepackage{mathrsfs,amsmath,amsthm,latexsym,paralist}
+\usepackage{mathtools} 
+\usepackage{amssymb}   % for \varnothing, \therefore
+\usepackage{centernot} % for \centernot
+\usepackage{geometry}  % for margins
+\usepackage{outlines}  % for outline
+% \usepackage{paralist}  % for compactitem, compactenum
+\usepackage{multicol} % for multicolumn layout
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{
+	pdftitle={Discrete Structures Reference Sheet},
+	pdfauthor={Josh Wright},
+	pdfsubject={CSCE 222},
+	bookmarksnumbered=true,
+	bookmarksopen=true,
+	bookmarksopenlevel=1,
+	colorlinks=true,
+	pdfstartview=Fit,
+	pdfpagemode=UseOutlines, % this is the option you were lookin for
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+}
+\geometry{letterpaper, landscape, margin=0.5in}
+\newcommand{\upspace}{\vspace{0px}}
+\newcommand{\bksp}{\hspace{-3px}}
+% \newcommand{\zzz}[1]{\upspace \0 \subsection*{#1:} \addcontentsline{toc}   {subsection}{#1} }
+\newcommand{\zzz}[1]{\upspace \0\bksp{\large\textbf{#1:}}\addcontentsline{toc}{subsection}{#1}}
+\newcommand{\zza}[1]{\upspace \1\bksp\textbf{#1:}\addcontentsline{toc}{subsubsection}{#1}}
+\newcommand{\aaa}{\upspace \1\bksp}
+\newcommand{\bbb}{\upspace \2\bksp}
+\newcommand{\ccc}{\upspace \3\bksp}
+\newcommand{\ddd}{\upspace \4\bksp}
+% makes second-level itemize bullets instead of dashes
+\renewcommand\labelitemii{\labelitemi}
+
+\newcommand{\oldiff}{\iff}
+\newcommand{\oldimplies}{\implies}
+\renewcommand{\iff}{\leftrightarrow}
+\renewcommand{\implies}{\rightarrow}
+
+\newcommand{\p}{\partial}
+\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\prt}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\grad}{\nabla}
+\newcommand{\tbf}[1]{\textbf{#1}}
+	
+
+\begin{document}
+\allowdisplaybreaks
+\begin{multicols*}{2}
+\begin{center}
+Discrete Structures Reference Sheet\\
+\textcopyright \space Josh Wright 2015 \\
+Ref: \url{http://oeis.org/wiki/List_of_LaTeX_mathematical_symbols} \\
+Last Updated: \today
+\end{center}
+% \tableofcontents
+\begin{alignat*}{1}
+	\forall                    & \quad \text{for all}\\
+	\exists                    & \quad \text{exists}\\
+	\therefore                 & \quad \text{therefore}\\
+	\oldimplies                & \quad \text{implies}\\
+	\rightarrow                & \quad \text{also implies (prof uses this one)}\\
+	\oldiff                    & \quad \text{if and only if (abbreviated iff)}\\
+	\leftrightarrow            & \quad \text{also iff} \\
+	\oplus                     & \quad \text{XOR, exclusive or} \\
+	\odot                      & \quad \text{Boolean product} \\
+	\equiv                     & \quad \text{is equivalent to}\\
+	\wedge                     & \quad \text{and}\\
+	\vee                       & \quad \text{or}\\
+	\neg                       & \quad \text{not}\\
+	\lfloor x \rfloor          & \quad \text{floor of $x$. Next integer smaller than or equal to $x$} \\
+	\lceil x \rceil            & \quad \text{ceiling of $x$. Next integer larger than or equal to $x$} \\
+	% & \quad \text{} \\
+\end{alignat*}
+\noindent
+\begin{outline}[compactitem]
+\allowdisplaybreaks
+\noindent
+\zzz{Sets}
+	\aaa Two sets are \tbf{disjoint} if they share no common elements. \hfill (p.128, 130)
+		\\ Disjoint sets $A$ and $B \implies A \cap B = \varnothing $
+	\aaa $a \in A$: $a$ is an element of the set $A$
+	\aaa $a \notin A$: $a$ is not an element of the set $A$
+	\aaa $A \subseteq B  $:  $A$ is a subset of $B$
+		\\ $\varnothing \subseteq A$: the empty set is a subset of all sets
+		\\ $x \in A \implies x \in B$
+	\aaa $A \nsubseteq B $:  $A$ not a subset of $B$
+		\\ $x \in A \centernot\implies x \in B$
+	\aaa $A \subset B    $:  $A$ is a proper subset of $B$ (implies $A\ne B$)
+		\\ $x \in A \implies x \in B$
+	\aaa $A \not\subset B$:  $A$ not a proper subset of $B$ (implies $A\ne B$).
+		\\ $x \in A \centernot\implies x \in B$
+	\aaa $A \cup B$: the union of $A$ and $B$. Contains all elements in either $A$ or $B$
+		\\\ $= \{x|x \in A \vee x \in B\}$
+		\\\ $x \in A \implies x \in (A \cup B)$
+		\\\ $x \in (A \cup B) \centernot\implies x \in A $
+	\aaa $A \cap B$: the intersection of $A$ and $B$. Contains all elements in both $A$ and $B$
+		\\ $= \{x|x \in A \wedge x \in B\}$
+		\\ $x \in A \centernot\implies x \in (A \cap B)$
+		\\ $x \in (A \cap B) \implies x \in A $
+	\aaa $\bar{A}$: the compliment of $A$. $\bar{A}$ contains every element that is not in $A$
+		\\ $x \in \bar{A} \iff x \notin A$
+		\\ $\bar{A} = \{x | x \notin A \}$
+		\\ $\bar{A} = U - A$
+	\aaa $A=B$: Sets $A$ and $B$ are equal (contain the same elements)
+		\\ Does not matter if elements are in a different order or repeated
+		\\ $\implies \forall x (x \in A \leftrightarrow x \in B)$
+		\\ $\implies (A \subseteq B) \wedge (B \subseteq A)$
+	\aaa $A \times B$: The Cartesian product of sets $A$ and $B$. Contains tuples of all combinations of the elements in $A$ and $B$
+		\\ $A \times B$ = $\{(a,b) | a \in A \wedge b \in B\}$
+	\aaa $C = A - B$:  $C$ contains all elements of $A$ that are not in $B$
+		\\ $C = \{x|x \in A \wedge x \notin B \}$
+	\zza{Special sets}
+		\bbb $\mathbb{U}$: Universal set. Contains all elements (no really, ALL of them)
+		\bbb $\mathbb{N}$: set of all natural numbers (positive integers, and 0 depending on who you ask)
+		\bbb $\mathbb{Z}$: set of all integers
+		\bbb $\mathbb{Q}$: set of all rational numbers
+		\bbb $\mathbb{R}$: set of all real numbers
+		\bbb $\varnothing$: the empty set
+			\\ $\varnothing \subseteq A$: the empty set is a subset of any sets
+		\bbb $\mathcal{P}(A)$: Power set of $A$. Contains all possible subsets of $A$, including $A$, $\varnothing$.
+			\\ $|\mathcal{P}(A)| = 2^{|A|}$
+			\\ $X \subseteq A \iff X \in \mathcal{P}(A)$
+
+\zzz{Functions} 
+	\aaa let $f$ be a function that maps elements ftom $A$ to $B$, where $A$ and $B$ are sets. \hfill(p.141)
+		\bbb We write this function as $f: A \rightarrow B$. if $f(a) = b$, then $b$ is the image in $B$ of $a$.
+	\aaa \tbf{domain:} the set of values for which $f$ is defined. ($A$ in above)
+	\aaa \tbf{co-domain:} the set of values for which $f$ maps elements to. ($B$ in above)(not the same as the range)
+	\aaa \tbf{one-to-one:} the function maps every element in $A$ to a unique element in $B$. (AKA injective)
+	\aaa \tbf{onto:} the function contains a mapping for every element in $B$. (AKA surjective)
+		\bbb Even if a function is onto, then mappings need not be unique, e.g. $ (f(a)=x \wedge f(b)=x) \centernot\implies a=b$
+	\aaa \tbf{bijection:} one-to-one and onto
+	\aaa \tbf{Function Composition:}
+		\bbb let $f: A \rightarrow B$ and $g: B \rightarrow C$
+		\bbb $\implies (f \circ g): A \rightarrow C$
+		\bbb $\implies (f \circ g)(a) = f(g(a))$ for all $a \in A$
+	\zza{Inverse Functions}
+		\bbb An inverse function only exists if a function is a bijection (both one-to-one and onto). For the previous example function, the inverse of $f$ is $h: B \rightarrow A$
+
+\zzz{Cardinality}
+	\aaa The number of elements in a set. Can be finite, countably infinite, or uncountably infinite
+		\bbb $|A|$ cardinality (number of elements) of $A$
+	\aaa $|A|=|B|$ if and only if there exists a bijection (one-to-one and onto) function mapping $A$ and $B$
+	\aaa $|A| \leq |B|$ if and only if there exists a one-to-one function mapping $A$ and $B$
+	\aaa A set is countable if:
+		\bbb it has a finite number of elements
+		\bbb it can be listed without skipping elements
+		\bbb it can be demonstrated to have the same cardinality as $\mathbb{N}$ (set of positive integers)
+	\aaa $\aleph_0$ cardinality of an infinite set (aleph sub 0)
+	\aaa $\mathbb{N}$, $\mathbb{Z}$ and $\mathbb{Q}$ are countably infinite
+	\aaa $\mathbb{R}$ is uncountably infinite
+
+\zzz{Sequences}
+	\aaa A sequence is an infinite ordered list of elements
+	\aaa $a = \{a_1, a_2, a_3, ... a_n,...\}$
+	\aaa Geometric progression: $\{a, ar, ar^2, ... ar^n,...\}$
+	\aaa Arithmetic progression: $\{a, a+d, a+2d,...a+nd, ...\}$
+	\aaa Recursive sequence: a sequence where each element is defined in terms of other elements
+		\bbb example: \tbf{Fibonacci Sequence:} $f_0 = 0, f_1 = 1, f_n = f_{n-1} + f_{n-2}$
+		\bbb solving a recursive sequence means finding valid initial conditions
+	\zza{Summations}
+		\bbb $\cup_{i=1}^n A_n   $ union of all sequences $A_n$. This is the set of all elements of every set
+		\bbb $\cap_{i=1}^n A_n   $ intersection of all sequences $A_n$. This is the set of all elements common to all sets $A_n$
+		\bbb $\sum_{i=0}^n a_n   $ sum of the sequence of elements $a_n$
+		\bbb $\sum_{j \in S} a_j $ sum of the sequence of elements $a_j$, whose indexes are elements of the set S
+		\bbb $\prod_{i=0}^n a_n  $ just like normal summation notation, except this is the product of all terms
+		\bbb $\vee_{i=0}^n q_n   $ logical OR of all logical propositions $a_n$. True if \tbf{any} $a_n$ is true.
+		\bbb $\wedge_{i=0}^n q_n $ logical AND of all logical propositions $a_n$. True if \tbf{all} $a_n$ are true.
+	\zza{Strings}
+		\bbb A string is a finite sequence of characters from a finite alphabet
+		\bbb The empty string is $\lambda$ (lambda)
+		\bbb The set of all possible strings of any length is countably infinite
+
+\zzz{Algorithms}
+	\aaa An algorithm is a finite list of precise instructions to solve a problem in a domain
+		\bbb can be defined in English or pseudocode
+		\bbb if a function is not computable, there cannot exist an algorithm that computes that function
+	\zza{Computability}
+		\bbb A function is computable if there exists a computer program that can find values of the function. A function is not computable if such a computer program does not exist.
+	\aaa We are often interested in the number of operations required to complete a given task using a given algorithm
+	\aaa Common algorithm tasks include searching and sorting
+	\aaa \tbf{Greedy Algorithm:} an algorithm that decides the best choice at each individual decision.
+		\bbb does not necessarily choose the best (most optimal) overall choice
+	\aaa \tbf{Halting Problem:} Does there exist an algorithm that takes as input an algorithm and the parameters for that algorithm, and determines whether the given algorithm will eventually stop with this input.
+		\bbb i.e. an algorithm that tests for infinite loops
+		\bbb in 1936, Alan Turing proved that this problem is not computable \hfill(p201)
+
+\zzz{Complexity}
+	\aaa \tbf{Time Complexity:} the number of operations needed to complete the operation
+		\bbb Usually given as worst-case complexity (another useful case is the average case complexity)
+	\zza{Big-$O$ notation}
+			\bbb $f(x)$ is $O(g(x))$ if $|f(x)| \leq C|g(x)|$ for $x>k$
+				\ccc i.e. $f$ grows slower than a fixed multiple of $g$ as $x$ approaches $\infty$
+			\bbb $C$ and $k$ are called witnesses. We only need one pair of them for which the relationship is true to show that the relationship is always true
+	\zza{Big-$\Omega$ notation}
+		\bbb (big-omega notation)
+		\bbb $f(x)$ is $\Omega(g(x))$ if $|f(x)| \geq C|g(x)|$ for $x>k$
+			\ccc i.e. $f$ grows faster than a fixed multiple of $g$ as $x$ approaches $\infty$
+		\bbb $f(x)$ is $\Omega(g(x))$ if and only if $g(x)$ is $O(f(x))$
+
+	\zza{Big-$\Theta$ notation}
+		\bbb (big-theta notation)
+		\bbb $f(x)$ is $\Theta(g(x))$ if and only if $f(x)$ is $O(g(x))$ and $\Omega(g(x))$
+			\ccc If true, $f(x)$ and $g(x)$ are said to be the same order
+
+\noindent
+\zzz{Theorems}
+	\aaa If $A$ and $B$ are countable sets, $A \cup B$ is also countable \hfill(p174)
+	\aaa If $A$ and $B$ are sets with $|A| \leq |B|$ and $|B| \leq |A|$, then $|B|=|A|$ \hfill(p174)
+		\bbb i.e. there exists a one-to-one function mapping $A$ to $B$, and a one-to-one function mapping $B$ to $A$
+		\bbb (Schröder-Bernstein Theorem)
+	\aaa Let $f(x) = a_nx^n+...+a_1x+a_0$ where $a_n$ are real number coefficients. Then $f(x)$ is $O(x^n)$ \hfill(p209)
+		\bbb A polynomial of order $n$ is $O(x^n)$
+	\aaa The sum of first $n$ positive integers is $O(n^2)$
+	\aaa If $f_1(x)$ is $O(g_1(x))$ and $f_2(x)$ is $O(g_2(x))$, then $(f_1+f_2)(x)$ is $O($max$(|g_1(x)|,|g_2(x)|))$ \hfill(p213)
+	\aaa If $f_1(x)$ and $f_2(x)$ are both $O(g(x))$, then $(f_1+f_2)(x)$ is $O(g(x))$ \hfill(p213)
+	\aaa $f_1(x)f_2(x)$ is $O(g_1(x)g_2(x))$ if  $f_1(x)$ is $O(g_1(x))$ and $f_2(x)$ is $O(g_2(x))$
+	\aaa If $d>c>1$: $n^c$ is $O(n^d)$ but $n^d$ is not $O(n^c)$ \hfill(p212)
+	\aaa If $b>1$ and $c$ and $d$ are $>0$, $(log_bn)^c$ is $O(n^d)$, but $n^d$ is not $O((log_bn)^c)$ \hfill(p212)
+	\aaa If $d>0$ and $b>1$, $n^d$ is $O(b^n)$ but $b^n$ is not $O(n^d)$ \hfill(p212)
+	\aaa If $c>b>1$, $b^n$ is $O(c^n)$, but $c^n$ is not $O(b^n)$ \hfill(p212)
+	\aaa $n!$ is $O(n^n)$
+	\aaa $\log(n!)$ is $O(n\log(n))$. (logarithmic identity)
+	\aaa Any constant $c$ is $O(1)$
+
+\zzz{Propositional Logic}
+	\aaa a logical proposition is a statement that can be either \tbf{true} or \tbf{false}
+	\aaa Traditional propositional variables are $p,q,r,s\ldots$
+	\zza{Operators}
+	\\ \begin{tabular}{|l l l|} \hline
+		Negation     &$\neg p$                                     &not $p$                            \\\hline
+		Conjunction  &$p \wedge q$                                 &$p$ and $q$                        \\\hline
+		Disjunction  &$p \vee q$                                   &$p$ or  $q$                        \\\hline
+		Implication  &$p \rightarrow q$, $p \rightarrow q$         &if $p$ then $q$                    \\\hline
+		Biconditional&$p \leftrightarrow q$, $p \leftrightarrow q$ &$p$ if and only if $q$, $p$ iff $q$\\\hline
+	\end{tabular}
+	\\ \\
+	\begin{tabular}{|l l l l l l l l l|} \hline
+		$p$ & $q$ & $ \neg p$ & $p \wedge q$ & $p \vee q$ & $p \rightarrow q$ & $p \leftrightarrow q$ & $p$ & $q$ \\ \hline
+		T & T & F & T & T & T & T & T & T \\ \hline
+		T & F & F & F & T & F & F & T & F \\ \hline
+		F & T & T & F & T & T & F & F & T \\ \hline
+		F & F & T & F & F & T & T & F & F \\ \hline
+	\end{tabular}
+	\aaa Operator Precedence:
+		\bbb parenthesis $()$
+		\bbb $\neg$
+		\bbb $\wedge, \vee$
+		\bbb $\rightarrow, \leftrightarrow$
+	\aaa \tbf{Converse:} the same statement, but backwards.
+		\\ if $p\rightarrow q$ then $q\rightarrow p$
+	\aaa \tbf{Inverse:} is negation of both sides of the statement. 
+		\\ if $p\rightarrow q$, then $\neg p\rightarrow \neg q$
+	\aaa \tbf{Contrapositive:} is equivalent to the inverse of the converse. (or equivalently, the converse of the inverse)
+		\\ if $p\rightarrow q$, then $\neg q\rightarrow \neg p$
+	\aaa \tbf{Tautology:} A statement is a tautology if it can be shown to be true by definition
+	\aaa \tbf{Contradiction:} always false, never true
+	\aaa \tbf{Contingency:} neither a tautology nor a contradiction
+	\aaa Two compound statements are logically equivalent ($\equiv$) if they have the same truth table.
+	\aaa \tbf{Propositional Satisfiability:} A statement is propositionally satisfiable if there exists a combination of inputs for which it is true. It is not propositionally satisfiable if and only if it's negation is a tautology
+	% \aaa DeMorgan`s Laws:
+	\zza{DeMorgan`s Laws}
+		\bbb \tbf{1.} $ \neg(p \wedge q) \equiv \neg p \vee \neg q $
+		\bbb \tbf{2.} $ \neg(p \vee q) \equiv \neg p \wedge \neg q $
+	\aaa \tbf{Rules of Inference:} \hfill (p.72) \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% didn't need any of this stuff on the exam %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% \begin{tabular}{ l l }
+	% Rule of\\ Inference & Tautology \\ \\
+	% Modus ponens & \\
+	% $ p $ &$ (p \wedge (p \rightarrow q)) $ \\
+	% $ p \rightarrow q $ & \\ \hline
+	% $ \therefore q $ \\ \\
+	% Modus tollens & \\
+	% $ \neg q $ & $ (\neg q \wedge (p \rightarrow q)) \rightarrow \neg p $ \\
+	% $ p \rightarrow q $ &  \\ \hline
+	% $ \therefore \neg p $ \\ \\
+	% Hypothetical syllogism & \\
+	% $ p \rightarrow q $ & $ (p \rightarrow q)\wedge(q \rightarrow r)\rightarrow(p \rightarrow r) $ \\
+	% $ q \rightarrow r $ & \\ \hline
+	% $ \therefore p \rightarrow r $ \\ \\
+	% Disjunctive syllogism & \\
+	% $ p \wedge q $ & $ ( (p \wedge q) \vee \neg p) \rightarrow q $ \\
+	% $ \neg p $ &  \\ \hline
+	% $ \therefore  q$ \\ \\
+	% Addition & \\
+	% $  $ & $ p \rightarrow (p \vee q) $ \\
+	% $ p$ &  \\ \hline
+	% $ \therefore p \vee q $ \\ \\
+	% Simplification & \\
+	% $  $ & $ (p \wedge q) \rightarrow p $ \\
+	% $ p \wedge q $ &  \\ \hline
+	% $ \therefore p $ \\ \\
+	% Conjunction & \\
+	% $  p$ & $ ( (p)\wedge (q)) \rightarrow (p \wedge q) $ \\
+	% $ q $ & \\ \hline
+	% $ \therefore (p \wedge q) $ \\ \\
+	% Resolution & \\
+	% $ p \vee q $ & $ ( (p \vee q)\wedge \neg p \vee r) \rightarrow q \vee p $ \\
+	% $ \neg p \vee r $ & \\ \hline
+	% \end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\zzz{Counting}
+	\zza{Pigeonhole Principle} if $N$ pigeons are placed into $N-1$ boxes, at least one box must have 2 or more pigeons
+	\zza{Generalized Pigeonhole Principle} if $N$ objects are placed into $k$ boxes, then there must exist a box with $\lceil N/k \rceil$ objects
+		\bbb Works regardless of the values of $N$ and $k$
+	\zza{Permutations} unique subsets of $n$ things taken $r$ at a time, where the order \tbf{does} matters
+		\bbb Assumes that duplicates cannot be selected
+		\bbb $P(n,r) = \frac{n!}{(n-r)!} = n(n-1)(n-2)(n-3)\ldots r$
+		\bbb \tbf{Permutations with duplicates:} $= n^r$
+	\zza{Combinations} unique subsets of $n$ things taken $r$ at a time, where the order \tbf{does not} matter
+		\bbb $C(n,r) = \frac{n!}{r!(n-r)!} = \frac{P(n,r)}{P(r,r)} = \frac{n(n-1)(n-2)(n-3)\ldots r}{r!}$
+		\bbb \tbf{Combinations with duplicates:} $=\frac{(n+r-1)!}{r!(n-r)!}$
+	\zza{Product Rule} if there is a task of two subtasks tasks which can be done $n_1$ and $n_2$ ways respectively, then the overall task can be done $n_1 n_2$ ways
+	\zza{Sum Rule} if a task can be done either $n_1$ or $n_2$ ways, and there is no overlap between the ways, the task can be done $n_1+n_2$ ways
+	\zza{Inclusion-Exclusion principle} $|A \cup B| = |A| + |B| - |A \cap B|$
+
+\zzz{Recurrence Relations}
+	\zza{Linear Homogeneous} in the form $a_n = c_1a_{n-1} + c_2a_{n-2} + \ldots + c_ka_{n-k}$ where $c_1, c_2, \ldots c_k$ are real numbers and $c_k \not= 0$
+		\bbb \tbf{Degree} is $k$. The relation is defined in terms of the previous $k$ terms of the sequence. (and therefore the terms before $a_{n-k}$ don't matter to $a_k$)
+		\bbb linear because all previous terms of $a$ have exponent 1 and constant coefficient
+		\bbb homogeneous because all terms are previous terms of $a$. (no constant numbers, no direct expressions of $n$)
+		\bbb \tbf{Theorem 1 Solution:} 
+		\\ (when there are multiple roots)
+		\\Characteristic equation: $r^k - c_1r^{k-1} - c_2r^{k-2} - \ldots - c_{k-1}r - c_k = 0$
+		\\ Find roots $r_1, r_2, \ldots r_k$ of characteristic equation, and then use $a_n = \alpha_1r_1^n + \ldots + \alpha_kr_k^n $ with base the conditions to find $\alpha_1 \ldots \alpha_k$.
+		\\ Final solution equation is $a_n = \alpha_1n^{r_1} + \ldots + \alpha_kn^{r_k} $
+		\bbb \tbf{Theorem 2 Solution:}
+		\\ (when there is a single root)
+		\\ same as theorem 1, except find $\alpha$ using
+		\\ $a_n = \alpha_1r_0^n + \alpha_2nr_0^n $
+	\zza{Linear Non-Homogeneous} FIXME
+	\zza{Divide and Conquer Recurrence Relations}
+	\\ (Theorem 1)
+		\bbb $f$ is an increasing function $f(n) = af(n/b) + c$
+		\\ if $a>1$: $f(n)$ is $O(n^{\log_b a})$
+		\\ if $a=1$: $f(n)$ is $O(\log n)$
+		\bbb When $n = b^k$ and $a \not= 1$: 
+		\\ $f(n) = C_1 n^{\log_b a} + C_2$
+		\\ $C_1 = f(1) + c/(a-1)$
+		\\ $C_2 = - c/(a-1)$
+	\zza{Master Theorem}
+	\\ (Theorem 2)
+		\bbb $f$ is an increasing function $f(n) = af(n/b) + cn^d$
+		\\ if $a<b^d$: $f(n)$ is $O(n^d)$
+		\\ if $a=b^d$: $f(n)$ is $O(n^d\log n)$
+		\\ if $a>b^d$: $f(n)$ is $O(n^{\log_b a})$
+
+\zzz{Relations}
+	\aaa $a$ and $b$ are related by $R$ if $(a,b)\in R$, also written $aRb$
+	\aaa a relation can be treated as a set of tuple and/or as a function
+	\aaa a \tbf{binary relation} is a relation from one set to another
+		\\ a binary relation from  $A$ to $B$ is a subset of $A\times B$
+		\\ $( R\subseteq A\times B )$
+	\aaa a \tbf{relation on a set} is a relation from $A$ to $A$
+	% \aaa a relation $R$ on a set $A$ is: \hfill (p.576)
+\0 A relation $R$ on a set $A$ is: \hfill (p.576)
+	\aaa\tbf{Reflexive} if:
+		\bbb $\forall(a\in A): (a,a) \in R$
+		\bbb All nodes have a loopback
+	\aaa\tbf{Symmetric} if:
+		\bbb $\forall(a,b\in A): ((a,b) \in R) \iff ((b,a) \in R)$
+		\bbb All streets are two-way
+	\aaa\tbf{Antisymmetric} if:
+		\bbb $\forall(a,b\in A): ((a,b)\in R \wedge (b,a) \in R) \implies a=b$
+		\bbb One-way streets only
+	\aaa\tbf{Transitive} if:
+		\bbb $\forall(a,b,c\in A): ((a,b)\in R\wedge(b,c)\in R)\implies (a,c)\in R $
+	\aaa\tbf{Irreflexive} if:
+		\bbb $\forall(a\in A): (a,a) \notin R$
+	\aaa\tbf{Asymmetric} if:
+		\bbb $((a,b)\in R \implies (b,a) \notin R) $
+		\bbb Asymmetric $\iff$ Antisymmetric and Irreflexive
+	\aaa relations can be combined in any way that sets can be combined (union, intersection, subtraction\ldots)
+	\aaa \tbf{composite relation} of $R$ and $S$
+	\\ sets $A,B,C$
+	\\ relation $R: A \rightarrow B$, $S: B \rightarrow C$
+	\\ $S \circ R = \{(a,c)|a\in A\wedge c \in C\wedge \exists b((a,b)\in R\wedge (b,c)\in S)\}$
+	\\ Note that $S$ and $R$ are reversed
+		\bbb powers of a relation $R$ on a set: $R^1 = R$, $R^2 = R\circ R$, $R^3 = R\circ R \circ R = R^2 \circ R\ldots$
+		\bbb a relation $R$ on a set is transitive if and only if $R^n\subseteq R$ for $n\geq1$
+\0 \tbf{Matrices:}
+	\aaa Matrix relation: $m_{ij}\left\{_{0 \mbox{ if } (a_i,b_j) \notin R}^{1 \mbox{ if } (a_i,b_j) \in R} \right\}$
+	\aaa \tbf{Reflexive} diagonal ($i=j$) is all 1's
+		$
+		\begin{bmatrix}
+			1&       &   \\
+			 &\ddots &   \\
+			 &       & 1 \\
+		\end{bmatrix}
+		$
+	\aaa \tbf{Symmetric, Antisymmetric}
+	\\ Symmetric: all opposite diagonals are equal.
+	\\ Antisymmetric: opposite diagonals aren't both one
+		$
+	\\	S:\begin{bmatrix}
+			 &0& & \\
+			0& &1& \\
+			 &1& &1\\
+			 & &1& \\
+		\end{bmatrix}	
+		A:\begin{bmatrix}
+			 &0& & \\
+			0& &0& \\
+			 &1& &1\\
+			 & &0& \\
+		\end{bmatrix}
+		$
+	\aaa \tbf{Boolean Product $\odot$}
+	\\ used to find the composite of two relations
+	% ref: http://www.csc.villanova.edu/~japaridz/Archive/1300/lect2.6/sld009.htm
+	\\ $M_{S\circ R} = M_R \odot M_S$
+	\\ Power of relation: $M_{R^n} = M_R^{[n]}$
+	\\ \includegraphics[width=0.8\columnwidth]{boolean_product.png}
+\0 \tbf{Closures of Relations}
+	\aaa Closure: $R \cup $ minimum elements to add to $R$ such that it satisfies a given condition.
+	\aaa E.g. The reflexive closure of $R$ is the loopback arrows that are missing, plus $R$ itself.
+\0 \tbf{$n$-ary Relations:}
+	\aaa (for databases)
+	\\ width of table = degree of relation = $n$
+	\\ each record is an $n$-tuple
+	\\ elements of the $n$-tuple are fields of the database
+	\aaa \tbf{Primary key:} element of the tuples such that each tuple contains a unique element in that position
+	\\ a field is a primary key if it is unique for all possible entries in the database
+	\aaa \tbf{Selection operator:} returns all $n$-tuples in $R$ that satisfy a condition $C$
+	\aaa \tbf{Join operator:} joins two tables. $J_p(R,S)$ joins tables $R$ and $S$, where there are $p$ duplicate keys.
+	\\ Width of result=(width of $R$)+(width of $S$)$-p$
+	\aaa \tbf{Projection:} $P_{i_1,i_2,\ldots i_m}(R)$ returns a new table with only columns $i_1,i_2,\ldots i_m$ from $R$. Note: $i_1,i_2,\ldots i_m$ may be any subset of integers on range $[1,m]$
+\0 \tbf{Equivalence Relation:}
+	\aaa A relation $R$ is an equivalence relation if it is \tbf{reflexive}, \tbf{symmetric}, and \tbf{transitive} \hfill (p.608)
+	\aaa if $aRb$, a are said to be equivalent, also written $a\sim b$ 
+
+\0 \tbf{Partial Ordering}
+	\aaa A relation $R$ on a set $S$ is a partial ordering if the relation is \tbf{reflexive}, \tbf{antisymmetric}, and \tbf{transitive}.
+	\aaa represents $\leq$, not $<$, since it is reflexive
+	\aaa Poset: relation on it's set, denoted as a tuple: $(R,S)$
+
+\0 \tbf{Hasse Diagram}
+	\aaa A visual representation of a partial ordering
+	\aaa leaves out the edges in the relation that are required by the reflexive and transitive properties, leaving a clean graph that easily represents which nodes are related to which
+
+\0\noindent\zzz{Graphs}
+\\\begin{tabular}{l l l l}
+	\tbf{Types of graphs:} & Edges      & multi? & loops \\\hline
+	Simple Graph           & undirected & no     & no    \\\hline
+	Multgraph              & undirected & yes    & no    \\\hline
+	Pseudograph            & undirected & yes    & yes   \\\hline
+	Simple Directed graph  & directed   & no     & no    \\\hline
+	Directed Multigraph    & directed   & yes    & yes   \\\hline
+	Mixed Graph            & both       & yes    & yes   \\\hline
+\end{tabular} \\
+\noindent
+\\\tbf{Degree} of vertex: $deg(v)$
+	\aaa number of edges connecting to it (one loopback counts twice). 
+	\aaa an undirected graph has an even number of vertexes of odd degree
+	\aaa\tbf{in-degree}: number of directed edges pointing into vertex. $deg^-(v)$
+	\aaa\tbf{out-degree}: number of directed edges pointing out of a vertex. $deg^+(v)$
+\\ for directed graph $G = (V,E)$: $\sum_{v\in V}deg^-(v) = \sum_{v\in V}deg^+(v) = |E|$
+\\
+\zzz{Special Graphs}
+	\aaa $K_n$: every vertex is directly connected to every other vertex
+	\aaa $C_n, (n\geq3)$: vertexes connected in a loop
+	\aaa $W_n, (n\geq4)$: same as $C_{n-1}$, but with an extra vertex in the middle that is connected to all outer vertexes
+	\aaa $Q_n, n$-dimensional Hypercube: represents all $(2^n)$ bit strings of length $n$. vertexes are adjacent if their bit strings differ by only one bit (in any position)
+\0\tbf{Hamiltonian Path}
+	\aaa Path across a graph that visits every node exactly once
+	\aaa Every node on a Hamiltonian path has exactly 2 edges on the path
+\0\tbf{Bipartite Graphs:}
+	\aaa graph $G = (V,E)$ is bipartite if you can split the vertexes into two subsets $V_1,V_2$ such that edges connect two points in one of the subsets. A graph is bipartite if you can assign one of two colors to every vertex and have no like color vertexes adjacent.
+\0\tbf{Complete bipartite graph:} 
+	\aaa a bipartite graph where every node in $V_1$ is adjacent to every node in $V_2$
+\0\tbf{Adjacency Matrix:} 
+	\aaa for a graph $G = (V,E)$ with $n=|V|$ vertexes, adjacency matrix $m$ is $n\times n$ where
+ $m_{i,j} = ( 1\mbox{ if }(V_i,V_j) \in E, 0 \mbox{ otherwise})$
+\0\tbf{Incidence Matrix:}
+	\aaa for a graph $G = (V,E)$ with $n=|V|$ vertexes and $m=|E|$ edges, incidence matrix $m$ is $n\times m$ where 
+ $m_{i,j} = ( 1$ if edge $e_j$ is incident with vertex $v_i$, $0$ otherwise$)$
+\\
+\0\tbf{Graph Isomorphism:} 
+	\aaa Two graphs $G_1 = (V_1,E_1)$ and $G_2 = (V_2,E_2)$ are isomorphic if there exists a one-to-one function $f: V_1 \rightarrow V_2$ such that $\forall ((a,b) \in E_1) ((f(a),f(b))\in E_2 )$. The function $f$ is called an isomorphism
+\\
+\\
+\zzz{Trees}
+	\aaa height $h =$ maximum path length starting at root node and ending at a leaf node
+	\aaa internal vertex: has parent and at least one child
+	\aaa leaf vertex: has no children
+	\aaa $m$-ary tree: each node has at most $m$ children
+	\aaa full $m$-ary tree: every vertex either has $m$ children or is a leaf
+	\aaa ordered root tree: tree where the children of each node are listed in order
+\0 \tbf{Properties:}
+	\aaa a tree with $n$ vertexes has $n-1$ edges
+	\aaa a full $m$-ary tree with:
+		\bbb $i$ internal vertexes contains $n=mi+1$ vertexes
+		\bbb $n$ vertexes has $i = (n-1)/m$ internal vertexes and $l=\left((m-1)n+1\right)/m$ leaves
+		\bbb $l$ leaves has $n=(ml-1)/(m-1)$ vertexes and $i=(l-1)/(m-1)$ internal vertexes
+	\aaa A rooted tree is balanced if all nodes are at levels $h$ or $h-1$
+	\aaa there are at most $m^h$ leaves in a $m$-ary tree of height $h$
+	\aaa for rooted $m$-ary tree:
+		\bbb $h \geq \ceil{\log_m l}$
+		\bbb if the tree is full and balanced: $h = \ceil{\log_m l}$
+\0 \tbf{Spanning tree:}
+	\aaa For a simple graph $G$, the spanning tree of $G$ is a tree containing every node in $G$
+	\aaa A simple graph is connected if and only if it has a spanning tree
+\0\tbf{Depth-first search}
+	\aaa All edges in the resulting tree are tree edges
+	\aaa All edges not in the resulting tree are back edges
+		\bbb all back edges connect ancestors to descendants or vice versa
+		\bbb (back edges never connect nodes that are the same distance from the root node)
+	\aaa Algorithm:
+	\\ add current node $w$ to $T$
+	\\ recursively visit every node adjacent to $w$ that isn't already in the tree
+\0\tbf{Breadth-first search}
+	\aaa add $w$ to $T$
+	\\ recurse
+	\\ for every vertex added at the previous level, add all nodes adjacent to them to $T$
+\0\zzz{Traversing Trees}
+	\aaa preorder traversal:
+		\bbb visits root node, then recursively preorder traverses subtrees from left to right
+	\aaa inorder traversal:
+		\bbb recursively visit first child nodes' subtree inorder, then visit root, then recursively visit remaining child nodes' subtrees
+	\aaa postorder traversal:
+		\bbb recursively postorder traverses subtrees from left to right, then finally visit root node
+\\
+\zzz{Finite State Machine}
+\\ deterministic FSM is same stuff as learned in ECEN248
+\\ non-deterministic FSM:
+	\aaa can't predict where it might go
+	\aaa because there are duplicate conditions for edges
+	\aaa useful for stuff that should be random (e.g. video game AI's)
+	\aaa A NDFSM can also recognize a (regular) language
+	\aaa a NDFSM can be transformed into a FSM using an algorithm (don't know how)
+\0 A FSM can be used to recognize a pattern
+	\aaa if the FSM terminates in a recognizing state (one with a double circle), then it recognizes the input
+	\aaa if not, the input is not recognized
+	\aaa useful for recognizing a grammar
+\\\zzz{Kleene Closure} of $A$ is $A^*$
+	\aaa all possible concatenations of elements of $A$
+	\aaa $A^* = \bigcup_{i=0}^{\infty} A^i$
+	\aaa Recursive definition:
+	\\ $V_0 = \{\lambda\}$
+	\\ $V_1 = A$ (the original set) (concatenate every element one with $\lambda$)
+	\\ $V_{i+1} = \{wv | w \in V_i \wedge v \in V \}$ (concatenate every element with every other element, and itself)
+	\\ (and let $i$ approach $\infty$)
+\\
+% \zzz{Grammars}
+	% \aaa \tbf{Phrase Structure Grammar}
+\zzz{Phrase Structure Grammar}
+	\aaa $G = (V,T,S,P):$
+		\bbb $V=$ vocabulary: finite, nonempty set of symbols
+		\bbb $T=$ terminal symbols
+		\bbb $S=$ start symbols
+		\bbb $P=$ productions
+	\aaa Vocabulary: set of all symbols in the language
+	\aaa Derivation tree = parse tree
+	\aaa word or sentence over vocabulary $V$: string of finite length containing elements of $V$
+	\aaa the empty string $(\lambda)$ contains no symbols
+	\aaa set of all words over $V$ is $V^*$
+	\aaa a language is a subset of $V^*$
+	\aaa $N = V - T = $ nonterminal symbols
+	\aaa production example: $A \rightarrow Bc$
+		\bbb $A$ can be replaced with $B$ concatenated with $c$
+	\aaa Language generated by $G$:
+		\bbb $L(G) = $ all strings or terminals that can be derived from the starting symbols in $S$ (using the productions $P$)
+		\bbb $L(G) = \{w \in T^* | S \overset{*}{\rightarrow} w\}$
+		\bbb $S \overset{*}{\rightarrow} w$ means you can derive $w$ from $S$ in a finite number of steps
+\\
+\zzz{Backus-Naur Form (BNF)}
+	\aaa a form for writing productions in a grammar
+	\aaa concatenate all statements starting with the same nonterminal, and separate the right hand sides with $|$
+	\aaa all nonterminals are enclosed in angle brackets $\ang{}$
+	\aaa $::=$ is used instead of $\rightarrow$
+	\aaa Example:
+	\\ Productions: $A \rightarrow a, A\rightarrow Aa, a\rightarrow Bc$
+	\\ BNF: $\ang{A} ::= a | \ang{A}a | \ang{B}c$
+\\
+\zzz{Regular Expressions}
+	\aaa A set representing a regular expression is a regular set
+		\bbb contains all the words in the language that match it
+	\aaa $\varnothing $ and $ \lambda$ are regular expressions
+	\aaa for a set $I$, $x$ is a regular expression over $I$ if $x \in I$
+		\bbb (this expression matches only the element $x$)
+	\aaa for regular expressions $A,B: (AB), (A\cup B), A^*$ are regular expressions
+	\aaa $(AB):$ concatenation of sets represented by $A$ and $B$
+		\bbb matches only $A$ immediately followed by $B$
+	\aaa $(A \cup B):$ matching either expression $A$ or expression $B$
+\\
+\zzz{Kleene's Theorem}
+	\aaa A set is regular if and only if it can be recognized by a FSA
+	\aaa A set is generated by a regular grammar if and only if it is a regular set
+\\
+\zzz{Other machine types}
+	\aaa\tbf{Pushdown Automaton:} includes a stack
+	\\ you can push something onto the stack, and you can pop something from the stack
+	\\ stack is First In, Last Out (FILO)
+	\\ stack is assumed to have infinite capacity
+	\\ can recognize $\{0^n1^n\}$ but not $\{0^n1^n2^n\}$ because it only has one stack
+	\aaa\tbf{Linear Bounded Automaton:}
+	\\ can recognize $\{0^n1^n2^n\}$
+	\aaa\tbf{Turing Machine:}
+	\\ most powerful machine we know
+	\\ can recognize all languages generated by phrase structure grammars
+\zzz{etc}
+	\aaa Non-deterministic Turing Machine (NDTM) is a thing
+	\\ basically just a Turing machine with probability built into the decisions it makes
+	\aaa P and NP Problems:
+	\\ P: solvable in polynomial time
+	\\ NP: non-deterministically solvable in polynomial time
+	\\ All NP problems are checkable in polynomial time
+
+\end{outline}
+\end{multicols*}
+\end{document}

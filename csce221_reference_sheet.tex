@@ -1,0 +1,737 @@
+% # (c) Copyright 2015 Josh Wright
+\documentclass{article}
+\usepackage{mathrsfs,amsmath,amsthm,latexsym,paralist}
+\usepackage{mathtools} 
+\usepackage{bm} 
+\usepackage{listings}
+\usepackage{amssymb}   % for \varnothing, \therefore
+\usepackage{centernot} % for \centernot
+\usepackage{geometry}  % for margins
+\usepackage{outlines}  % for outline
+\usepackage{paralist}  % for compactitem, compactenum
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle={CSCE 221 Reference Sheet},
+  pdfauthor={Josh Wright},
+  pdfsubject={CSCE 221},
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1,
+  colorlinks=true,
+  pdfstartview=Fit,
+  pdfpagemode=UseOutlines,
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,      
+  urlcolor=cyan,
+}
+\lstset{
+  basicstyle=\small\ttfamily, % font size and style of code
+  frame=single,
+  frame=l,
+  literate={~} {$\sim$}{1}, % this fixes ~ in code
+  tabsize=4,
+  numbers=none,
+  % numbersep=5pt,
+  % numberstyle=\footnotesize
+  % numberstyle=\scriptsize
+  % numberstyle=\tiny
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% paper size, orientation, margins %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % good for on screen-only viewing
+% \def \columncount {3}
+\geometry{letterpaper, landscape, margin=0.25in}
+% good for printing
+\def \columncount {2}
+\geometry{letterpaper, portrait, margin=0.125in}
+
+
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemi{\cdot}
+\renewcommand\labelitemi{\hspace{-1in}\tiny$\bullet$}
+\renewcommand\labelitemii{\labelitemi}
+
+
+\newcommand{\p}{\partial}
+\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\prt}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\grad}{\nabla}
+\newcommand{\vrt}[1]{\rotatebox{90}{#1}}
+\newcommand{\vrta}[2]{\rotatebox{90}{#1} \rotatebox{90}{#2}}
+\newcommand{\vrtb}[3]{\rotatebox{90}{#1} \rotatebox{90}{#2} \rotatebox{90}{#3}}
+\newcommand{\vrtc}[4]{\rotatebox{90}{#1} \rotatebox{90}{#2} \rotatebox{90}{#3} \rotatebox{90}{#4}}
+
+\newcommand{\remove}[1]{}
+% \newcommand{\remove}[1]{#1}
+
+\newcommand{\tabletextsize}{\large}
+
+
+% \setlength{\parindent}{0em}
+% \setdefaultleftmargin{0em}{0em}{}{}
+
+
+\begin{document}
+\allowdisplaybreaks
+% \large
+% \Large
+\noindent
+\textbf{CSCE 221 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright 2016
+\remove{
+\\ Course Webpage: \url{https://parasol.tamu.edu/~amato/Courses/221/}
+\\ Paul's Online Math Notes: \url{http://tutorial.math.lamar.edu/Classes/CalcIII/CalcIII.aspx}
+\\ Latex Symbols: 
+\url{http://oeis.org/wiki/List_of_LaTeX_mathematical_symbols}
+}
+\vspace{-0.4cm}
+% asterisk makes multicols finish one column before going onto the next
+\begin{multicols*}{\columncount}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+\begin{outline}[longenum]
+
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newcommand{\upspace}{\vspace{-0.8px}\linespread{0}}
+% section titles
+% makes second-level itemize bullets instead of dashes
+\renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}} \upspace}
+\renewcommand{\1}{\upspace \oldOne  }
+\renewcommand{\2}{\upspace \oldTwo  }
+\renewcommand{\3}{\upspace \oldThree}
+\renewcommand{\4}{\upspace \oldFour }
+% super-dense mode:
+% \renewcommand{\1}{\upspace $\bullet$\hspace{-0.5em} }
+% \renewcommand{\2}{\upspace $\bullet\bullet$\hspace{-0.5em} }
+% \renewcommand{\3}{\upspace $\bullet\bullet\bullet$\hspace{-0.5em} }
+% \renewcommand{\4}{\upspace $\bullet\bullet\bullet\bullet$\hspace{-0.5em} }
+
+% \newcommand{\zzz}[1]{{\noindent\textbf{#1:}}}
+% \renewcommand{\1}{$\bullet$}
+% \renewcommand{\2}{$\bullet$}
+% \renewcommand{\3}{$\bullet$}
+% \renewcommand{\4}{$\bullet$}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% real content starts here %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \zzz{General}
+%   \1 W: Worst case;
+%   B: Best case;
+%   A: Amortized (like average) case
+%   \1 ADTs don't have any complexity because they are only a specification, not an implementation. Only implementations have defined complexity
+
+% \zzz{Iterators}
+%   \1 get from data structure using:
+%     \verb|begin()|
+%     \verb|end()|
+%     \verb|front()|
+%     \verb|back()|
+%   \1 Iterator ADT methods:
+%     \verb|hasNext()|
+%     \verb|next()|
+%     \verb|elem()| get the element (dereference)
+
+
+% \zzz{Stack ADT}
+%   \1 methods:
+%     \verb|push(e)|
+%     \verb|top()|
+%     \verb|pop()|
+%     \verb|size()|
+%     \verb|empty()|
+%   \1 implement with single linked list: make \verb|top| of stack at \verb|head| node, or else \verb|pop()| is $O(n)$
+% \0\remove{\tabletextsize
+% \begin{tabular}{|l|l|l|l|}\hline
+% stack & \vrta{fixed}{array} & \vrta{array}{double} & \vrtb{singly}{linked}{list} \\\hline
+% push(e)         & $O(1)$      & $O(1)$  & $O(1)$ \\\hline
+% pop()           & $O(1)$      & $O(n)$W & $O(1)$ \\
+%         &             & $O(1)$B &        \\
+%         &             & $O(1)$A &        \\\hline
+% top(e)          & $O(1)$      & $O(1)$  & $O(1)$ \\\hline
+% front(), back() & $O(1)$      & $O(1)$  & $O(1)$ \\\hline
+% size(), empty() & $O(1)$      & $O(1)$  & $O(1)$ \\\hline
+% \end{tabular}}
+
+% \zzz{Queue ADT}
+%   \1 can only enqueue and dequeue
+%   \1 FIFO: first in first out
+% \0\remove{\tabletextsize
+% \begin{tabular}{|l|l|l|l|}\hline
+% queue & \vrta{fixed}{array} & \vrta{array}{double} & \vrtb{singly}{linked}{list} \\\hline
+% dequeue()         & $O(1)$      & $O(1)$  & $O(1)$ \\\hline
+% enqueue()         & $O(1)$      & $O(n)$W & $O(1)$ \\
+%           &             & $O(1)$B &        \\
+%           &             & $O(1)$A &        \\\hline
+% front(), back()   & $O(1)$      & $O(1)$  & $O(1)$ \\\hline
+% size(), empty()   & $O(1)$      & $O(1)$  & $O(1)$ \\\hline
+% \end{tabular}}
+
+% \zzz{Deque ADT}
+%   \1 can enqueue and dequeue from either end, therefore isn't technically only FIFO or FILO
+% \0\remove{\tabletextsize
+% \begin{tabular}{|l|l|l|l|l|}\hline
+% dequeue & \vrta{fixed}{array} & \vrta{array}{double} & \vrtb{singly}{linked}{list} & \vrtb{doubly}{linked}{list} \\\hline
+% eraseBack()       & $O(1)$      & $O(1)$  & $O(1)$ or & $O(1)$ \\
+% eraseFront()      &             &         & $O(n)$    &        \\\hline
+% insertBack$(o)$   & $O(1)$      & $O(n)$W & $O(1)$    & $O(1)$ \\
+% insertFront$(o)$  &             & $O(1)$B &           &        \\
+%           &             & $O(1)$A &           &        \\\hline
+% front(), back()   & $O(1)$      & $O(1)$  & $O(1)$    & $O(1)$ \\\hline
+% size(), empty()   & $O(1)$      & $O(1)$  & $O(1)$    & $O(1)$ \\\hline
+%           % &             &         &           &        \\
+% \end{tabular}}
+%   \1 pronounced like ``deck''
+
+% \zzz{Vector ADT}
+%   \1 methods:
+%     \verb|at(i)|
+%     \verb|set(i,e)|
+%     \verb|insert(i,e)|
+%     \verb|erase(i)|
+%     \verb|size()|
+%     \verb|empty()|
+%   \1 array wrapper, allows growing
+%   \1 uses indexes, not iterators
+%   \1 space complexity: $O(N)$
+%   \1 \verb|insert()| complexity: $O(1)$B, $O(n)$W,A
+%     \2 same for erase
+
+% \zzz{List ADT}
+%   \1 methods:
+%     \verb|insertFront(e)|
+%     \verb|insertBack(e)|
+%     \verb|insert(p,e)|
+%     \verb|eraseFront()|
+%     \verb|eraseBack()|
+%     \verb|erase(p)|
+%     \verb|size()|
+%     \verb|empty()|
+%   \1 \verb|eraseBack()| is expensive $(O(n))$ on a singly linked list because you must reset the \verb|next| pointer of the second-to-last node
+% \0\remove{\tabletextsize
+% \begin{tabular}{|l|l|l|}\hline
+% list & \vrtb{singly}{linked}{list} & \vrtb{doubly}{linked}{list} \\\hline
+% space           & $O(n)$  & $O(n)$ \\\hline
+% insertFront(),  & $O(1)$  & $O(1)$ \\
+% insertBack(),   &         &        \\
+% eraseFront()    &         &        \\\hline
+% insert(p,e),    & $O(n)$W & $O(1)$ \\
+% eraseBack(),    & $O(n)$A &        \\
+% erase(p)        & $O(1)$B &        \\\hline
+% front(), back() & $O(1)$  & $O(1)$ \\\hline
+% size(), empty() & $O(1)$  & $O(1)$ \\\hline
+% \end{tabular}}
+
+% \zzz{Sequence ADT}
+%   \1 like a vector that has iterators
+%   \1 methods in addition to those of vector:
+%     \verb|atIndex(i)|
+%     \verb|indexOf(p)| gets index of iterator \verb|p|
+%     \verb|insert(p,e)|
+%     \verb|erase(p)|
+%   \1 if you implement it with a circular array, you can insert at either end with $O(1)$ complexity; and you can get \verb|indexOf(p)| in $O(1)$ using pointer arithmetic
+% \zzz{Circular Array}
+%   \1 an array where you store the beginning and ending indexes of your data
+%   \1 allows you to insert or pop at the beginning or end all with $O(1)$ complexity
+%   \1 you must store the \verb|start| and \verb|end| pointers and a \verb|bool| for if it is full. You need the boolean because \verb|start==end| happens both when the array is empty and full
+
+% \zzz{Circularly Linked List}
+%   \1 linked list where \verb|next| of the \verb|tail| node points back to the \verb|head| node (and vice versa in the case of a doubly linked list)
+%   \1 because the list is circular, you don't need a distinct \verb|head| and \verb|tail|; you can just have a \verb|cursor|
+
+% \zzz{Tree Node ADT}
+%   \1 methods:
+%     \verb|parent()|
+%     \verb|children()|
+%     \verb|isRoot()|
+%     \verb|isLeaf()|
+% \zzz{Tree ADT}
+%   \1 methods:
+%     \verb|size()|
+%     \verb|empty()|
+%     \verb|root()|
+%     \verb|positions():| returns list of all nodes of tree
+%     % \verb||
+% \zzz{Trees}
+%   \1 examples: decision tree, expression tree, binary search tree
+%   \1 Tree is given as $T(V,E)$: $V$: vertexes, $E$: edges
+%   \1\textbf{Ancestors} is the parents and parent's parents etc... of the node
+%   \1\textbf{Sibling} shares a parent (not just same depth)
+%   \1\textbf{Depth} of node: number of ancestors
+%   \1\textbf{Height} of tree: maximum depth of any node of tree. Height of single node tree is $0$
+%   \1\textbf{Path} sequence of nodes such that every two nodes are connected by an edge
+%   \1\textbf{Ordering} tree is ordered if there is a linear order among children. \textbf{Unordered} if there is no relation telling which child is left or right
+%   \1 \textbf{Complete:} for $j=0,1,\ldots h-1$ there are $2^i$ nodes on 
+%   that level of the tree. Last level (level $h$) is filled from left to right
+%   \1 Proper Tree Formulas:
+%     \2 $n$: number of nodes
+%     \2 $l$: number of leaf nodes
+%     \2 $i$: number of internal nodes
+%     \vspace{-1em}\begin{multicols*}{2}
+%     \begin{compactitem}
+%     \item $h$: height
+%     \item $l = i + 1 $
+%     \item $ n = 2l - 1 $
+%     \item $ h \leq i $
+%     \item $ h \leq \frac{n-1}{2} $
+%     \item $ l \leq 2^h $
+%     \item $ h \geq \log_2l $
+%     \item $ h \geq \log_2(n+1) - 1 $
+%     \end{compactitem}
+%     \end{multicols*}\vspace{-1em}
+%   \1\textbf{Binary search} has $O(log(n))$ complexity and can only be $O(1)$ best-case if you can terminate early by finding the element
+%   \1\textbf{Merge Sort} has average complexity $O(n\log(n))$
+%   \1\textbf{Selection Sort} is $O(n^2)$
+% \zzz{Tree Traversals}
+%   \1\textbf{Preorder:} visit root node; then visit each subtree recursively
+%     \2 visits root node first
+%   \1\textbf{Postorder:} recursively visit each subtree; then lastly visit root node
+%     \2 visits root node last
+%   \1\textbf{Inorder:} 
+%   \\ 1. visit left subtree recursively; 
+%   \\ 2. visit root node;
+%   \\ 3. visit right subtree recursively
+%     \2 visits root node somewhere in the middle
+%   \1 \textbf{Euler tour:}
+%   \\ 1. visit root node from the left;
+%   \\ 2. visit left subtree recursively;
+%   \\ 3. visit root node from bottom;
+%   \\ 4. visit right subtree recursively;
+%   \\ 5. visit root node from right;
+%     \2 Only visits leaf nodes on the bottom (not left or right)
+%     \2 Important that the subtree visits happen between root node visits
+
+
+% \zzz{Binary Search Tree}
+%   \1 stores entries as key-entry pairs $(k,e)$
+%   \1 for node $v$ with children $u,w$, the ordering $key(u) \leq key(v) \leq key(w)$ holds
+%   \1 external nodes do not store items; the deepest node holding a value has two dummy-children
+%   \1 inorder traversal visits every node in key-order
+%   \1 \verb|ceilingEntry(k)|: returns iterator to least key greater than or equal to $k$, else returns end() if no such entry exists
+%   \1 \verb|floorEntry(k)|: returns iterator to greatest key less than or equal to $k$, else end()
+%   \1 \verb|lowerEntry(k)|: returns iterator to largest key less than (but not equal to) $k$, else end()
+%   \1 \verb|higherEntry(k)|: returns iterator to smallest key greater than $k$, else end()
+%   \1 \verb|search(k, node=root)|:
+%   \\ if \verb|k| $<$  \verb|node.k|: return \verb|search(key,node.left);|
+%   \\ if \verb|k| $==$ \verb|node.k|: return \verb|key.value;|
+%   \\ if \verb|k| $>$  \verb|node.k|: return \verb|search(key,node.right);|
+%     \2 \verb|floorEntry()| and \verb|ceilingEntry()| are implemented similarly
+%   \1\textbf{insert}: find the leaf node where it would go; put it there; add leaf nodes to so it's an internal node
+%   \1\textbf{delete} where there is only one non-leaf child: remove the node, put the sub-tree where the original node was.
+%   \1\textbf{delete} with two internal children: find the next node in an inorder traversal and put it in place of the node to be erased
+%   \1 Complexity:
+%     \2 space: $O(n)$
+%     \2 height $h$: $O(n)$ worst; $O(\log(n))$ best
+%     \2 
+%       \verb|find(k)| 
+%       \verb|floorEntry(k)|
+%       \verb|ceilingEntry(k)|
+%       \verb|put(k,v)|
+%       \verb|erase(k,v)|:
+%       $O(h)$
+
+
+% % \zzz{\huge Exam 2}
+% \zzz{Map ADT}
+%   \1 methods:
+%     \verb|find(k)|
+%     \verb|put(k,v)|
+%     \verb|erase(k)|
+%     \verb|erase(p)|
+%     % \verb||
+%   \1 does not allow duplicate keys, but Dictionary ADT does
+%   \1 also there is Ordered Map and Ordered Dictionary
+
+% \zzz{Dictionary}
+%   \1 methods:
+%     \verb|find(k)|
+%     \verb|findAll(k)| returns two iterators to the range of elements with key $k$
+%     \verb|insert(k,v)|
+%     \verb|erase(k)|
+%     \verb|erase(p)|
+%     % \verb||
+%   \1 allows for duplicate keys (with duplicate or unique values)
+%   \1 map has \verb|put(k,v)|; dictionary has \verb|insert(k,v)|
+%   \1 Only dictionary has \verb|findAll(k)| because only can have more than one key-value pair with the same key
+
+% \zzz{Hash Table}
+%   \1 implements map ADT
+%   \1 hash function: $h(k)$ with range $[0,N-1]$
+%     \2 typically made up of a hash function and a compression function
+%   \1 Note on modulus: $(k$ mod $N)$ has range $[0,N-1]$
+%   \1 \textbf{chaining:}
+%     \2 when an element collides, chain it onto that element, like a linked list
+%   \1 \textbf{open addressing - linear probing:}
+%     \2 put collisions in the next linearly available slot
+%     \2 makes removal a little bit difficult
+%   \1 \textbf{open addressing - quadratic probing:}
+%     \2 add index to the hash function for multiple tries
+%     \2 $h(k,i) = (h(k)+i^2)$ mod $N$
+%     \2 works best when $N$ is prime
+%     \2 if $N$ has lots of factors, it's easy for quadratic probing to leave lots of holes
+%   \1 \textbf{open addressing - double hashing:}
+%     \2 use two hashes
+%     \2 $h(k,i) = (h_1(k) + i*h_2(k))$ mod $N$
+%     \2 make sure $h_2$ is never 0, else the second hash will have no effect
+%   \1 \textbf{load factor}: $\lambda = \frac{n}{N}$
+%   \1 assuming that the hashes are perfectly random, the \textbf{expected number} of \textbf{probes} is $\frac{N}{N-n}$
+%     \2 $n$ is used spaces; $N$ is total spaces
+%     \2 insertion is $O(1)$ when $n$ is small compared to $N$
+%   \1 \textbf{Uniform Hashing Assumption:} that the probing sequence of each key is equally likely to be any of the possible $N!$ permutations of probe sequences
+%     \2 Real hashes are far from this good
+%     \2 with this assumption, maximum probes is $\frac{1}{1-\lambda}$
+%   \1 \textbf{polynomial accumulation:} hash function made by splitting the object into chunks and evaluating those chinks as a polynomial expression
+%   \1 \textbf{cyclic shift:} like polynomial accumulation, except with bit shifts instead of multiplication and bitwise operators instead of addition
+%   \1 Removal:
+%     \2 erase the element to be removed
+%     \2 find the next place an element would have been placed upon collision
+%     \2 until you find an unused cell: 
+%       \3 re-insert that element
+%       \3 find the next place an element would have been placed upon collision
+
+% \zzz{Skip Lists}
+%   \1 implements ordered map ADT
+%   \1 bottom list is $S_0$, top list is $S_x$ where $x$ is $O(\log(n))$
+%   \1 every list is ordered; and is a subset of the list above it
+%   \1 \verb|find()|: linearly probe top list, drop down one list below, repeat.
+%   \1 \verb|insert()|: flip coin until you get tails ($\rightarrow c$ times); 
+%     \verb|find()| position to put it in $S_0$; 
+%     insert it there with stack height $c$
+%   \1 \verb|remove()|: \verb|find()| the element, then delete the whole stack of nodes
+%   \1 height: $O(\log(n))$
+%     \2 probability that we insert an element in $S_i$ is $\frac{1}{2^i}$
+%     \2 test 
+%   \1 space usage: $O(2n)=O(n)$
+%     (because probabilistic analysis, $\sum^h_{i=0}\frac{n}{2^i} \leq 2n$)
+%   \1 complexity of search: (drop-down steps)$+$(scan-forward steps); both are $O(\log(n))$ so search is $O(2\log(n))$ or just $O(\log(n))$
+
+% \zzz{AVL Tree}
+%   \1 a Binary Search Tree that automatically balances itself
+%   \1 AVL property: the maximum difference between heights of two sibling subtrees is 1
+%   \1 restructuring: use single or double rotations; cares about 3 nodes and 4 subtrees
+%   \1 \textbf{rotation:} only cares about 2 nodes and 3 subtrees
+%     \includegraphics[width=0.75\columnwidth]{TreeRotation.png}
+%     \2 example: in the right side of the picture, if $A$ is a subtree with $h=3$, a right rotation will balance the $P$ subtree
+%     \2 When you rotate right about a node, that node's left child is the new root (and vice versa)
+%   \1 \textbf{rebalancing after insert:} iterate from the new node up to the root, rebalancing whenever a node is unbalanced. You should only need to rebalance once
+%   \1 \textbf{removal:}
+%     first remove the node just like you would for a binary search tree;
+%     then rebalance starting from the parent of the node removed all the way up to the root. You may need to rebalance more than one node.
+%   \1 \textbf{height:} always $O(\log(n))$ by the AVL property; whenever it isn't, the rebalancing (and restructuring) fixes it
+%   \1 \textbf{Complexity:}
+%     \2 rotate, restructure: $O(1)$; worst case will need do it $O(h)=O(\log(n))$ times
+%     \2 therefore find, insert are $O(\log(n) + \log(n))=O(\log(n))$
+%     \2 remove is $O(2\log(n))=O(\log(n))$
+
+
+
+
+
+
+% \0 \vspace{-0.23cm}
+% \begin{lstlisting}
+% \end{lstlisting} \vspace{-0.23cm}
+
+
+% final stuff
+
+\zzz{Heap}
+  \1 implemented as a complete binary tree in an array
+  \1 for node at index $i$
+    \2 left child is at $2i$
+    \2 right child is at $2i+1$
+    \2 parent is at $\lfloor \frac{i}{2} \rfloor$ (floor)
+  \1 insert: put at the last node and up-heap if needed. $O(\log(n))$
+  \1 remove min: replace the root node with the last node, and down-heap if needed. $O(\log(n))$
+  \1 up-heap: compare a node with it's parent. swap if needed. Repeat until you no longer need to swap, or at the root node
+  \2 down-heap: same as up-heap, except going down. choice of left or right child is arbitrary.
+  \1 merge two heaps (of equal height) with an extra element $e$: just connect $e$ as the new root node, then down-heap if needed
+  \1 bottom-up heap construction:
+    \2 treat array as complete binary tree
+    \2 down-heap starting at second-to-bottom row (bottom row is leaves, therefore satisfies heap property)
+    \2 continue down-heaping until you get up to the root node
+    \2 not every node can be down-heaped the full $h$, because they started at different points
+      \3 this is why it's $O(n)$
+
+\zzz{Priority Queue}
+  \1Comparison: 
+  \\\begin{tabular}{l l l}
+    implementation & insert & removeMin \\
+    unsorted list  & $O(1)$ & $O(n)$ \\
+    sorted list    & $O(n)$ & $O(1)$ \\
+    heap           & $O(\log(n))$  & $O(\log(n))$ \\
+  \end{tabular}
+  \1 priority queue sort: make the input into a priority queue (in-place) then remove each from the queue back into the list
+    \2 complexity is $O(n*\mbox{insert} + n*\mbox{removeMin})$
+  \1 PQ sorts: selection, insertion, heap
+    \2 selection: unordered list
+    \2 insertion: ordered list
+    \2 heap: heap (duh)
+
+\zzz{Set}
+  \1 ordered
+  \1 union: $A\cup B$: all elements in either $A$ or $B$
+  \1 intersection: $A\cap B$: all elements in both $A$ and $B$
+  \1 subtraction (relative complement): $A \setminus B$: all elements in $A$ and not in $B$
+  \1 can be easily implemented using a binary tree
+
+\zzz{Quick Select}
+  \1 algorithm to find the $k$th smallest element
+  \1 algorithm that's the same as quicksort, except it only recurses onto the section containing the element we're looking for
+  \1 recurrence relation: $T(n) = O(n) + T(\frac{n}{2})$
+    \2 $O(n)$ for the partitioning step
+    \2 this solves to $O(2n)$ which is $O(n)$
+
+\zzz{Sorting}
+\\
+\zzz{slow sorts}
+  \1 selection, insertion, bubble
+  \1 all $O(n^2)$ average
+  \1 insertion and bubble are $O(n)$ best-case
+  \1 selection is $O(n^2)$ always
+
+\zzz{Heap Sort}
+  \1 $O(n\log(n))$ all cases
+  \1 in-place
+  \1 can use the bottom-up heap building to be faster, but the removal stage still limits it to $O(n\log(n))$
+  \1 non-recursive
+
+\zzz{Merge Sort}
+  \1 $T(n) = 2T(\frac{n}{2}) + O(n)$
+    \2 splitting is $O(1)$, merging is $O(n)$
+  \1 always $O(n\log(n))$
+  \1 not in-place
+  \1 recursive
+
+\zzz{Quick Sort}
+  \1 $T(n) = 2T(\frac{n}{2}) + O(n)$
+  \1 recursive
+  \1 pivot is randomly selected
+  \1 $O(n\log(n))$ average and best, $O(n^2)$ worst
+    \2 worst-case: pick worst element every time. This makes it $T(n) = T(1) + T(n+1) + O(n)$. 
+    \2 Unlikely for random numbers
+
+\zzz{Graphs}
+  \1 path: sequence alternating vertexes and edges. must begin and end on a vertex.
+    \2 simple path has all vertexes and edges unique (does not cross itself)
+  \1 cycle: a loop of nodes
+    \2 simple if it doesn't intersect itself (except beginning/end)
+    \2 non-simple otherwise
+  \1 total in-degree of a graph is equal to it's total out degree
+  \1 total degree of graph is double the number of edges
+  \1 connected graph: there is a path between every pair of vertexes
+  \1 tree: connected graph with no cycles
+  \1 spanning tree: tree that includes all vertexes in graph
+  \1 TODO expound this
+
+\zzz{Graph Implementation}
+\\\begin{tabular}{|l|l|l|l|} \hline
+% & \vrta{edge}{list} & \vrta{Adj.}{List} & \vrta{Adj.}{Matrix} \\ \hline
+& Edge & Adjacency & Adjacency \\
+& List & List      & Matrix   \\ \hline
+space         & $O(n+m)$ & $O(n+m)$ & $O(n^2)$ \\ \hline
+endVertexes() & $O(1)$ & $O(1)$ & $O(1)$ \\
+opposite()    &&& \\
+incidentOn(v) &&& \\ \hline
+v.incidentEdges() & $O(m)$ & $O(deg(v))$ & $O(n)$ \\ \hline
+v.adjacentTo() & $O(m)$ & O(min( & $O(n)$ \\
+                      & & deg(v),deg(w))) & \\ \hline
+insertEdge(u,v,w) & $O(1)$ & $O(1)$ & $O(1)$ \\
+eraseEdge(e) &&& \\ \hline
+insertVertex(x) & $O(1)$ & $O(1)$ & $O(n^2)$ \\ \hline
+eraseVertex(v) & $O(m)$ & $O(deg(v))$ & $O(n^2)$ \\ \hline
+\end{tabular}
+  \1 adjacency matrix is usually a bad choice
+
+\zzz{DFS: Depth First Search}
+  \1 visits each child node before visiting adjacent nodes 
+  \1 can be used for maze traversal
+    \2 each position is a vertex, edges are places you can get to
+  \1 similar to preorder tree traversal
+  \1 labels vertexes visited or not, labels edges as discovery or back edges
+    \2 no cross edges because those would have been discovery edges
+  \1 $O( (m+n) )$ for adjacency list?
+  \1 DFS and BFS are both good for finding connected components
+\0\begin{lstlisting}
+DFS(G: (V,E), s: starting v):
+  v.label = VISITED
+  for e in v.incidentEdges():
+    if e.label == UNEXPLORED:
+      w = e.opposite(v)
+      if w.label = UNEXPLORED:
+        e.label = DISCOVERY
+        DFS(G, w)
+      else:
+        e.label = BACK
+// then repeat for other connected components
+\end{lstlisting} \vspace{-0.23cm}
+
+
+\zzz{BFS: Breadth First Search}
+  \1 visits all nodes in order of their distance from the starting node. (distance in hops, not counting edges)
+  \1 labels vertexes to keep track of whether visited
+  \1 labels edges as discovery or cross edges
+    \2 no back edges because those would have been discovery edges (assuming undirected)
+  \1 uses a (non-priority) queue to keep track of the edges to check next
+  \1 $O( (m+n) )$ for adjacency list
+\0\begin{lstlisting}
+BFS(G: (V,E), s: starting v):
+  Q.enqueue(s)
+  while !Q.empty():
+    v = Q.dequeue()
+    v.label = VISITED
+    for e in v.incidentEdges():
+      if e.label == UNEXPLORED:
+        w = e.opposite(v)
+        if w.label = UNEXPLORED:
+          e.label = DISCOVERY
+          w.label = VISITED
+          Q.enqueue(w)
+        else:
+          e.label = CROSS
+// then repeat for other connected components
+\end{lstlisting} \vspace{-0.23cm}
+
+\zzz{MST: Minimum Spanning Tree}
+  \1 minimum total weight spanning tree
+  \1 partition property: if you partition the MST into two subsets, there must be exactly one edge connecting the two, and it must be the minimum possible edge connecting the two subsets
+\zzz{Prim-Jarnik's Algorithm}
+  \1 $O( (m+n)\log(n) )$ for adjacency list
+  \1 start at a given (or arbitrary) node as our MST
+  \1 put all the vertexes in a PQ keyed with their shortest edge connecting them to the MST
+  \1 add the closest vertex $v$ to the MST
+  \1 update the vertexes adjacent to $v$ with their new distance (use PQ.replaceKey())
+  \1 repeat until the PQ is empty
+\0 \vspace{-0.23cm}
+\begin{lstlisting}
+Prim_Jarnik(G: (V,E), s):
+  for each v in V:
+    D[v] = inf, P[v] = NULL
+    PQ.add(v, key=D[v])
+  while (!PQ.empty()):   // O(n)
+    u = PQ.removeMin()
+    for e in u.edges():  // O(m)
+      z = e.opposite(u)
+      if e.weight() < D[z]:
+        D[z] = e.weight(); P[z] = u
+        PQ.replaceKey(z,D[z])  // O(log(n))
+\end{lstlisting} \vspace{-0.23cm}
+\zzz{Kurskal's Algorithm}
+  \1 $O( (m+n)\log(n) )$ for adjacency list
+  \1 initialize a PQ with all edges keyed by weight
+  \1 make clouds of mini MST's by adding each minimum edges
+    \2 adding edge joining non-cloud vertex to cloud is easy
+    \2 if an edge connects two vertexes in the same cloud, ignore it
+    \2 if an edge connects two vertexes in different clouds, add it and merge the clouds (merging these clouds is complex depending on the implementation)
+  \1 does not start at any particular node
+  \1 cluster merging: $merge(u,v)$ is $O(min(|C_u|,|C_v|))$. We assume that merging doubles the size of the sets, therefore we preform max $\log(n)$ merges
+  \1 complexity:
+    \2 PQ: $m$ removals: $O(m\log(n))$
+    ; cluster merges: $O(n\log(n))$
+    \2 total: $O( (m+n) \log(n))$
+\0 \vspace{-0.23cm}
+\begin{lstlisting}
+kurskals(G: (V,E)):
+  T = (V, NULL) // all vertexes, no edges 
+  for v in V: { define cluster C(v) = {v} }
+  for e in E: { PQ.add(e, key=e.weight()) }
+  while ( P.size() < V.size() - 1 ):  // O(m)
+    (u,v) = PQ.removeMin()            // O(log(n))
+    if C(u) != C(v): // nodes from different clusters
+      T.insertEdge(u,v)
+      MergeClusters( C(u), C(v) )
+      // ^- O(min(|C(u)|, |C(v)|))
+\end{lstlisting} \vspace{-0.23cm}
+
+\zzz{SSSP: Single Source Shortest Path}
+  \1 SSSP is a spanning tree where the path from every node to the root is the shortest possible path.
+    \2 not necessarily the same thing as the MST
+  \1 a subpath of a shortest path is itself a shortest path
+  \1 if there is no path between two vertexes, we generally represent the path length as $\infty$
+  \1 \textbf{Dijkstra's Algorithm}
+    \2 $O( (m+n)\log(n))$ for adjacency list
+      \3 $(m+n)$ because it must look at every node
+      \3 $\log(n)$ for the PQ operations
+    \2 assumes: graph is connected, all edges are undirected, all weights are $\geq 0$
+    \2 is a greedy algorithm
+    \2 very similar to Prim-Jarnik's Algorithm, main difference is that we care about the distance to the root node, not the distance to the cloud
+    \2 store all distances in a map keyed with the vertex; 
+    map$<$dist,vertex$>D[]$
+    \2 also store vertexes in a PQ, keyed with their total distance form the root (also stored in $D[]$)
+    \2 edge relaxation: 
+      \3 for vertex $v_0$ not yet in the cloud: check if edge $(v_b,v_0)$ provides a shorter path than the current edge $(v_a,v_0)$
+      \3 if $D[v_b] + (v_b,v_0).weight <  D[v_a] + (v_a,v_0).weight$: use the new edge $(v_b,v_0)$ to connect $v_0$ to the cloud, and update $D[v_0]$ accordingly
+    \2 does not work for negative edge weights because it is greedy, doesn't go back and check for the ways negative weighs could change things
+\0 \vspace{-0.23cm}
+\begin{lstlisting}
+dijkstras(G: (V,E) P: ParentMap, s: start vertex):
+  D[v] = infinity for each v in V
+  D[s] = 0
+  P[s] = NULL
+  Q = PQ of all v in V keyed with D[v]
+  while !Q.empty():                // O(n)
+    u = Q.removeMin()              // O(log(n))
+    for e in u.edges(): // relax each adj. edge
+      z = e.opposite(u)
+      if D[u] + e.weight() < D[z]:
+        D[z] = D[u] + e.weight()
+        Q.updateKey(z)             // O(log(n))
+        P[z] = u // update the parent of this node
+\end{lstlisting} \vspace{-0.23cm}
+  \1 \textbf{Bellman-Ford Algorithm}
+    \2 $O(nm)$
+    \2 works for negative edge-weights (therefore must assume directed graph, otherwise there are negative weight cycles)
+    \2 doesn't work if there are negative weight cycles, but can be extended to detect them
+    \2 iteration $i$ finds all shortest paths of length $i$, therefore the last iteration finds the maximum length shortest-path, of length $|V|-1$
+      \3 detect negative weight cycles: relax again at the end. If any edge can be relaxed, there is a shortest path with length $|V|$, and therefore there must be a negative weight cycle
+\0 \vspace{-0.23cm}
+\begin{lstlisting}
+bellman_ford(G: (V,E), s: starting vertex, P):
+  D[v] = infinity for each v in V
+  D[s] = 0; P[s] = NULL
+  for i = 1:(V.size() - 1):  // O(n)
+    for each e in E:         // O(m)
+      // relax edge
+      u = e.source(); z = e.target()
+      if D[u] + e.weight() < D[z]:
+        D[z] = D[u] + e.weight()
+        P[z] = u
+\end{lstlisting} \vspace{-0.23cm}
+
+\zzz{Directed Graphs}
+  \1 also just called digraph
+  \1 graph is \textbf{strongly connected} if every vertex can be reached from every other vertex
+  \1 strongly connected components: subsets of a graph which are themselves strongly connected.
+  \1 determine if graph $G$ is strongly connected:
+    \2 do DFS on $G$. if there are any nodes not visited, graph is not strongly connected.
+    \2 $G' = G$ with all directed edges reversed
+    \2 do DFS on $G'$. if there are any nodes not visited, graph is not strongly connected.
+    \2 otherwise, graph is strongly connected
+  \1 Directed Acyclic Graph: directed graph with no directed cycles
+  \1 DFS and BFS make sense on a digraph. MST doesn't really make as much sense on a digraph
+
+
+
+\end{outline}
+\end{multicols*}
+\end{document}

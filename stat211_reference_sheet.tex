@@ -1,0 +1,485 @@
+% # (c) Copyright 2015 Josh Wright
+\documentclass{article}
+\usepackage{mathrsfs,amsmath,amsthm,latexsym,paralist}
+\usepackage{mathtools} 
+\usepackage{bm}
+\usepackage{calc}      % for dimension arithmetic
+\usepackage{amssymb}   % for \varnothing, \therefore
+\usepackage{centernot} % for \centernot
+\usepackage{geometry}  % for margins
+\usepackage{outlines}  % for outline
+% \usepackage{paralist}  % for compactitem, compactenum
+\usepackage{multicol}
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle={STAT 211 Reference Sheet},
+  pdfauthor={Josh Wright},
+  pdfsubject={STAT 211},
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1,
+  colorlinks=true,
+  pdfstartview=Fit,
+  pdfpagemode=UseOutlines,
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,      
+  urlcolor=cyan,
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% paper size, orientation, margins %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% good for on screen-only viewing
+% \def \columncount {3}
+% \newlength{\papersize}
+% \setlength{\papersize}{20cm}
+% \geometry{paperheight=1.7777\papersize, paperwidth=\papersize, landscape, margin=0.25in}
+% good for printing
+\def \columncount {2}
+\geometry{letterpaper, portrait, margin=0.5in}
+
+
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemi{\cdot}
+\renewcommand\labelitemi{\tiny$\bullet$}
+\renewcommand\labelitemii{\labelitemi}
+
+%%%%%%%%%%%%%%%%%%%%
+%% helpful macros %%
+%%%%%%%%%%%%%%%%%%%%
+\newcommand{\p}{\partial}
+\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\prt}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\grad}{\nabla}
+% \newcommand{\remove}[1]{}
+\newcommand{\remove}[1]{#1}
+
+
+
+\begin{document}
+\allowdisplaybreaks
+\large
+% \Large
+%%%%%%%%%%%
+%% title %%
+%%%%%%%%%%%
+\noindent
+\textbf{STAT 211 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright 2016
+% Latex Symbols: \url{http://oeis.org/wiki/List_of_LaTeX_mathematical_symbols}
+% Paul's Online Math Notes: \url{http://tutorial.math.lamar.edu/Classes/CalcIII/CalcIII.aspx} \\
+% asterisk makes multicols finish one column before going onto the next
+\begin{multicols*}{2}
+\begin{outline}[compactitem]
+\noindent
+
+
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newcommand{\upspace}{\vspace{0px}\linespread{0}}
+% section titles
+\newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}}}
+% makes second-level itemize bullets instead of dashes
+\renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\upspace \oldOne  }
+\renewcommand{\2}{\upspace \oldTwo  }
+\renewcommand{\3}{\upspace \oldThree}
+\renewcommand{\4}{\upspace \oldFour }
+
+
+
+
+
+
+\zzz{General}
+  \1 $E(b)$ means expected value of $b$
+  \1\textbf{Mean:} $\mu = E(x)$ (mu)
+  \\ sample mean: $\bar x$
+  \1\textbf{Variance:} $\sigma^2$ (sigma squared)
+  \\ $\sigma^2 = E( (x-\mu)^2 ) = E(x^2) - E(x)^2$
+  \\ sample variance: $s^2 = \frac{\sum((x-\bar x)^2)}{n-1}$
+  \1\textbf{Standard Deviation:} $\sigma$ (sigma)
+  \\ sample standard deviation: $s$
+  \1 \textbf{Random Process} can't be predicted
+  \1 \textbf{Complement} of $A$ is $A^c$ or $A'$
+  \1 $P(A\cap B)=$ probability of $A$ \textbf{and} $B$
+  \1 $P(A\cup B)=$ probability of $A$ \textbf{or} $B$
+  \\ $P(A\cup B) = (P(A\cap B))/P(B)$
+  \1 $P(A|B) = $ probability of $A$ given $B$ is true
+  \1 $A,B$ independent if $P(A|B)=P(A)P(B)$
+  \\ therefore $P(A|B) = P(A)$
+  \remove{
+  \1 \textbf{Reliability:} probability that it works
+  \1 \textbf{Discrete:} finite number of possible values
+  \\ \textbf{Continuous:} any value between $a$ and $b$ (e.g. any real number)
+  }
+  \1 Probability Mass Function (PMF) for discrete, Probability Density Function (PDF) for continuous
+  \1 Bernoulli random variable: has only 2 states: success or failure
+
+\zzz{5 Number Summary}
+  \1 5 numbers:
+    \\\begin{tabular}{r l}
+    min &      \\
+    Q$_1$  & 25\% \\
+    Q$_2$  & 50\% \\
+    Q$_3$  & 75\% \\
+    Max &      \\
+    \end{tabular}
+    \1 Q$_x$ is a number (called a quartile) such that (25\%, 50\%, or 75\%) of the data falls below that number
+  \1 Q$_2$ is also the median
+  \1 IQR: Inner Quartile Range $=$ Q$_3$ $-$ Q$_1$
+
+\zzz{Bayes Rule}
+  \1 When you've got a grid of the possible outcomes of two different events
+  \1 These edges are called marginals; they sum to 1
+  \1 if the two events are independent, each cell is the product of the corresponding marginals
+  \\ $P(A\cup B)=P(A)P(B)$
+  \\ example: fair dice roll is independent
+  \1 Two events in a grid are only independent if the property holds for every cell in the grid
+  \1\textbf{Conditional Probability:} $P(A|B) =$ probability of $A$ given that $B$ is true
+    $P(A|B) = \frac{P(A\cap B)}{P(B)}$
+  \1 if $A$ and $B$ are independent, then $P(A|B)=P(A)$ because $B$ doesn't affect $A$
+
+\zzz{Mutual Exclusion}
+  \1 $A$ and $B$ are mutually exclusive if $P(A\cap B)=0$
+  \1 can be one or the other, or none, but can't be both\hspace{-0.5em}
+  \1 mutually exclusive events can't be independent, because once you know one is true, you know the other is false
+
+\zzz{Combinations Formula}
+  \1 $\dbinom{n}{x}=\frac{n!}{x!(n-x)!}=\frac{(n)(n-1)\ldots(n-x+1)}{(x)(x-1)\ldots(1)}$
+
+\zzz{Binomial Distribution}
+  \1 Discrete. Driven by $p$ and $n$
+  \\ $p$: probability of success
+  \\ $n$: number of trials
+  \1 $\mu = np$
+  \\ $\sigma^2 = np(1-p)$
+  \1 PMF: $\dbinom{n}{x}p^x(1-p)^{n-x}$
+
+\zzz{Continuous Distributions}
+  \1 PDF: Probability Density Function
+  \\ $f(x) = \frac{d}{dx}(F(x))$
+  \\ $\int_{-\infty}^{\infty}f(x) dx = 1$
+  \\ $f(x) \geq 0$ for all $x$
+  \1 CDF: Cumulative Density Function
+  \\ $F(x) = \int_{-\infty}^{x} f(t) dt$
+  \\ $F(x) = P(X \leq x)$
+  \1 $P(a \leq X \leq b) = \int_a^b f(x) dx$
+  \\   $P(a \leq X \leq b) = F(b) - F(a)$ 
+  \\   $P(X=a) = 0$
+  \1 $\mu = E(x) = \int_a^b x f(x) dx$ ($(a,b)=$ domain of $f(x)$)
+  \\ $\sigma^2 = E((X-\mu)^2) = E(x^2) - E(x)^2$
+  \\ $E(h(x)) = \int_a^b h(x) f(x) dx$ expected value of $h(x)$
+
+\zzz{Uniform Continuous Distribution}
+  \1 All outcomes have the same probability
+  \1 $\mu = \frac{B+A}{2}$
+  \1 $E(X^2) = (B^2 + AB + A^2)/3$
+  \1 $\sigma^2 = (B-A)^2/12$
+  \1 PDF: $f(x) = \frac{1}{B-A}$ for $A\leq x \leq B$
+  \1 CDF:
+  \\   $F(x) = 0$ for $x < A$
+  \\   $F(x) = \int_{A}^{x} \frac{1}{B-A} dx = \frac{x-A}{B-A}$ for $A\leq x \leq B$
+  \\   $F(x) = 1$ for $x > B$
+
+\zzz{Poisson distribution}
+  \1 Discrete. Driven by $\lambda$ (lambda)
+  \\ Interval size is fixed, number of occurrences is varied
+  \\ $\lambda$: number of events occurring per interval
+  \1 $\mu = \sigma^2 = \lambda$
+  \\ $\sigma = \sqrt{\lambda}$
+  \1 PDF: $P(X=x) = \frac{e^{-\lambda}\lambda^x}{x!}$
+
+\zzz{Gamma Distribution}
+  \1 Continuous equivalent of Poisson
+  \1 Driven by $\alpha$ and $\beta$
+  \\ Number of occurrences is fixed, interval length is varied
+  \\ $\alpha$: number of events we're interested in
+  \\ $\beta$: rate at which events happen: ``$\beta$ time until the next event''
+  \1 $\lambda = 1/\beta$: shape parameter
+  \\ $\mu = \alpha\beta$
+  \\ \sigma^2 = \alpha(\beta^2)
+
+\zzz{Normal Distribution}
+  \1 Continuous. Defined in terms of $\mu$ and $\sigma$
+
+  \1 Empirical Rule: (probably don't use)
+  \\ $P(x = \mu \pm 1\sigma): 68\%$
+  \\ $P(x = \mu \pm 2\sigma): 95\%$
+  \\ $P(x = \mu \pm 3\sigma): 99\%$
+  \1 \textbf{Important $Z$ Values:}
+  \\ \begin{tabular}{l l}
+      $Z$    & area to the right \\
+      1.6450 & 5.0\% \\
+      1.9600 & 2.5\% \\
+      2.3260 & 1.0\% \\
+      2.5758 & 0.5\% \\
+    \end{tabular}
+\zzz{Standard Normal Transformation}
+  \1 $Z$ is like $x$ in terms of $\mu$ and $\sigma$.
+  \1 For use with lookup tables
+  \1 $Z = \frac{x-\mu}{\sigma}$
+  \1 $\Phi(Z) = $NormCDF$(\sigma=1,\mu=0,x=Z)$
+  \1 Prof says this method is prone to error
+
+\zzz{Joint Distributions}
+  \1 $f(x,y)$
+  \1 \textbf{Independent} if you can split up $f(x,y)=g(x)h(y)$
+  \1 Mean and Variance are additive
+  \1 Standard Deviation is not additive
+
+
+
+\zzz{Distribution of Sample Totals}
+  \1 original distribution: $\mu_0, \sigma_0$
+  \1 sample size: $n$
+  \1 mean: $\mu = n\mu_0$
+  \1 variance: $\sigma^2 = n\sigma^2_0$
+  \1 (not as easy for standard deviatoin ($\sigma$))
+
+\zzz{Distribution of Sample Mean}
+  \1 original distribution: $\mu_0, \sigma_0$
+  \1 mean: $\mu = \mu_0$
+  \1 variance: $\sigma^2 = \frac{\sigma_0^2}{n}$
+
+
+
+\zzz{Confidence Interval - Mean}
+  \1 Only works for $n\geq30$
+  \1 Mean: $\bar{x} \pm Z_{\frac{\alpha}{2}}\left(\frac{s}{\sqrt{n}}\right)$
+    \2 $s=$ sample standard deviation
+    \2 $\frac{s}{\sqrt{n}}=$ standard error$=$standard deviation of distribution of sample means
+    \2 Only works for $n\geq30$
+  \1 sample size in terms of confidence and interval width: $n = \left(2Z_\frac{\alpha}{2}\left(\frac{\sigma}{L}\right)\right)^2$
+    \2 $L=$ width of interval
+      \\ $\sigma=$ standard deviation of \textbf{population}
+
+\zzz{Confidence Interval - Mean - $n<30$}
+  \1 Only works when parent distribution is normal
+  \1 use the $t$-distribution
+  \1 $n-1=$ degrees of freedom
+  \1 mean: $\bar{x} \pm \left(t_{\alpha/2, n-1}\right)\left(\frac{s}{\sqrt{n}}\right)$
+
+\zzz{Confidence Interval - Variance}
+  \1 You can only do this for $n<30$ if the data is from a normal distribution
+  \1 distribution is a (right-skewed) $\chi^2$ (chi-squared) distribution
+  \1 $n-1=$ degrees of freedom
+  \1 confidence interval for $\sigma^2: \left(
+      \frac{s^2(n-1)}{\chi^2_{\alpha/2, n-1}}, 
+      \frac{s^2(n-1)}{\chi^2_{1-(\alpha/2), n-1}} 
+    \right)$
+    \2 $\chi^2_{x, y}$ is the chi-squared distribution with $P(X)\leq x$ and $y$ degrees of freedom
+
+\zzz{Confidence Interval - Proportion}
+  \1 proportion of successes in sample of trials
+  \1 based on Bernoulli trials
+    \2 each $x$ is either 0 (fail) or 1 (success)
+  \1 $\hat{p} = $ sample proportion
+    \\ $p=$ population proportion
+    \\ $\hat{q}, q$ same, but for failure
+    \\ $q=1-p$,  $\hat{q}=1-\hat{p}$
+  \1 you can only assume it's normal when $\hat{p}>5$ and $1-\hat{p}>5$
+  \1 $\hat{p} = \frac{\sum x}{n}$
+  \1 Central Limit Theorem only applies for $\hat{p}n\geq5$ and $\hat{q}n\geq5$ and $n$ much smaller than the population
+  \1 Confidence Interval:
+    $\hat{p} \pm Z_{\alpha/2}\sqrt{\frac{\hat{p}\hat{q}}{n}}$
+  \1 Sample size:
+    $n = 4Z^2_{\alpha/2}\hat{p}\hat{q}\frac{1}{L^2}$
+    \2 If you don't have any idea about $\hat{p}$, use 0.5 to be maximally conservative
+
+\zzz{Prediction Interval}
+  \1 predict the next value that will occur
+  \1 $\bar{x} \pm Z_{\alpha/2}\sigma\sqrt{1+\frac{1}{n}}$
+    \2 use $s$ if you don't have the population standard deviation
+  \1 if $n<30$ you can only use this if the parent population is normal
+  \1 the standard error is different (wider) than a confidence interval because we're comparing two different distributions:
+    \2 variance of $x$: $\sigma^2$
+    \2 variance of the sampling distribution of means: $\frac{\sigma^2}{n}$
+  \1 this follows from the fact that we had to use our sample mean to predict the next value, not the actual mean
+
+\zzz{Hypothesis Testing}
+  \1 Objective is always to reject the null hypothesis
+  \1 null hypothesis: $H_0$
+    \2 usually $H_0: \mu = \mu_0$
+  \1 alternative hypothesis: $H_A$
+    \\\begin{tabular}{l r}
+      1 tail right: & $H_A: \mu     > \mu_0$ \\
+      1 tail left:  & $H_A: \mu     < \mu_0$ \\
+      2 tail:       & $H_A: \mu \not= \mu_0$ \\
+    \end{tabular}
+  \1 test statistic: $Z_t = \frac{\bar{x} - \mu}{s_\bar{x}}$ where $s_\bar{x} = \frac{s}{\sqrt{n}}$ (standard error)
+  \1 critical value: $Z_C$ (determined by $\alpha$ level)
+    \2 for a 1 tailed test, it's $Z_\alpha$
+    \2 for a 2 tailed test, it's $Z_{\alpha/2}$
+  \1 p-value: area more extreme than text statistic
+    \2 remember it's two-sided if it's a 2-tail test
+
+\zzz{Proportion Hypothesis}
+  \1 $Z_t=\frac{\hat{p}-p_0}{\sqrt{p_0(1-p_0)/n}}$
+  \1 equivalent of $S_\bar{x}$ is $\sqrt{p_0(1-p_0)/n}$
+
+\zzz{Type 1 Error}
+  \1 false positive
+  \1 rejecting $H_0$ when it is true
+  \1 probability is equal to our alpha level $(\alpha)$
+
+\zzz{Type 2 Error}
+  \1 false negative
+  \1 probability that we fail to reject when $H_0$ is false (we should have rejected)
+  \1 represents the probability of drawing a sample that just happens to support $H_0$ (be inside our critical range)
+  \1 depends on the actual \textbf{population} values $\mu\mbox{ and }\sigma$
+  % \1 $P($type 2 error$)=\frac{\bar{x}-\mu}{\sigma_{\bar{x}}}$
+  \1 $P($type 2 error$)=\frac{\bar{x}_c-\mu}{\sigma_{\bar{x}}}$
+    \2 $\sigma_{\bar{x}}=\frac{\sigma}{\sqrt{n}}$ standard error of sample from population
+    \2 $\mu=$real mean of population (not the one from $H_0$)
+    \2 $\bar{x}_c$ critical value for sample mean (determined by $H_0$ and $\alpha$)
+  \1 Example: if the real mean is exactly $\bar{x}_c$, then $P(T2)=0.5$
+  \1 Technically, the minimum and maximum are 0 and 1 respectively, since it depends on the population values, and that could be anything.
+
+\zzz{\Large Final stuff}
+
+\noindent
+You calculate $Var(\bar{X}-\bar{y})$ differently depending on if the variances of the two distributions are equal or not
+
+\zzz{Difference of Means}
+  \1 actual variance of difference: $\frac{\sigma^2_x}{m} + \frac{\sigma^2_y}{n}$
+    \2 does not matter if the two variances are (roughly) equal or not
+    \2 don't usually get to use this because we don't have the population values
+    \2 therefore must use $s^2$ instead of $\sigma^2$
+    \2 (this is not the same thing as pooled variance)
+
+\zzz{Two Distributions, equal variance}
+  \1 $\Delta_0$ is the expected difference between the means
+  \1 $H_0$ is usually that $\bar{X} - \bar{Y} = \Delta_0$
+  \1 variance considered equal if $\frac{1}{3}\leq \frac{s_X^2}{s_Y^2} \leq 3$
+  \1 pooled variance $s_p^2 = \frac{(m-1)s_x^2 + (n-1)s_y^2}{n+m-2}$
+    \2 weighted average of the sample variances
+  \1 test stat: $T = \frac{\bar{X}-\bar{Y}-\Delta_0}{s_p\sqrt{1/m+1/n}}$
+
+\zzz{Two Distributions, unequal variance}
+  \1 always use $t$ distribution
+  \1 test stat: $T = \frac{\bar{X}-\bar{Y}-\Delta_0}{\sqrt{s_X^2/m+s_Y^2/n}}$
+  \1 $DF = m+n-2$
+
+\zzz{Paired Difference Test}
+  \1 $D_i = X_i - Y_i$ mean difference is \bar{D}
+  \1 test stat: $T = \frac{\bar{D}-\Delta_0}{s_D / \sqrt{n}}$
+    \2 $n$ is the number of paired differences, not the number of total observations
+
+\zzz{Proportion comparison}
+  \1 uses $Z$ distribution
+  \1 common $\hat{p}$ is total successes divided by total observations
+  \1 test stat: $Z = \frac{\hat{p}_X - \hat{p}_Y}{\sqrt{\hat{p}(1-\hat{p})(1/m+1/n)}}$
+    \2 $\hat{p}$ is success proportion of the overall study
+  \1 C.I: $(\hat{p}_X - \hat{p}_Y) \pm Z_{\alpha/2}
+    \sqrt{
+      \frac{\hat{p}_x(1-\hat{p}_x)}{m} + 
+      \frac{\hat{p}_y(1-\hat{p}_y)}{n}
+    }$
+  \1 We use the common $\hat{p}$ for hypothesis tests but not C.I. because hypothesis tests assume that $\hat{p}_x = \hat{p}_y$
+
+\zzz{ANOVA}
+  \1 ANalysis Of VAriance
+  \1 $H_0: \mu_1 = \mu_2 = \ldots = \mu_i$
+  \\ $H_A$: at least two means ($\mu$'s) are different
+  \1 $trt=$ treatment
+  \1 $err=$ error
+  \1 $tot=$ total
+  \1 Assume normal population distribution with equal variance
+  \1 $X_{i,j}=$ $j$th sample from the $i$th treatment group
+    \2 $I=$ number of treatment groups, $n_i=$ number of samples in treatment group $i$
+  \1 $\bar{X}_{GM}$ or just $\bar{X} = $ Grand Mean
+  \1 $SS=$ Sum of Squares
+    \2 $SS_{tot}=SS_{trt} + SS_{err}$
+    \2 $SS_{tot}=\sum_{i=1}^I \sum_{j=0}^{n_i} \left( X_{i,j} - \bar{X} \right)^2 $
+    \2 $SS_{err}=\sum_{i=1}^I \sum_{j=0}^{n_i} \left( X_{i,j} - \bar{X}_i \right)^2 $
+    \2 $SS_{trt}=\sum_{i=1}^I \left( \bar{X}_i - \bar{X} \right)^2 $
+    \2 
+  \1 $MS=$ Means Squared
+    \2 $MS_{thing} = \frac{SS_{thing}}{DF_{thing}}$
+  \1 test statistic: $F_{test}=\frac{MS_{trt}}{MS_{err}}$
+    \2 Describes how much error is due to treatment as opposed to (normally distributed) random errors
+  \1 critical value: $F_{\alpha, DF_{trt}, DF_{err}}$
+  \1 You can't use pair-wise ANOVA tests to determine which one of the distributions is actually different, because the uncertainty (introduced by the $\alpha$ level) propagates.
+    \2 instead you have to use Tuke's method (not this class)
+
+\zzz{Regression}
+  \1 we assume different measurements are independent of each other
+  \1 model: $Y_i=\beta_0 + \beta_1 X_i + \epsilon_0$
+    \2 $\beta_0$: intercept
+    \2 $\beta_1$: slope
+    \2 $\epsilon_i$: (random) error term
+      \3 assumed to have a normal distribution with $\mu=0$
+    \2 $X_i$: independent variable; predictor
+    \2 $Y_i$: dependent variable; response
+  \1 $Q = \sum_{i=1}^{I} ( Y_i - \beta_0 - X_i\beta_1 )$
+    \2 sum of squared vertical deviations
+    \2 sum-of-squares minimizes this
+  \1 $S_{xx} = \sum(x_i - \bar{x})^2$
+  \1 $S_{xy} = \sum(y_i - \bar{y})(x_i - \bar{x})$
+  \1 $\hat{\beta}_1 = \frac{S_{xy}}{S_{xx}}$ ratio of joint variability of $X$ and $Y$ to variability of just $X$
+    \2 hat ( $\hat{}$ ) means estimate
+  \1 $\hat{\beta_0} = \bar{y}-\hat{\beta}_0\bar{x}$
+  \1 $\epsilon_i = y_i - \hat{y}_i$, error term, residual
+    \2 actual - estimated
+  \1 total sum of squares $SST = \sum(y_i - \bar{y})^2 = \sum y_i^2 - \frac{1}{n}(\sum y^i)^2$
+  \1 error sum of squares$SSE 
+    = \sum (e_i^2) 
+    = \sum (y_i - \bar{y})^2 
+    = \sum y_i^2 - \hat{\beta}_0\sum y_i - \hat{\beta}_1\sum x_i y_i
+    $
+  \1 regression sum of squares $SSR = \sum (\hat{y}_i - \bar{y})^2 = SST-SSR $
+  \1 \textbf{measure of fit:} $r^2 = \frac{SSR}{SST} = 1- \frac{SSE}{SST}$
+  \2 $r^2=$ proportion of variation in $y$ explained by the linear relationship model with $x$
+    \2 $0 \leq r^2 \leq 1$
+    \2 $r^2 = 1$: all data perfectly on straight line
+    \2 $r^2$ near zero: no linear relationship (may be other type of relationship)
+  \1 sample correlation: $r$
+  \1 you can do an ANOVA test for regression
+    \2 $DF_{total} = n-2$(because two estimates $\beta_0, \beta_1$)
+    \2 $DF_{regression} = 1$
+  \1 hypothesis test: $T = \frac{\hat{\beta}_1 - \Delta_0}{s_\hat{\beta}_1}$
+    \2 $s_\hat{\beta}_1 = \frac{s_\epsilon}{\sqrt{\sum(x-\bar{x})^2}}$ standard error of slope
+    \2 $H_0$: $\beta_1 = \Delta_0$
+    \2 $s_\epsilon = $ estimate of standard deviation of error term
+    \2 $\Delta_0$: expected slope (usually 0)
+    \2 confidence interval: $\hat{\beta}_1 \pm t_{\alpha/2, n-2} s_\hat{\beta}_1$
+  \1 confidence interval for mean response
+    \2 mean $y$ value at given value $x^*$
+    \2 means that you're $(1-\alpha)100\%$ sure that the mean response will be inside this interval
+    \2 variance $=\sigma_{\epsilon}^2\left( \frac{1}{n} + \frac{(x^* - \bar{X})^2 }{\sum(X_i - \bar{X})^2 } \right)$
+    \2 C.I. $\hat{\beta}_0 
+      + \hat{\beta}_1 x^* 
+      \pm t_{\alpha/2, n-2} s_\epsilon \sqrt{ \frac{1}{n} + \frac{(x^* - \bar{X})^2 }{\sum(X_i - \bar{X})^2 } }$
+  \1 prediction interval
+    \2 means you're $(1-\alpha)100\%$ sure that a new value will lie inside this interval
+    \2 C.I. $\hat{\beta}_0 
+      + \hat{\beta}_1 x^* 
+      \pm t_{\alpha/2, n-2} s_\epsilon \sqrt{ 1 + \frac{1}{n} + \frac{(x^* - \bar{X})^2 }{\sum(X_i - \bar{X})^2 } }$
+
+
+
+\zzz{Law of Total Probability}
+  \1 If a probability is made up of sub-probabilities, the total probability is equal to the weighted average
+  \1 Example:
+    \2 Lightbulb makers $X$ and $Y$, probabilities of failure are $\Pr{B_X}$ and $\Pr{B_Y}$ respectively
+    \2 our lightbulb population is $\frac{6}{10}X$ and $\frac{4}{10}Y$
+    \2 $A$ is total probability that any bulb will fail
+    \2 ${\Pr(A)
+    =\Pr(A|B_X)}{\Pr(B_X)}+{\Pr(A|B_Y)}{\Pr(B_Y)}$
+    \\$={99 \over 100}\cdot{6 \over 10}+{95 \over 100}\cdot{4 \over 10}
+    ={{594 + 380} \over 1000}={974 \over 1000}$
+
+
+\zzz{Long Range Frequency}
+  \1 as sample size increases, the relative frequencies of outcomes will approach their theoretical values.
+  \1 Example: A fair dice will give each number approximately $\frac{1}{2}$ of the time
+
+\end{outline}
+\end{multicols*}
+\end{document}

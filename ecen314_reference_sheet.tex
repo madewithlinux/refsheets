@@ -1,0 +1,211 @@
+% Josh_Wright_Resume.tex
+% (c) Copyright 2015 Josh Wright
+\documentclass[12pt]{article}
+\usepackage{verbatim}
+% \usepackage{syntonly}
+\usepackage{ragged2e}
+\usepackage{geometry}
+\usepackage{enumitem} % for longenum
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{outlines} % for outline
+\usepackage{paralist} % for compactitem (compact itemize)
+\usepackage{multicol} % for multicolumn layout
+\geometry{letterpaper, margin=0.5in, top=0.3in}
+% \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
+
+\begin{document}
+% \linespread{0.5}
+\begin{center}
+Signals and Systems Reference Sheet
+\hfill \textcopyright \space Josh Wright 2015 \hfill
+Last Updated: \today
+\end{center}
+
+%%%%%%%%%%%%%%%%%%
+%% main section %%
+%%%%%%%%%%%%%%%%%%
+\begin{multicols*}{2}
+\begin{flushleft}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=@}
+% \begin{outline}[compactitem]
+\begin{outline}[longenum]
+
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newlength{\upspacelength}
+\setlength{\upspacelength}{0px}
+\newcommand{\upspace}{\vspace{\upspacelength}}
+% section titles
+\newcommand{\zzz}[1]{\upspace \0 \textbf{#1} }
+% \newcommand{\zzz}[1]{\0 \hspace{-1.25in} \textbf{#1} \vspace{-10px} }
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\upspace \oldOne  }
+\renewcommand{\2}{\upspace \oldTwo  }
+\renewcommand{\3}{\upspace \oldThree}
+\renewcommand{\4}{\upspace \oldFour }
+
+\small
+
+\zzz{Complex Numbers}
+  \1 $z = x+iy = re^{i\theta} = r[\cos(\theta)+i\sin(\theta)]$
+  \1 $[r(\cos(\theta)+i\sin(\theta))]^n = r^n[\cos(n\theta)+i\sin(n\theta)]$
+  \1 $z^n = (re^{i\theta}) = r^ne^{in\theta}$
+  \1 $\sqrt[n]{z} = \sqrt[n]{r}e^{\frac{\theta}{n}+\frac{2k\pi}{n}}$ for $n\in N^*$ (ints $\geq0$)
+  \1 $e^{j\theta} = \cos(\theta) + j\sin(\theta)$
+  \1 $e^{-j\theta} = \cos(\theta) - j\sin(\theta)$
+  \1 $\cos(\theta) = \frac{1}{2}(e^{j\theta} + e^{-j\theta})$
+  \1 $\sin(\theta) = \frac{1}{2j}(e^{j\theta} - e^{-j\theta})$
+  \1 
+  \1 sinc$(t) = \frac{\sin(\pi t)}{\pi t}$
+
+\zzz{Signals}
+  \1 \textbf{Even/Odd}
+  \\ even: $x(-t) =  x(t)$ for all $t$
+  \\ odd:  $x(-t) = -x(t)$ for all $t$
+  \1 \textbf{Auto Correlation:} compare signal with a time-delayed version of itself
+  \\ $\phi(\tau) = \int_{-\infty}^{\infty}x(t)*x(t+\tau)dt$
+    \2 peaks will be at multiples of the period
+  \1 \textbf{Cross Correlation:} like autocorrelation, but for two different signals
+  \\ $\phi(\tau) = \int_{-\infty}^{\infty}x_1(t)*x_2(t+\tau)dt$
+    \2 to easily tell if one signal is a shifted version of another
+  \1 Shifting and scaling: just always remember you're replacing \textbf{just} $t$ with an expression involving $t$
+  \1 \textbf{Unit Step} Signal
+    \2 $u(t) = \{_{1, n>0}^{0, n<0}$
+  \1 \textbf{Discrete Unit Impulse} Signal
+  \\ $\delta[n] = \{_{1, n=0}^{0, n\not=0}$
+    \2 any discrete signal can be represented as a sum of shifted unit impulse signals
+    \2 $\delta[n] = u[n] - u[n-1]$
+  \1 \textbf{Continuous Unit Impulse} Signal
+  \\ $x(t) = \delta(t) = \{_{\infty, t=0}^{0, t\not=0}$
+    \2 discontinuous at $t=0$
+    \2 $\int_{-\infty}^{\infty} \delta(t) dt = 1$
+    \2 pick out values from discrete function: (shifting property)
+    \\ $\int_{-\infty}^{\infty} \delta(t)*f(t) dt = f(0)$
+    \\ $\int_{-\infty}^{\infty} \delta(t-a)*f(t) dt = f(a)$
+  \1 \textbf{Shifting Property:} $\int_{-\infty}^{\infty}x(t)\sigma(t-t_0)dt = x(t_0)$
+  \1 \textbf{Bounded:} $x(t)\leq M$ for all $t$, some $M$
+    \2 unbounded signals typically are infinite at some time instant
+  \1 \textbf{Causal} iff $x(t)=0$ for all $t<0$
+  \1 \textbf{Energy:} 
+    $E_x = \int_{-\infty}^{\infty}|x(t)|^2 dt$
+    \2 signal is an energy signal if $0 < E_x < \infty$
+  \1 \textbf{Power:} 
+    $P_x = \frac{1}{T}\int_{T} |x(t)|^2 dt$
+    \2 (for periodic signals)
+    \2 signal is an power signal if $0 < P_x < \infty$
+
+\zzz{Convolution}
+  \1 $\sum_{k=-\infty}^{\infty} x(k) h(n-k)$ 
+    or $\int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\tau$
+  \1 graphically:
+    \2 choose one function to be $h$
+    \2 flip around origin with $t \rightarrow -t$
+    \2 shift back and forth on form $h(t-\tau)$
+      \2 shift is reversed because the negative
+    \2 multiply by $x(t)$ and then sum
+  \1 if the system is LTI invariant, then the convolution of $x(t)$ with the impulse response $h(t)$ is the same as if $x(t)$ were the input of the system
+  \1 convolution with shifted unit impulse is the same as shifting the original system: $h(t)*\sigma(t-a) = h(t-a)$
+  \1 Step response is just convolution with impulse response.
+    worked out: $u(t)*h(t)=\int_{-\infty}^{t}h(\tau) d\tau$
+    \2 only works for LTI systems!
+
+\zzz{Geometric Series}
+  \1 $\sum_{k=0}^{\infty} ar^n = \frac{a}{1-r}$
+  \1 $a$ is first term of the series
+    \\ $r$ is ratio between terms: $r = \frac{a_1}{a_0} = \frac{a_2}{a_1} \ldots$
+
+\zzz{Systems}
+  \1 A system is an operation that transforms an input signal into an output signal
+    \2 you can add/subtract signals
+    \2 composing signals (one input to another) is convolution
+      \\ (easier to just shift if input is shifted unit step (because LTI))
+  \1 \textbf{BIBO stability:} output is stable iff input signal is stable
+    \2 also if impulse response $\int_{-\infty}^{\infty} |h(t)| dt < \infty$ (for LTI systems)
+    \2 bounded: $h(t)<M$ for all $t$ and some $M$
+  \1 \textbf{Memory:} iff the system depends on past or future values of the input
+  \1 \textbf{Causality:} iff the output depends only on the current or past values of the input
+    \2 (cannot depend on future values of input)
+  \1 \textbf{Invertibility:} iff the system's input can be recovered from the output
+  \1 \textbf{Time Invariance:} iff shifting the input signal shifts the output
+    \2 integral is time invariant
+  \1 \textbf{Superposition:} additive commutativity
+    \2 $H\{x_1(t)+x_2(t)\} = H\{x_1(t)\}+H\{x_2(t)\}$
+  \1 \textbf{Homogeneity:}
+    \2 $H\{a x(t)\} = a H\{x(t)\}$
+  \1 \textbf{Linearity:} iff satisfies Superposition and Homogeneity
+    \2 $H\{a x_1(t)+b x_2(t)\}$ $= a H\{x_1(t)\}+b H\{x_2(t)\}$
+    \2 averaging filter is linear
+  \1 \textbf{LTI:} both Linear and Time Invariant
+    \2 simplest systems
+  \1 system from block diagram:
+    \2 add/subtract signals just like you would
+    \2 for signals $h_1(t) \rightarrow h_2(t)$ (in series), you get $y(t) = h_1(t)*h_2(t)$ (convolution of the two signals)
+    \2 basic method is to keep combining adjacent signal blocks using convolution, scaling, and addition until you get a single block
+  \1 system from differential equation:
+    \2 solve equation for $y(t)$
+    \2 stuff in terms of input goes on the left; output on the right
+    \2 add constants scaling to each output, and sum it all together
+
+\zzz{Linearity}
+  \1 system is linear if it satisfies superposition (additive) and homogeneity (scalable)
+    \2 superposition: $h(a) + h(b) = h(a + b)$
+    \2 homogeneity: $a h(b) = h(a b)$
+
+\zzz{Noise}
+  \1 unwanted signals generated externally or internally
+  \1 thermal noise is a thing
+
+\zzz{Impulse Response}
+  \1 output of a system when the input is $\sigma(t)$
+  \1 \begin{tabular}{l l}
+    memoryless if  & $h(t) = c\sigma(t)$                          \\
+    causal if      & $h(t)=0$ for $t<0$                           \\
+    BIBO stable if & $\int_{-\infty}^{\infty} |h(t)| dt < \infty$ \\
+    invertible if  & $h(t)*h^{inv}(t)=\sigma(t)$                  \\
+  \end{tabular}
+    \2 same for discrete time
+
+% ----------------- post exam 1
+
+\zzz{even/odd signals}
+  \1 $f(t) = f_e(t) + f_o(t)$
+  \1 $f_e(t) = \frac{1}{2} ( f(t) + f(-t) )$
+  \1 $f_o(t) = \frac{1}{2} ( f(t) - f(-t) )$
+
+\zzz{Fourier Series}
+  \1 Harmonic: $e^{jk2\pi F_0 t}$
+  \1 Synthesis: $f(t) = \sum_{k=-\infty}^{\infty} X[k] e^{jk2\pi F_0 t}$
+  \1 Analysis: $X[k] = \frac{1}{T_p}\int_{0}^{T_p} x(t) e^{-jk2\pi F_0 t} dt$
+    \2 note the different sign!
+  \1 $X[k] = C_k$
+\zzz{Fourier Properties}
+  \1 linearity: $z(t) = ax(t)+by(t) \leftrightarrow Z(k) = aX(k)+bY(k) $
+  \1 time shift: $x(t-t_0) \leftrightarrow X(k)e^{-jk\omega_0t_0}$
+  \1 frequency shift: $x(t)e^{jk_0\omega_0t} \leftrightarrow X(k-k_0)$
+  \1 time scaling: same coefficients, $x(at) \rightarrow \omega = a\omega_0$ (for $a>0$)
+  \1 time reversal: $x(-t) \leftrightarrow X(-k)$
+  \1 convolution: $x(t)\ast z(t) \leftrightarrow TX(k)Z(k) $
+  \1 multiplication: $x(t)z(t) \leftrightarrow \sum_{l=-\infty}^{\infty} X(k)Z(k-l)$
+    \2 similar to convolution
+  \1 derivative: $\frac{d}{dt}(x(t)) \leftrightarrow jk\omega_0 X(k) $
+  \1 integral: $\int_{-\infty}^{t} x(t) dt \leftrightarrow \frac{1}{jk\omega_0} X(k) $
+  \1 Symmetry: if $x(t)=x_r(t)+jx_i(t)$ then $x^*(t)=x_r(t)-jx_i(t)$
+  \1 if $x(t)$ is real and even, $X(k)$ is real and even
+  \1 if $x(t)$ is real and odd, $X(k)$ is imaginary and odd
+
+\end{outline}
+\end{flushleft}
+\end{multicols*}
+\end{document}

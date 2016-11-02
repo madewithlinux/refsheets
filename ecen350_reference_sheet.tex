@@ -1,0 +1,212 @@
+% Josh_Wright_Resume.tex
+% (c) Copyright 2015 Josh Wright
+\documentclass[12pt]{article}
+\usepackage{verbatim}
+% \usepackage{syntonly}
+\usepackage{ragged2e}
+\usepackage{geometry}
+\usepackage{enumitem} % for longenum
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{outlines} % for outline
+\usepackage{paralist} % for compactitem (compact itemize)
+\usepackage{multicol} % for multicolumn layout
+\geometry{letterpaper, margin=0.5in, top=0.3in}
+% \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
+
+\graphicspath{ {images/} }
+
+\begin{document}
+% \linespread{0.5}
+\begin{center}
+ECEN350 Computer Architecture Ref Sheet
+\hfill \textcopyright \space Josh Wright 2015 \hfill
+Last Updated: \today
+\end{center}
+
+%%%%%%%%%%%%%%%%%%
+%% main section %%
+%%%%%%%%%%%%%%%%%%
+\begin{multicols*}{2}
+\begin{flushleft}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=@}
+% \begin{outline}[compactitem]
+\begin{outline}[longenum]
+
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newlength{\upspacelength}
+\setlength{\upspacelength}{0px}
+\newcommand{\upspace}{\vspace{\upspacelength}}
+% section titles
+\newcommand{\zzz}[1]{\upspace \0 \textbf{#1} }
+% \newcommand{\zzz}[1]{\0 \hspace{-1.25in} \textbf{#1} \vspace{-10px} }
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\upspace \oldOne  }
+\renewcommand{\2}{\upspace \oldTwo  }
+\renewcommand{\3}{\upspace \oldThree}
+\renewcommand{\4}{\upspace \oldFour }
+\small
+
+\zzz{Hex}
+  \\
+  \begin{tabular}{|r r r|}\hline
+   0 & \verb|0x0| & \verb|0000| \\
+   1 & \verb|0x1| & \verb|0001| \\
+   2 & \verb|0x2| & \verb|0010| \\
+   4 & \verb|0x4| & \verb|0100| \\
+   8 & \verb|0x8| & \verb|1000| \\ \hline
+  \end{tabular}
+
+\zzz{Registers}
+  \\
+  \begin{tabular}{|l r l l|}\hline
+  n & $_{10}$ & hex & bin   \\\hline
+  \verb|$0 | & \verb| 0| & \verb|0x00| & \verb|00000| \\ \hline
+  \verb|$at| & \verb| 1| & \verb|0x01| & \verb|00001| \\ \hline \hline
+  \verb|$v0| & \verb| 2| & \verb|0x02| & \verb|00010| \\ \hline
+  \verb|$v1| & \verb| 3| & \verb|0x03| & \verb|00011| \\ \hline \hline
+  \verb|$a0| & \verb| 4| & \verb|0x04| & \verb|00100| \\ \hline
+  \verb|$a1| & \verb| 5| & \verb|0x05| & \verb|00101| \\ \hline
+  \verb|$a2| & \verb| 6| & \verb|0x06| & \verb|00110| \\ \hline
+  \verb|$a3| & \verb| 7| & \verb|0x07| & \verb|00111| \\ \hline \hline
+  \verb|$t0| & \verb| 8| & \verb|0x08| & \verb|01000| \\ \hline
+  \verb|$t1| & \verb| 9| & \verb|0x09| & \verb|01001| \\ \hline
+  \verb|$t2| & \verb|10| & \verb|0x0a| & \verb|01010| \\ \hline
+  \verb|$t3| & \verb|11| & \verb|0x0b| & \verb|01011| \\ \hline
+  \verb|$t4| & \verb|12| & \verb|0x0c| & \verb|01100| \\ \hline
+  \verb|$t5| & \verb|13| & \verb|0x0d| & \verb|01101| \\ \hline
+  \verb|$t6| & \verb|14| & \verb|0x0e| & \verb|01110| \\ \hline
+  \verb|$t7| & \verb|15| & \verb|0x0f| & \verb|01111| \\ \hline
+  \end{tabular}
+  \begin{tabular}{|l r l l|}\hline
+  \verb|$s0| & \verb|16| & \verb|0x10| & \verb|10000| \\ \hline
+  \verb|$s1| & \verb|17| & \verb|0x11| & \verb|10001| \\ \hline
+  \verb|$s2| & \verb|18| & \verb|0x12| & \verb|10010| \\ \hline
+  \verb|$s3| & \verb|19| & \verb|0x13| & \verb|10011| \\ \hline
+  \verb|$s4| & \verb|20| & \verb|0x14| & \verb|10100| \\ \hline
+  \verb|$s5| & \verb|21| & \verb|0x15| & \verb|10101| \\ \hline
+  \verb|$s6| & \verb|22| & \verb|0x16| & \verb|10110| \\ \hline
+  \verb|$s7| & \verb|23| & \verb|0x17| & \verb|10111| \\ \hline \hline
+  \verb|$t8| & \verb|24| & \verb|0x18| & \verb|11000| \\ \hline
+  \verb|$t9| & \verb|25| & \verb|0x19| & \verb|11001| \\ \hline \hline
+  \verb|$k0| & \verb|26| & \verb|0x1a| & \verb|11010| \\ \hline
+  \verb|$k1| & \verb|27| & \verb|0x1b| & \verb|11011| \\ \hline
+  \verb|$gp| & \verb|28| & \verb|0x1c| & \verb|11100| \\ \hline
+  \verb|$sp| & \verb|29| & \verb|0x1d| & \verb|11101| \\ \hline
+  \verb|$fp| & \verb|30| & \verb|0x1e| & \verb|11110| \\ \hline
+  \verb|$ra| & \verb|31| & \verb|0x1f| & \verb|11111| \\ \hline
+  \end{tabular}
+  \1 callee saved registers: \verb|$s0-$s7, $sp, $gp, $fp|
+    \2 save parent's value at beginning of function
+  \1 caller saved registers: basically all the others
+    \2 save your value before calling subroutine
+  \1 general format is to list destination first, then operands
+
+\zzz{J format (absolute branching)}
+  \1 cannot change the top 4 bits of PC. (\verb|PC[31:28]|)
+  \1 range:
+    \2 total of $2^{26}$ instructions or $2^{28}$ bytes
+      \3 because range is $[0,2^{26}-1]$
+    \2 farthest possible next instruction is $2^{26}$ away (if \verb|PC+4| lies at the beginning of a $2^{28}$ byte boundary)
+    \2 worst case is you can only jump 1 instruction ahead (if \verb|PC+4| lies at the end of a $2^{28}$ byte boundary)
+  \1 conversion:
+    \2 instruction stores 26 bits
+    \2 right pad with two 0s to get 28
+    \2 take the top four bits from current PC to get 32
+  \1 mask of top 4 bits: \verb|0xF0000000|
+  \1 \verb|target = (PC AND 0xF0000000) OR (addr << 2)|
+  % python: j = lambda PC,addr: hex((PC & 0xF0000000) | (addr << 2))
+
+\zzz{Relative Branching}
+  \1 range: $[ PC - 2^{17}, PC + 2^{17} - 4 ]$
+    \2 that's in bytes. It's a range of $2^{15}-1$ words
+    \2 you lose one from the exponent because it's 2's complement
+  \1 conversion
+    \2 take 16 bit offset, zero pad by 2 (multiply by 4)
+    \2 add to PC+4 (next PC)
+  \1 \verb|target = (PC + 4) + (addr << 2)|
+  \1 due to the \verb|PC+4| thing, if you want to jump back to the same instruction, the immediate value will be -1
+
+\zzz{Endianness}
+\\
+Value: \verb|0xA0B0C0D0|\\
+  \1 
+  % \begin{tabular}{r r r}
+  % idx: & little & big \\
+  %   0 & \verb|0xD0| & \verb|0xA0| \\
+  %   1 & \verb|0xC0| & \verb|0xB0| \\
+  %   2 & \verb|0xB0| & \verb|0xC0| \\
+  %   3 & \verb|0xA0| & \verb|0xD0| \\
+  % \end{tabular}
+  % \\
+  \begin{tabular}{l r r r r}
+  index  & 0 & 1 & 2 & 3 \\
+  little & \verb|0xD0| & \verb|0xC0| & \verb|0xB0| & \verb|0xA0| \\
+  big    & \verb|0xA0| & \verb|0xB0| & \verb|0xC0| & \verb|0xD0| \\
+  \end{tabular}
+    \2 Little Endian puts the least significant (littlest) stuff first
+% \includegraphics[width=0.493\columnwidth]{Big-Endian}
+% \includegraphics[width=0.493\columnwidth]{Little-Endian}
+% take up space after bottom of picture
+% \vspace{-20px} 
+  \1 x86 is little endian, MIPS is big endian
+  \1 networking is done in big endian
+
+\zzz{Two's Complement}
+  \1 $N$ bits can represent a range $[ -2^N, +2^N - 1 ]$
+  \1 methods for converting negative values
+  \1 method 1:
+    \2 start with absolute value
+    \2 flip all bits (bitwise not)
+    \2 add 1
+  \1 method 2:
+    \2 use $N+1$ bits ($2^N$ is $N+1$ bits)
+    \2 start with absolute value $x$
+    \2 find $2^N - x$
+    \2 truncate
+
+\zzz{Shifts}
+  \1 shift left always fills with 0s
+  \1 \textbf{Logical} left shift fills with 0s
+  \1 \textbf{Arithmetic} left shift sign-extends
+    \2 extends based on far left bit (most significant)
+ 
+\zzz{Assembler}
+  \1 Spilling: when a compiler puts a variable in main memory because it's run out of registers
+    \2 the variable has spilled to RAM
+    \2 inverse is filling
+  \1 Object file sections: header; text; data; relocation information; symbol table; debugging information
+    \2 Object file is assembled assuming that instructions start at \verb|0x00|. (this is corrected later by the linker)
+  \1 Global label can be referenced in any file
+    \2 you must declare it global in the file where it is defined, and declare it global again where it's used
+    \2 \verb|main| must be global so the linker can find it
+    \2 \verb|printf| is global so you can use it (but you must still declare it as global in that file where you use it)
+  \1 local label can be referenced in only the current file
+    \2 labels are local by default
+  \1 \textbf{Symbol Table:} contains all external references
+    \2 also lists unresolved references (e.g. printf)
+    \2 as far as assembler is concerned, symbol table contains both local and global labels, resolved and unresolved.
+    \2 The final assembled object file only contains global labels
+  \1 \textbf{Relocation Table:} contains references to all things that depend on absolute addresses
+    \2 e.g. all absolute jumps, load address
+    \2 these must be changed after loading into memory
+    \2 does not contain addresses of labels
+
+
+\end{outline}
+\end{flushleft}
+\end{multicols*}
+\end{document}

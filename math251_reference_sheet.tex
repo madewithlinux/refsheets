@@ -1,0 +1,294 @@
+% # (c) Copyright 2015 Josh Wright
+\documentclass{article}
+\usepackage{mathrsfs,amsmath,amsthm,latexsym,paralist}
+\usepackage{mathtools} 
+\usepackage{bm} 
+\usepackage{amssymb}   % for \varnothing, \therefore
+\usepackage{centernot} % for \centernot
+\usepackage{geometry}  % for margins
+\usepackage{outlines}  % for outline
+% \usepackage{paralist}  % for compactitem, compactenum
+\usepackage{multicol}
+\usepackage{hyperref}
+\hypersetup{
+	pdftitle={MATH 251 Reference Sheet},
+	pdfauthor={Josh Wright},
+	pdfsubject={MATH 251},
+	bookmarksnumbered=true,
+	bookmarksopen=true,
+	bookmarksopenlevel=1,
+	colorlinks=true,
+	pdfstartview=Fit,
+	pdfpagemode=UseOutlines,
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+}
+\geometry{letterpaper, margin=0.25in}
+\newcommand{\upspace}{\vspace{0px}}
+% 
+\newcommand{\zza}[1]{\upspace \1 \textbf{#1:} \addcontentsline{toc}{subsubsection}{#1} }
+\newcommand{\zzz}[1]{\0 {\textbf{#1:}} \addcontentsline{toc} {subsection}{#1}}
+\newcommand{\aaa}{\upspace \1}
+\newcommand{\bbb}{\upspace \2}
+\newcommand{\ccc}{\upspace \3}
+\newcommand{\ddd}{\upspace \4}
+% 
+% \newcommand{\zzz}[1]{\\ {\large\textbf{#1:}} \addcontentsline{toc} {subsection}{#1}}
+% \newcommand{\aaa}{\upspace \\ \noindent}
+% \newcommand{\bbb}{\upspace \\ \indent}
+% \newcommand{\ccc}{\upspace \\ \indent \indent}
+% \newcommand{\ddd}{\upspace \\ \indent \indent \indent}
+
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemi{\cdot}
+\renewcommand\labelitemi{\tiny$\bullet$}
+\renewcommand\labelitemii{\labelitemi}
+
+\newcommand{\p}{\partial}
+\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\prt}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\grad}{\nabla}
+	
+\begin{document}
+\allowdisplaybreaks
+% \begin{center}
+\noindent
+\textbf{Math 251 Reference Sheet} \hfill \textcopyright \space Josh Wright 2015 \\
+Latex Symbols: \url{http://oeis.org/wiki/List_of_LaTeX_mathematical_symbols} \hfill Last Updated: \today \\
+Paul's Online Math Notes: \url{http://tutorial.math.lamar.edu/Classes/CalcIII/CalcIII.aspx} \\
+% \end{center}
+% asterisk makes multicols finish one column before going onto the next
+\begin{multicols*}{2}
+% \tableofcontents
+% \large
+\begin{outline}[compactitem]
+\noindent
+\zzz{3D vectors}
+	\aaa vector $v = \langle a,b,c \rangle$
+	\aaa Magnitude (length): $|v| = \sqrt{a^2 + b^2 + c^2}$=
+	\aaa \textbf{Dot Product:} $a \cdot b = a_1b_1 + a_2b_2 + a_3b_3 = |a||b|\cos{\theta}$
+	\\ if $a \cdot b = 0$, $a$ and $b$ are perpendicular
+	\aaa \textbf{Cross Product:} $a \times b =\langle a_yb_z-a_zb_y,a_zb_x-a_xb_z,a_xb_y-a_yb_x \rangle$
+	\\ if $a \times b = 0$, $a$ and $b$ are parallel
+	\\ $a \times b = n|a||b|\sin{\theta}$ where $n$ is a vector perpendicular to both $a$ and $b$ in direction given by right hand rule
+	\\ $a\times (b+c) = a\times b + a\times c$
+	\aaa \textbf{Angle} between (nonzero) vectors: $\theta = \cos^{-1}(\frac{a\cdot b}{|a||b|})$
+	\aaa Unit Vector: $\hat{a} = \frac{a}{|a|}$
+	\\ $\hat{a}$ is a vector of length 1 parallel to vector $a$
+	\aaa Scalar triple product: $a \cdot (b \times c)$
+	\aaa Vector triple product: $a \times (b \times c)$
+	\aaa areas and volumes:
+		\bbb area of parallelogram with sides $a,b = |a \times b|$
+		\bbb area of triangle with sides $a,b = \frac{1}{2} |a \times b|$
+		\bbb volume of box with sides $a,b,c = a \cdot (b \times c)$
+\zzz {Lines}
+	\aaa \textbf{Vector Equation:} $L(t) = r_0 + vt$
+	\\ $r_0$ is a point on the line and $v$ is a vector parallel to the line
+	\\ $L(t) = \langle x_0,y_0,z_0 \rangle + t\langle a,b,c \rangle$
+	\aaa \textbf{Parametric Equation:} $L(t) = \langle x_0 + at, y_0 + bt, z_0 + ct \rangle$
+	\\ point on line: $(x_0,y_0,z_0)$
+	\\ vector parallel to line: $\langle a,b,c \rangle$
+\zzz{Planes}
+	\aaa \textbf{Standard (linear) form:} $ax + by + cz = d$
+	\\ $d = ax_0 + by_0 + cz_0 $ where $P(x_0,y_0,z_0)$ is a point in the plane
+	\\ normal vector: $n = \langle a,b,c \rangle$
+	\aaa \textbf{Scalar form:} $a(x-x_0) + b(y-y_0) + c(z-z_0) = 0$
+	\\ normal vector: $n = \langle a,b,c \rangle$
+	\\ point in plane: $P(x_0,y_0,z_0)$
+	\aaa \textbf{Distance} from point $P(x,y,z)$ to plane: $D = \frac{|ax + by + cz - d|}{\sqrt{a^2 + b^2 + c^2}}$
+	\\ (assuming plane is in linear form above)
+\zzz{Quadratic Surfaces}
+	\aaa \textbf{Ellipsoid}                    \dotfill $\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1$
+		\bbb \textbf{All} traces are ellipses
+	\aaa \textbf{Elliptic Paraboloid}          \dotfill $\frac{x^2}{a^2} + \frac{y^2}{b^2} = \frac{z}{c}$
+		\bbb \textbf{Horizontal} traces are ellipses
+		\bbb \textbf{Vertical}   traces are parabolas
+	\aaa \textbf{Hyperboloid} of one sheet     \dotfill $\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 1$
+		\bbb \textbf{Horizontal} traces are ellipses
+		\bbb \textbf{Vertical}   traces are hyperbolas
+	\aaa \textbf{Hyperboloid} of two sheets    \dotfill $ -\frac{x^2}{a^2} - \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1$
+		\bbb \textbf{Horizontal} traces are ellipses
+		\bbb \textbf{Vertical}   traces are hyperbolas
+		\bbb some traces do not exist because graph has a gap centered around the origin
+	\aaa \textbf{Cone}                         \dotfill $\frac{x^2}{a^2} + \frac{y^2}{b^2} = \frac{z^2}{c^2}$
+		\bbb \textbf{Horizontal} traces are ellipses.
+		\bbb \textbf{Vertical}   traces are pair of lines if $x$ or $y$ is 0, otherwise hyperbolas
+	\aaa \textbf{Hyperbolic Paraboloid}        \dotfill $\frac{x^2}{a^2} - \frac{y^2}{b^2} = \frac{z}{c}$
+		\bbb \textbf{Horizontal} traces are hyperbolas.
+		\bbb \textbf{Vertical}   traces are parabolas
+\zzz{Vector Functions}
+	\aaa \textbf{Arc length} from $t=a$ to $t=b$: $\int_a^b |r'(t)| dt$
+		\bbb Conversion back to the similar form from 2D:
+		\bbb $|r'(t)| = \sqrt{(f_x)^2 + (f_y)^2 + (f_z)^2}$
+	\aaa \textbf{Arc Length Function:} $s(t) = \int_a^t |r'(u)| du$
+	\aaa \textbf{Unit Tangent Vector:} $T(t) = \frac{r'(t)}{|r'(t)|}$
+	\\ unit-length vector tangent to the curve $r(t)$
+	\aaa \textbf{Unit normal vector:} $N(t) = \frac{T'(t)}{|T'(t)|}$
+	\\ unit-length vector perpendicular to $r(t)$
+\zzz{Derivatives}
+	\aaa $z = f(x,y)$
+	\aaa Notation: $\frac{\partial z}{\partial x} = f_x = \frac{\partial f}{\partial x} $ etc\ldots
+		\bbb Same for second derivatives: $f_{xy} = \frac{}{}$
+	\aaa \textbf{Gradient Vector:} $\nabla f = \langle f_x, f_y, f_z \rangle$
+	\aaa \textbf{Tangent plane} at $P(a,b,c)$: $f_x(a,b) + f_y(a,b) = z - c$
+	\aaa Chain Rule:
+		\bbb $\frac{\partial x}{\partial z} = -\frac{\partial F / \partial z }{\partial F / \partial x} = \frac{F_z}{F_x}$ ($\partial F$ cancels out, fraction flips)
+		\bbb $\frac{\partial z}{\partial t} = -\frac{\partial z}{\partial x} \frac{\partial x}{\partial t}$ ($\partial x$ cancels out)
+	\aaa Directional Derivative, parallel to $\langle a,b,c \rangle$ at $P(x,y,z)$: $f_x(x,y,z)a + f_y(x,y,z)b + f_z(x,y,z)c$
+\zzz{Double Integrals}
+	\aaa volume under the function $f(x,y)$ on the rectangle $R = [a,b]\times[c,d]$
+	\aaa $\iint_R f(x,y) dA$ on $R = [a,b]\times[c,d] = \int_c^d\int_a^bf(x,y)dxdy$
+	\\ solve the inner integral first, then the outer
+	\\ if $f(x,y)$ is continuous on $R$, then you can flip the order of the integrals
+	\aaa if $f(x,y)=g(x)\cdot h(y)$ then $\int_c^d\int_a^bf(x,y)dxdy=\int_a^bg(x)dx\cdot\int_c^dh(y)dy$
+	\aaa \textbf{General Regions:} 
+	\\ Only difference is whether $x$ or $y$ has its limits defined in terms of the other
+	\\ For these, you must evaluate the inner integral first, you can't swap them
+		\bbb Type 1: bounds of $x$ are constants, bounds of $y$ are defined as functions of $x$
+		\\ $D = \{(x,y)|a\leq x\leq b, g_1(x)\leq y\leq g_2(x)\}$
+		\\ $=\int_a^b \int_{g_1(x)}^{g_2(x)} f(x,y) dy dx $
+		\bbb Type 2: bounds of $y$ are constants, bounds of $x$ are defined as functions of $y$
+		\\ $D = \{(x,y)|h_1(y)\leq x\leq h_2(y),c\leq y\leq d\}$
+		\\ $=\int_c^d \int_{h_1(y)}^{h_2(y)} f(x,y) dx dy $
+\zzz{Polar Coordinates}
+	\aaa Polar $\rightarrow$ Cartesian:
+	\\ $r = \pm\sqrt{x^2 + y^2}$
+	\\ $\theta = \tan^{-1}(\frac{y}{x})$
+		\bbb You need to be careful with the sign of $r$ and multiples of $\theta$ because Polar Coordinates are \textbf{not} unique.
+	\aaa Cartesian $\rightarrow$ Polar:
+	\\ $x = r\cos\theta$
+	\\ $y = r\sin\theta$
+		\bbb You don't have to worry about quadrants or anything because Cartesian Coordinates \textbf{are} unique.
+	\aaa \textbf{Double Integrals in Polar Coordinates}
+	\\ works best when D is in a polar-coordinate-friendly shape
+		\bbb Do the following replacements:
+			\ccc $dA$ or $dxdy$ or $dydx$ $\rightarrow r dr d\theta$
+			\ccc $x \rightarrow r\cos\theta$
+			\ccc $y \rightarrow r\sin\theta$
+			\ccc $x^2 + y^2 \rightarrow r$
+			\ccc Translate limits
+		\bbb Should end up with something that looks like one of these general regions:
+		\\ $\int_a^b \int_{g_1(r)}^{g_2(r)} f(r\cos\theta,r\sin\theta) dx dy $
+		\\ $\int_\alpha^\beta \int_{h_1(\theta)}^{h_2(\theta)} f(r\cos\theta,r\sin\theta) dr d\theta $
+		\bbb integrate as normal with new function and new limits
+		\\ stuff will probably cancel out everywhere
+	\aaa \textbf{Arc Length in Polar Coordinates:}
+	\\ $L = \int_{\theta=\alpha}^{\theta=\beta}\sqrt{ \left(\frac{dx}{d\theta} \right)^2 + \left(\frac{dy}{d\theta}\right)^2} d\theta = \int_{\theta=\alpha}^{\theta=\beta}\sqrt{ r^2 + \left( \frac{dr}{d\theta} \right)^2} d\theta$
+\\
+\zzz{Cylindrical Coordinates}
+	\aaa $dV = r dr d\theta dz$
+	\aaa usually:
+		\\ $r \geq 0$
+		\\ $0 \leq \theta \leq 2\pi$
+	\aaa Cylindrical $\rightarrow$ Cartesian:
+	\\ $x = r\cos\theta$
+	\\ $y = r\sin\theta$
+	\\ $z = z$
+	\aaa Cartesian $\rightarrow$ Cylindrical:
+	\\ (be careful about the quadrant of $\theta$)
+	\\ $r = \sqrt{x^2 + y^2}$
+	\\ $r^2 = x^2 + y^2$
+	\\ $\theta = \tan^{-1}\left(\frac{y}{x}\right)$
+	\\ $z = z$
+\\
+\zzz{Spherical Coordinates}
+	\aaa $dV = \rho^2 \sin\phi$
+	\aaa $\phi$ is the angle from the $+z$ axis down to $\rho$
+		\bbb usually:
+		\\ $-\pi/2 \leq \rho \leq \pi/2$
+		\\ $\rho \geq 0$
+		\\ $0 \leq \theta \leq 2\pi$
+	\aaa Spherical $\rightarrow$ Cartesian:
+	\\ $x = \rho\sin\phi\cos\theta$
+	\\ $y = \rho\sin\phi\sin\theta$
+	\\ $z = \rho\cos\phi$
+	\aaa Cartesian $\rightarrow$ Spherical:
+	\\ $\theta = \tan^{-1}\left(\frac{y}{x}\right)$
+	\\ $\rho^2 = x^2 + y^2 + z^2$
+	\\ $\phi = \cos^{-1}\left(\frac{z}{\rho}\right)$
+	\aaa Other:
+	\\ $\rho^2 = x^2 + y^2 + z^2$
+	\\ $r = \rho \sin\phi$
+\\
+\zzz{Minimum and Maximum}
+\\ Find critical points by solving $\grad f = \ang{0,0}$
+\\ For each point, find $D = (f_{xx})(f_{yy}) - \left(f_{xy}\right)^2$
+\\ $D>0$ and $f_{xx}>0$: relative minimum at $(a,b)$
+\\ $D>0$ and $f_{xx}<0$: relative maximum at $(a,b)$
+\\ $D<0$: saddle point at $(a,b)$
+\\ $D=0$: can't tell (probably won't see)
+\\
+\\
+\zzz{Line Integrals}
+	\aaa\textbf{2D:}
+	\\ $C = \{r(t) | a \leq r \leq b\}$
+	\\ $r(t) = \ang{x,y,z}$
+	\\ Scalar function $f(x,y)$:
+	\\ $\int_C f(x,y) ds = \int_a^b f(r(t)) \sqrt{(x'(t))^2 + (y'(t))^2} dt$
+	\\ $= \int_a^b f(r(t))|r'(t)| dt$
+	\\ $\int_C f(x,y)dx = \int_a^b f(r(t))x'(t)dt$
+	\\ Vector field $F(x,y) = \langle P, Q \rangle$:
+	\\ $\int_C F(x,y) \cdot ds = \int_b^a P(r(t)) dx + Q(r(t)) dy $
+	\aaa\textbf{3D:}
+	\\ $C = \{r(t) | a \leq r \leq b\}$
+	\\ (scalars are the same)
+	\\ Vector field $F(x,y,z) = \langle P, Q, R \rangle$:
+	\\ $\int_C F(x,y,z) \cdot ds  = \int_a^b F(r(t))\cdot r'(t) dt$
+	\\ $= \int_C P dx + Q dy + R dy $
+	\\ $= \int_a^b P\prt{r}{x} dx + Q\prt{r}{y} dy + R\prt{r}{z} dz $
+	\\ $\int_C F(x,y,z) \cdot dr = \int_a^b F(r(t)) \cdot r'(t) dt $
+\\
+\\
+\zzz{Fundamental Theorem for Line Integrals}
+\\ $C: r(t), a\leq r \leq b$, $C$ is simple. Domain is simply-connected
+\\ $F(x,y,z) = \ang{P,Q,R}$
+\\ If there exists $f$ such that $\grad f = F$, then:
+\\ $\int_C F \cdot dr = f(r(b)) - f(r(a))$
+\\
+\\
+\zzz{Green's Theorem} (2D only, doesn't work in 3D)
+\\ $C$: curve with $r(t) = \ang{x(t),y(t),z(t)} $ on $a\leq t\leq b$; $C$ is closed and simple; $D$: region enclosed by $C$
+\\ $F(x,y) = \ang{P(x,y),Q(x,y)}$
+\\ $\int_C F\cdot dr = \int_C Pdx + Qdy = \iint_D \left(\prt{Q}{x} - \prt{P}{y} \right) dA $
+\\\zzz{Vector Field: Curl and Divergence}
+\\ $curlF = \nabla\times F = \ang{\prt{}{x}, \prt{}{y}, \prt{}{z}}\times\ang{P,Q,R}$
+\\ $= \ang{R_y-Q_z, P_z-R_x, Q_x-P_y}$
+\\ $divF = \nabla\cdot F =  \prt{P}{x}+\prt{Q}{y}+\prt{R}{z} = P_x+Q_y+R_z$
+\\ $div(curl(F)) = 0, curl(div(f)) = 0$
+\\ if $curl(F) = 0$, then $F$ is irrotational (causes no rotation); and therefore $\nabla f = F$ exists
+\\
+\\
+\zzz{Surface Integrals}
+\\ Surface $S: r(u,v)=\ang{x(u,v), y(u,v), z(u,v)}$ for $(u,v) \in D$
+\\ scalar function $f(x,y,z)$, vector field $F(x,y,z)$
+\\ $\hat{n} = (r_u\times r_v)/|r_u\times r_v| = \frac{r_u\times r_v}{|r_u\times r_v|}$
+\\ Scalar Function $f$:
+\\ $\iint_S f dS = \iint_D f(r(u,v))|r_u\times r_v|dA$
+\\ When $f(x,y,z): z=g(x,y)$: 
+	\\ $\iint_S f(x,y,z)dS = \iint_D f(x,y,g(x,y))\sqrt{g_x^2 + g_y^2 + 1}dA$ 
+\\ Area of $S: \iint_D |r_u\times r_v|dA$
+\\ Vector Function $F$:
+\\ $\iint_S F \cdot dS = \iint_S (F\cdot\hat{n})dS = \iint_D F(r(u,v))\cdot(r_u\times r_v) dA$
+\\
+\\
+\zzz{Stokes' Theorem} (works in 3D)
+\\ Surface $S$ bounded by curve $C: g(t), a\leq t \leq b$
+\\ vector field $F(x,y,z)$
+\\ $\int_C F \cdot dg = \iint_S curl(F)\cdot dS$
+\\
+\\
+\zzz{Divergence Theorem}
+\\ surface $S$ is boundary of solid region $E$
+\\ $F$ is vector field
+\\ $\iint_S F\cdot dS = \iiint_E div(F) dV$
+\\
+\\
+test this stuff like editing in emacs vim spacemacs
+
+\end{outline}
+\end{multicols*}
+\end{document}

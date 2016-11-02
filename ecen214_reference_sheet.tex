@@ -1,0 +1,311 @@
+% # (c) Copyright 2015 Josh Wright
+\documentclass{article}
+%%%%%%%%%%%%%%
+%% packages %%
+%%%%%%%%%%%%%%
+\usepackage{mathrsfs,amsmath,amsthm,latexsym,paralist}
+\usepackage{mathtools} 
+\usepackage{bm}
+\usepackage{calc}      % for dimension arithmetic
+\usepackage{amssymb}   % for \varnothing, \therefore
+\usepackage{centernot} % for \centernot
+\usepackage{geometry}  % for margins
+\usepackage{outlines}  % for outline
+% \usepackage{paralist}  % for compactitem, compactenum
+\usepackage{multicol}
+\usepackage{hyperref}
+%%%%%%%%%%%%%%%%
+%% hyperlinks %%
+%%%%%%%%%%%%%%%%
+\hypersetup{
+  pdftitle={ECEN 214 Reference Sheet},
+  pdfauthor={Josh Wright},
+  pdfsubject={ECEN 214},
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1,
+  colorlinks=true,
+  pdfstartview=Fit,
+  pdfpagemode=UseOutlines,
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,      
+  urlcolor=cyan,
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% paper size, orientation, margins %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% good for on screen-only viewing
+\def \columncount {3}
+\newlength{\papersize}
+\setlength{\papersize}{18cm}
+\geometry{paperheight=1.7777\papersize, paperwidth=\papersize, landscape, margin=0.25in}
+% good for printing
+% \def \columncount {2}
+% \geometry{letterpaper, portrait, margin=0.25in}
+
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemi{\cdot}
+\renewcommand\labelitemi{\tiny$\bullet$}
+\renewcommand\labelitemii{\labelitemi}
+
+%%%%%%%%%%%%%%%%%%%%
+%% helpful macros %%
+%%%%%%%%%%%%%%%%%%%%
+\newcommand{\p}{\partial}
+\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\prt}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\diff}[2]{\frac{d #1}{d #2}}
+\newcommand{\grad}{\nabla}
+
+\begin{document}
+\allowdisplaybreaks
+\large
+% \Large
+%%%%%%%%%%%
+%% title %%
+%%%%%%%%%%%
+\noindent
+\textbf{ECEN 214 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright
+\\ Latex Symbols: \url{http://oeis.org/wiki/List_of_LaTeX_mathematical_symbols}
+\begin{multicols*}{\columncount}
+\begin{outline}[compactitem]
+
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newcommand{\upspace}{\vspace{0px}\linespread{0}}
+% section titles
+\newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}}}
+% makes second-level itemize bullets instead of dashes
+\renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\upspace \oldOne  }
+\renewcommand{\2}{\upspace \oldTwo  }
+\renewcommand{\3}{\upspace \oldThree}
+\renewcommand{\4}{\upspace \oldFour }
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% real content starts here %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\zzz{Metric Prefixes} \\
+\begin{tabular}{|c c l l|}                                   \hline
+peta  & P     & $10^{ 15}$ & \hfill 1 000 000 000 000 000 \\ \hline
+tera  & T     & $10^{ 12}$ & \hfill     1 000 000 000 000 \\ \hline
+giga  & G     & $10^{  9}$ & \hfill         1 000 000 000 \\ \hline
+mega  & M     & $10^{  6}$ & \hfill             1 000 000 \\ \hline
+kilo  & k     & $10^{  3}$ & \hfill                 1 000 \\ \hline
+hecto & h     & $10^{  2}$ & \hfill                   100 \\ \hline
+deca  & da    & $10^{  1}$ & \hfill                    10 \\ \hline
+one   &       & $10^{ 0 }$ & \hfill       1 \hfill \hfill \\ \hline
+deci  & d     & $10^{- 1}$ & 0.1                          \\ \hline
+centi & c     & $10^{- 2}$ & 0.01                         \\ \hline
+milli & m     & $10^{- 3}$ & 0.001                        \\ \hline
+micro & $\mu$ & $10^{- 6}$ & 0.000 001                    \\ \hline
+nano  & n     & $10^{- 9}$ & 0.000 000 001                \\ \hline
+pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
+femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
+\end{tabular}
+
+\zzz{Ohm's Law}
+  $V = IR$,
+  \quad $I = \frac{V}{R}$,
+  \quad $R = \frac{V}{I}$
+
+\zzz{Power} 
+  $P = IV = I^2 R = \frac{V^2}{R}$
+
+\zzz{Energy}
+  \1 $W = \int_{0}^{t}P(s) ds$
+  \1 Unit: Watts, $W=\frac{J}{s}=\frac{V^2}{\Omega}=VA=A^2\Omega$
+
+\zzz{KCL: Kirchoff's Current Law}
+  \1 All currents out of (or into) a point sum to 0
+  \1 be careful with signs with this!
+
+\zzz{KVL: Kirchoff's Voltage Law}
+  \1 The sum of voltages around a fixed loop is 0 
+  \1 be careful with signs with this one too!
+
+
+
+
+\zzz{\Large Exam 1 stuff}
+
+\zzz{Source Transformation}
+  \1 When you have a current source with a resistor in parallel to its load or a voltage source with a resistor in series to it's load, you can use Ohm's Law to transform it into the opposite source type.
+  \1 The resistor value stays constant, the source type and value changes
+
+\zzz{Nodal Analysis}
+  \1 use KCL to sum all currents at each node to 0
+  \1 when in doubt, use more nodes
+  \1 remember to have a ground node for reference
+  \1 convention is to count current out of the node as positive
+  \2 current sources pointing into the node are counted negative
+
+\zzz{Superposition}
+  \1 evaluate the circuit many times, killing all but one source each time
+  \1 sum the results to get the final result (be careful with signs)
+  \1 superposition only applies for linear circuits
+    \2 which nearly all are. Notable exception: stuff with diodes
+
+\zzz{Mesh}(current loop method)
+  \1 use KVL to sum all the voltages in each loop to 0
+  \1 convention is to loop clockwise
+  \1 when you hit a voltage terminal, use the sign of that terminal; e.g. hit negative terminal of $V_x$ means append ``$-V_x$'' to equation. (does not matter if $V_s$ is source or component)
+  \1 When you hit a resistor, use $V=IR$ to find voltage drop
+
+\zzz{Thevenin: Independent Only}
+  \1 always remove the load resistor (if present) first
+  \1 find $V_{th}$ by assuming $AB$ is an open circuit
+  \1 find $R_{th}$:
+    \2 first deactivate all sources in the circuit
+    \2 then determine the equivalent resistance from $A$ to $B$
+
+\zzz{Thevenin: Dependent and Independent}
+  \1 Note: you can't kill independent sources
+  \1 find $V_{th}$ the same way
+  \1 find $R_{th}$:
+    \2 kill all independent sources
+    \2 put a 1Amp independent current source across $AB$
+    \2 find voltage across new independent source
+    \2 use $R_{th}=\frac{V}{I}=\frac{V}{1\mbox{\small Amp}}$
+
+\zzz{Thevenin: Dependent Only}
+  \1 can't find $V_{th}$ regular way, so use $1$Amp source method
+  \1 This means you will get $R_{th}=\frac{V_{th}}{1\mbox{\small Amp}}$
+
+\zzz{Norton Equivalent}
+  \1 just use Ohm's Law on the Thevenin Equivalent
+
+\zzz{\Large Exam 2 stuff}
+
+\zzz{Ideal Op Amp}
+  \1 The output tries to do whatever is necessary to make the difference between the input voltages zero.
+  \1 Zero current in/out from the input pin
+  \1 For a real op amp, the output voltage is limited to $\pm V_{CC}$
+    \2 Saturated when $|V_{out}|=V_{CC}$
+
+\zzz{Op Amp - Inverting}
+  \1 $V_o \rightarrow R_f \rightarrow$ $-$input
+    \\ $-$input $\rightarrow R_s \rightarrow V_s$
+    \\ $+$input $\rightarrow$ ground
+  \1 $R_f$: feedback resistor
+    \\ $R_s$: source resistor
+  \1 $V_o = -\frac{R_f}{R_s}V_s$
+  \1 linear region: $\left|\frac{R_f}{R_s}\right|\leq\left|\frac{V_{CC}}{V_s}\right|$
+
+\zzz{Op Amp - Summing}
+  \1 Adds voltages
+  \1 Similar to inverting op amp except that each input is wired as $V_x\rightarrow R_x \rightarrow-$input. (Only one $R_f$, but one $R_s=R_x$ for each input)
+  \1 $V_o = -\left(\frac{R_f}{R_a}V_a + \frac{R_f}{R_b}V_b + \ldots \right)$
+  \1 If $R_f=R_a=R_b\ldots$ then $V_o=-(V_a + V_b+\ldots)$
+
+\zzz{Op Amp - Non-inverting}
+  \1 $+$input$\rightarrow R_s\rightarrow V_g \rightarrow$ground
+    \\ $-$input$\rightarrow R_s\rightarrow$ground
+    \\ (two different resistors each with value $R_s$)
+    \\ same $R_f$ feedback resistor as inverting amp
+    \\ $R_f$ and $R_s$ form an unloaded voltage divider across  $-$input
+  \1 $V_o = \frac{R_s+R_f}{R_s}V_g$
+  \1 Linear region: $\frac{R_s+R_f}{R_s}<\left|\frac{V_{CC}}{V_g}\right|$
+
+\zzz{Op Amp - Difference}
+  \1 regular feedback resistor $R_b$
+    \\ $R_a$: from $V_a$ to $-$input
+    \\ $R_c$: from $V_b$ to $+$input
+    \\ $R_d$: from $+$input to ground
+  \1 $V_o = \frac{R_d(R_a+R_b)}{R_a(R_c+R_d)}V_b - \frac{R_b}{R_a} V_a$
+  \1 if $\frac{R_a}{R_b}=\frac{R_c}{R_d}$ then $V_o=\frac{R_b}{R_a}(V_b-V_a)$
+
+\zzz{Op Amp - Integrator}
+  \1 Circuit: just like inverting op-amp except with a capacitor instead of the feedback resistor ($R_f$)
+  \1 The only resistor is $R_s$, between the source and the $-$input of the op amp
+  \1 $V_o=-\frac{1}{R_sC}\int V_{in} dt$
+  \1 can be used to turn square wave into sawtooth wave
+
+\zzz{Op Amp - Differentiator}
+  \1 Circuit: just like inverting op-amp except with a capacitor instead of the input resistor ($R_s$)
+  \1 $V_o = -R_fC\diff{V_{in}}{t}$
+  \1 Can be used to turn sawtooth wave into square wave
+
+
+\zzz{Inductors}
+  \1 Series and parallel is the same as resistors
+  \1 Voltage: $V_L(t) = -L\diff{i_L(t)}{t}$
+    \\ Energy: $W(t) = \frac{1}{2} L*i(t)^2$
+  \1 $\tau = \frac{L}{R}$
+  \1 RL Charging: $i(t) = i_f + (i_o - i_f)e^{-tR/L}$
+  \1 RL Discharging: $i(t) = i_oe^{-tR/L}$   
+
+\zzz{Capacitors}
+  \1 Series and parallel is the opposite as resistors
+  \1 Current: $I_c(t) = C \diff{V_C(t)}{t}$
+    \\ Energy: $W(t) = \frac{1}{2}C*V_C(t)^2$
+  \1 $\tau = RC$
+    \\ $V_f=$final voltage
+    \\ $V_o=$initial voltage
+  \1 RC Charging: $V(t) = V_f + (V_o - V_f)e^{-t/(RC)}$
+  \1 RC Discharging: $V(t) = V_oe^{-t/(RC)}$
+
+
+
+\zzz{Exam 3 stuff}
+
+\zzz{RLC Circuits - Parallel}
+  \1 $s_{1,2} = \frac{1}{2/RC} \pm \sqrt{\left(\frac{1}{2RC}\right)^2-\frac{1}{LC}}$
+  \\ $s_{1,2} = - \alpha \pm \sqrt{\alpha^2-\omega_0^2}$
+  \1 $\alpha = \frac{1}{2RC}$
+  \1 resonant frequency: $\omega_0 = \frac{1}{\sqrt{LC}}$
+  \1 damping:
+    \2 $\omega_0 < \alpha$: over damped
+      \3 $V(t) = A_1 e^{s_1 t} + A_2 e^{s_2 t}$
+    \2 $\omega_0 = \alpha$: critically damped
+      \3 $V(t) = B_1 t e^{\alpha t} + B_2 e^{\alpha t}$
+    \2 $\omega_0 > \alpha$: under damped
+      \3 $V(t) = B_1 t e^{\alpha t}\cos(\omega_0t) + B_2 e^{\alpha t}\sin(\omega_0t)$
+  \1 $\omega_d = \sqrt{\omega_0^2 - \alpha^2}$ damped frequency (only relevant for under damped)
+
+\zzz{Impedance}
+  \1 $V = IZ$
+  \1 $Z_R = R$
+    \2 $\phi_R=0^\circ$
+  \1 $Z_L = j\omega L$
+    \2 Current lags $90^\circ$ behind voltage
+    \2 $\phi_L=-90^\circ$
+  \1 $Z_C = \frac{1}{j\omega C}$
+    \2 Current leads voltage by $90^\circ$
+    \2 $\phi_C=90^\circ$
+
+\zzz{Reactance}
+  \1 $X_L = \frac{V_L}{I_L} = \omega L = 2\pi f L$
+  \1 $X_C = -\frac{1}{\omega C} = -\frac{1}{2\pi f C}$
+
+
+\zzz{Complex Power}
+  \1 $S = P + jQ = \frac{(V_{RMS})^2}{Z^*}$
+    \2 $\bar{Z}$ is complex conjugate of $Z$
+  \1 $P = \frac{V_m I_m}{2}\cos(\theta_v - \theta_i)$
+  \1 $Q = \frac{V_m I_m}{2}\sin(\theta_v - \theta_i)$
+  \1 $S = V I^*$
+    \2 $^*$ also means conjugate
+
+\zzz{Maximum Power Transfer}
+  \1 unrestricted: $Z_{L} = \bar{Z}_{Th}$
+  \1 restricted: $|Z_{L}| = |\bar{Z}_{Th}|$
+
+
+
+
+
+\end{outline}
+\end{multicols*}
+\end{document}
