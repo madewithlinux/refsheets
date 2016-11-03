@@ -19,7 +19,7 @@
 % \linespread{0.5}
 \begin{center}
 Math 311 Reference Sheet
-\hfill \textcopyright Josh Wright 2015 \hfill
+\hfill \textcopyright{} Josh Wright 2015 \hfill
 Last Updated: \today
 \end{center}
 
@@ -45,16 +45,16 @@ Last Updated: \today
 \setlength{\upspacelength}{0px}
 \newcommand{\upspace}{\vspace{\upspacelength}}
 % section titles
-\newcommand{\zzz}[1]{\upspace \0 \textbf{#1} }
+\newcommand{\zzz}[1]{\upspace\0 \textbf{#1} }
 % \newcommand{\zzz}[1]{\0 \hspace{-1.25in} \textbf{#1} \vspace{-10px} }
 % makes second-level itemize bullets instead of dashes
 % \renewcommand\labelitemii{\labelitemi}
 % redefine the sub-headings to inject our space-saver
 \let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
-\renewcommand{\1}{\upspace \oldOne  }
-\renewcommand{\2}{\upspace \oldTwo  }
-\renewcommand{\3}{\upspace \oldThree}
-\renewcommand{\4}{\upspace \oldFour }
+\renewcommand{\1}{\upspace{}\oldOne{}}
+\renewcommand{\2}{\upspace\o{}\oldTwo{}}
+\renewcommand{\3}{\upspace\o{}\oldThree{}}
+\renewcommand{\4}{\upspace\o{}\oldFour{}}
 
 \zzz{Linear Equations}
   \1 system is inconsistent if it has no solution
@@ -90,7 +90,7 @@ Last Updated: \today
   \1 matrices $A,B \in M_{m,n}(R)$
   \1 addition, scalar multiplication work like vectors
     \2 addition is only defined when matrix dimensions match
-  \1 \textbf{Dot Product:} $x*y = x_1y_1 + x_2y_2 + \ldots + x_ny_n = \sum_{k=0}^{n}x_ky_k$
+  \1 \textbf{Dot Product:} $x*y = x_1 y_1 + x_2 y_2 + \cdots + x_n y_n = \sum_{k=0}^{n} x_k y_k$
   \1 \textbf{diagonal matrix:} only diagonal elements are non-zero
   \1 identity matrix: $I$, diagonal of $1$'s
     \2 $AI=A$ for any A and properly sized $I$
@@ -126,7 +126,7 @@ Last Updated: \today
 
 \zzz{These are Equivalent}
   \1 $A$ is invertible
-  \1 $det(A) \not= 0$
+  \1 $\det(A) \not= 0$
   \1 $x=0$ is the only solution to the equation $Ax=0$
   \1 $Ax=b$ has a unique solution for any column vector $b$
   \1 Row-Echelon form of $A$ has no zero rows
@@ -147,10 +147,10 @@ Last Updated: \today
     \2 D1: multiply row by $r$ $\rightarrow$ multiply det by $r$
     \2 D2: add scalar multiple of one row to another $\rightarrow$ same det
     \2 D3: swapping rows of matrix $\rightarrow$ det changes sign
-    \2 D4: $det(I) = 1$
-    \2 C1: if $A,B$ are square and $A$ is obtained by applying Elementary Operations to $B$, then $det(A)=0$ iff $det(B)=0$
-    \2 C2: $det(B)=0$ whenever $B$ has a zero row
-    \2 C3: $det(A)=0$ iff $A$ is not invertible
+    \2 D4: $\det(I) = 1$
+    \2 C1: if $A,B$ are square and $A$ is obtained by applying Elementary Operations to $B$, then $\det(A)=0$ iff $\det(B)=0$
+    \2 C2: $\det(B)=0$ whenever $B$ has a zero row
+    \2 C3: $\det(A)=0$ iff $A$ is not invertible
   \1 Cramer's rule: explicit formula for solution to system of linear equations, using determinants. Not very useful because determinants.
 
 \zzz{Wronskian}
@@ -173,19 +173,20 @@ Last Updated: \today
   \1 it's like a coordinate system
   \1 Basis = minimum spanning set = maximum set of linearly independent vectors
   \1 can get one by adding linearly independent vectors to a too-small set or removing linearly dependent ones from a too-large one
-  \1 \textbf{Dimension:} ($dim(V)$) number of basis vectors for a vector space
-    \2 if $dim(V)<\infty$ then every basis of $V$ is the same size
+  \1 \textbf{Dimension:} ($\dim(V)$) number of basis vectors for a vector space
+    \2 if $\dim(V)<\infty$ then every basis of $V$ is the same size
 
 \zzz{Matrix Spaces}
-  \1 matrix $M_{m,n}:$
+  \1 matrix $M_{m,n}$:
   \1 \textbf{Row Space:} subspace of $R^n$ spanned by rows of $M$
     \2 \textbf{Rank:} = dimension of row space (number of linearly independent rows)
     \2 in Row-Echelon form, all non-zero rows are linearly independent
   \1 \textbf{Column Space:} subspace of $R^m$ spanned by columns of $M$
   \1 \textbf{Null Space:} $N(A)$: all $x$ such that $Ax=0$
+    \2 aka kernel
     \2 solution set of homogeneous equations with coefficients $A$
     \2 $N(A)$ is subspace of $R^n$
-    \2 Nullity $=dim(N(A))=$ number of free variables
+    \2 Nullity $=\dim(N(A))=$ number of free variables
   \1 for any matrix, rank + nullity = number of columns
 
 \zzz{Change of Basis (Coordinates):}
@@ -218,3 +219,4 @@ Last Updated: \today
 \end{flushleft}
 \end{multicols*}
 \end{document}
+
