@@ -184,13 +184,18 @@ Last Updated: \today
   \1 $f_e(t) = \frac{1}{2} ( f(t) + f(-t) )$
   \1 $f_o(t) = \frac{1}{2} ( f(t) - f(-t) )$
 
+
 \zzz{Fourier Series}
   \1 Harmonic: $e^{jk2\pi F_0 t}$
   \1 Synthesis: $f(t) = \sum_{k=-\infty}^{\infty} X[k] e^{jk2\pi F_0 t}$
   \1 Analysis: $X[k] = \frac{1}{T_p}\int_{0}^{T_p} x(t) e^{-jk2\pi F_0 t} dt$
     \2 note the different sign!
   \1 $X[k] = C_k$
-\zzz{Fourier Properties}
+  \1 Parseval's theorem: (energy of a signal)
+    $\int_{-\infty}^{\infty} |x(t)|^2 dt = \frac{1}{2\pi} \int_{-\infty}^{\infty} |X(j\omega)|^2 d\omega$
+  \1 FT of fraction of two polynomials: use partial fraction decomposition
+
+\zzz{Fourier Properties}%todo make a table of these
   \1 linearity: $z(t) = ax(t)+by(t) \leftrightarrow Z(k) = aX(k)+bY(k) $
   \1 time shift: $x(t-t_0) \leftrightarrow X(k)e^{-jk\omega_0t_0}$
   \1 frequency shift: $x(t)e^{jk_0\omega_0t} \leftrightarrow X(k-k_0)$
@@ -204,6 +209,32 @@ Last Updated: \today
   \1 Symmetry: if $x(t)=x_r(t)+jx_i(t)$ then $x^*(t)=x_r(t)-jx_i(t)$
   \1 if $x(t)$ is real and even, $X(k)$ is real and even
   \1 if $x(t)$ is real and odd, $X(k)$ is imaginary and odd
+
+\zzz{Frequency Response}%L17
+  \1 how the system will respond to a particular frequency
+  \1 the Fourier Transform of the impulse response
+    \\ (we don't have to convolve it here, just multiply since it's frequency domain)
+  \1 find using $H(\omega)=\frac{Y(\omega)}{X(\omega)}$
+    \2 if the starting equation is expressed as a differential equation, you can (usually) derive this from that.
+  \1 usually represented as $H(\omega)=|H(\omega)|e^{j\theta_H(\omega)}$ (magnitude and phase)
+    \2 magnitude: $|H(\omega)|$, phase: $\theta_H(\omega)$
+  \1 magnitude and phase can be linearly combined
+
+\zzz{Filtering}%L17
+  \1 multiply signal by a filter to filter it
+  \1 pass: allow through (not filtered out)
+  \1 stop: filter out, remove
+  \1 $something$ pass filter passes $something$; same for stop
+  \1 low pass filter: passes $\omega$ lower than $b$, drops higher
+    $H(\omega)=\{ _{1:|\omega|<b}^{0:|\omega|>b}$
+  \1 high pass filter: opposite of low pass filter
+  \1 band pass filter: pass a specific band of frequency.
+    \2 That frequency is specified by magnitude, so it can be on the positive or negative side of the graph
+  \1 Notch filter: band stop filter with a narrow stop band
+  \1 An ideal filter has exact edges, but real filters don't
+    \2 This is impossible in practice. 
+      Typically there is vertical variation inside the pass band and stop band, and also a trans band ($\omega_s$), as transition between pass and stop band.
+      % more details later in this course apparently
 
 \end{outline}
 \end{flushleft}
