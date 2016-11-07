@@ -19,6 +19,7 @@
 \graphicspath{ {images/} }
 
 \begin{document}
+\begin{spacing}{0.8}
 % \linespread{0.5}
 \begin{center}
 ECEN350 Computer Architecture Ref Sheet
@@ -60,15 +61,15 @@ Last Updated: \today
 \renewcommand{\4}{\upspace \oldFour }
 \small
 
-\zzz{Hex}
-  \\
-  \begin{tabular}{|r r r|}\hline
-   0 & \verb|0x0| & \verb|0000| \\
-   1 & \verb|0x1| & \verb|0001| \\
-   2 & \verb|0x2| & \verb|0010| \\
-   4 & \verb|0x4| & \verb|0100| \\
-   8 & \verb|0x8| & \verb|1000| \\ \hline
-  \end{tabular}
+% \zzz{Hex}
+%   \\
+%   \begin{tabular}{|r r r|}\hline
+%    0 & \verb|0x0| & \verb|0000| \\
+%    1 & \verb|0x1| & \verb|0001| \\
+%    2 & \verb|0x2| & \verb|0010| \\
+%    4 & \verb|0x4| & \verb|0100| \\
+%    8 & \verb|0x8| & \verb|1000| \\ \hline
+%   \end{tabular}
 
 \zzz{Registers}
   \\
@@ -144,24 +145,12 @@ Last Updated: \today
 \\
 Value: \verb|0xA0B0C0D0|\\
   \1 
-  % \begin{tabular}{r r r}
-  % idx: & little & big \\
-  %   0 & \verb|0xD0| & \verb|0xA0| \\
-  %   1 & \verb|0xC0| & \verb|0xB0| \\
-  %   2 & \verb|0xB0| & \verb|0xC0| \\
-  %   3 & \verb|0xA0| & \verb|0xD0| \\
-  % \end{tabular}
-  % \\
   \begin{tabular}{l r r r r}
   index  & 0 & 1 & 2 & 3 \\
   little & \verb|0xD0| & \verb|0xC0| & \verb|0xB0| & \verb|0xA0| \\
   big    & \verb|0xA0| & \verb|0xB0| & \verb|0xC0| & \verb|0xD0| \\
   \end{tabular}
     \2 Little Endian puts the least significant (littlest) stuff first
-% \includegraphics[width=0.493\columnwidth]{Big-Endian}
-% \includegraphics[width=0.493\columnwidth]{Little-Endian}
-% take up space after bottom of picture
-% \vspace{-20px} 
   \1 x86 is little endian, MIPS is big endian
   \1 networking is done in big endian
 
@@ -206,7 +195,51 @@ Value: \verb|0xA0B0C0D0|\\
     \2 does not contain addresses of labels
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% exam 2
+
+\zzz{Verilog}
+  \1 always block: synthesize to combinational logic iff:
+    \2 everything written to is always written exactly once for every case of inputs
+    \2 the outputs of the always block depend only on inputs that are in the sensitivity list
+    \2 stuff assigned to inside an always block must be declard \verb|reg|
+      \3 will be optimized out if it's combinational
+  \1 bitwise not is $\sim$
+  \1 ternary operator: \verb|cond ? if_true : if_false|
+  \1 assignments: \verb|=| is blocking, \verb|<=| is non-blocking
+    \2 \verb|=|: happens in order
+    \2 \verb|<=|: happens all at once
+  \1 case statement: can use \verb|?| to specify `don't care' for some bits
+  \1 \verb|`timescale unit/precision|:
+    \2 \verb|unit|: 1, 10, or 100, unit either s, ms, us, ps, fs
+    \2 \verb|precision|: must be shorter than \verb|unit|
+
+\zzz{Performance}
+  \1 execution time = (\# of clock cycles) $\times$ (clock cycle time)
+    \\ = (\# of clock cycles)/(clock rate) 
+  \1 CPI: Cycles Per Instruction
+    \2 effective CPI is just a weighted average (varies by instruction mix)
+
+\zzz{IEEE Floating-Point}
+  \1 1 bit sign; 8 bit exponent; 23 bit mantissa
+    \2 $x = (-1)^s \cdot (1::m) \cdot 2^{e-127}$
+  \1 sign: 0 for positive, 1 for negative
+  \1 exponent: bias is $-127$
+  \1 mantissa: the fractional part; denominator $2^{23}$
+    \2 implicit leftmost bit is not stored, only fractional
+  \1 conversion:
+    \2 start with $x$
+    \2 use $\log_2$ to express $x$ as $a \cdot 2^b$ where $1\leq a < 2$
+    \2 exponent $=127+b$
+    \2 mantissa $=(a-1) \cdot 2^{23}$
+      \3 round to nearest integer
+  \1 calculate mantissa directly: $\frac{x}{2^{\lfloor \log_2(x) \rfloor}} \cdot 2^{23}$
+  \1 mantissa the long way:
+    \\ take right-of-decimal part and repeatedly multiply by 2. On each iteration, the 1's place is that bit in the mantissa. (starting from leftmost bit)
+    
 \end{outline}
 \end{flushleft}
 \end{multicols*}
+\end{spacing}
 \end{document}
+
