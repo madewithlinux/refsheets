@@ -116,6 +116,42 @@ Last Updated: \today
     \2 save your value before calling subroutine
   \1 general format is to list destination first, then operands
 
+\zzz{Clock Rate}
+\\
+\begin{tabular}{|r r|}    \hline
+  period   & rate    \\ \hline
+    1 msec &   1 MHz \\ \hline
+  100 nsec &  10 MHz \\ \hline
+   10 nsec & 100 MHz \\ \hline
+    5 nsec & 200 MHz \\ \hline
+\end{tabular}
+\begin{tabular}{|r r|}    \hline
+    2 nsec & 500 MHz \\ \hline
+    1 nsec & 1 GHz   \\ \hline
+  500 psec & 2 GHz   \\ \hline
+  250 psec & 4 GHz   \\ \hline
+  200 psec & 5 GHz   \\ \hline
+\end{tabular}
+
+\zzz{Metric Prefixes} \\
+\begin{tabular}{|c c l l|}                                   \hline
+peta  & P     & $10^{ 15}$ & \hfill 1 000 000 000 000 000 \\ \hline
+tera  & T     & $10^{ 12}$ & \hfill     1 000 000 000 000 \\ \hline
+giga  & G     & $10^{  9}$ & \hfill         1 000 000 000 \\ \hline
+mega  & M     & $10^{  6}$ & \hfill             1 000 000 \\ \hline
+kilo  & k     & $10^{  3}$ & \hfill                 1 000 \\ \hline
+hecto & h     & $10^{  2}$ & \hfill                   100 \\ \hline
+deca  & da    & $10^{  1}$ & \hfill                    10 \\ \hline
+one   &       & $10^{ 0 }$ & \hfill       1 \hfill \hfill \\ \hline
+deci  & d     & $10^{- 1}$ & 0.1                          \\ \hline
+centi & c     & $10^{- 2}$ & 0.01                         \\ \hline
+milli & m     & $10^{- 3}$ & 0.001                        \\ \hline
+micro & $\mu$ & $10^{- 6}$ & 0.000 001                    \\ \hline
+nano  & n     & $10^{- 9}$ & 0.000 000 001                \\ \hline
+pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
+femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
+\end{tabular}
+
 \zzz{J format (absolute branching)}
   \1 cannot change the top 4 bits of PC. (\verb|PC[31:28]|)
   \1 range:
@@ -216,9 +252,13 @@ Value: \verb|0xA0B0C0D0|\\
 
 \zzz{Performance}
   \1 execution time = (\# of clock cycles) $\times$ (clock cycle time)
-    \\ = (\# of clock cycles)/(clock rate) 
+    = (\# of clock cycles)/(clock rate) 
   \1 CPI: Cycles Per Instruction
     \2 effective CPI is just a weighted average (varies by instruction mix)
+  \1 instructions per time = CPI / clock rate = CPI * clock period
+  \1 compare two systems:
+    \2 use instruction latencies and instruction mix to calculate CPI for each setup
+    \2 then calculate instructions per time, and do comparison there 
 
 \zzz{IEEE Floating-Point}
   \1 1 bit sign; 8 bit exponent; 23 bit mantissa
@@ -227,16 +267,25 @@ Value: \verb|0xA0B0C0D0|\\
   \1 exponent: bias is $-127$
   \1 mantissa: the fractional part; denominator $2^{23}$
     \2 implicit leftmost bit is not stored, only fractional
-  \1 conversion:
+  \1 conversion: decimal to float:
     \2 start with $x$
-    \2 use $\log_2$ to express $x$ as $a \cdot 2^b$ where $1\leq a < 2$
+    \2 use $\lfloor \log_2 \rfloor$ to express $x$ as $a \cdot 2^b$ where $1\leq a < 2$
     \2 exponent $=127+b$
     \2 mantissa $=(a-1) \cdot 2^{23}$
       \3 round to nearest integer
+  \1 conversion: float to decimal:
+    \2 real exponent $a = exp-127$
+    \2 take exponent as integer $\rightarrow a$
+    \2 decimal = $(1 + \frac{a}{2^{23}}) \cdot 2^a$
   \1 calculate mantissa directly: $\frac{x}{2^{\lfloor \log_2(x) \rfloor}} \cdot 2^{23}$
   \1 mantissa the long way:
     \\ take right-of-decimal part and repeatedly multiply by 2. On each iteration, the 1's place is that bit in the mantissa. (starting from leftmost bit)
-    
+  \1 quantity of numbers on range $[2^n, 2^{n+1}] = 2^{23} + 1$
+    \\ quantity of numbers on range $[2^n, 2^{n+1}) = 2^{23}$
+    \2 the $2^{n+1}$ bumps it up because the exponent changes
+  \1 next largest float: add $2^{-23}$ to mantissa (assuming exponent doesn't change, i.e. number isn't evenly $2^n$)
+
+
 \end{outline}
 \end{flushleft}
 \end{multicols*}
