@@ -19,7 +19,7 @@
 \graphicspath{ {images/} }
 
 \begin{document}
-\begin{spacing}{0.8}
+\begin{spacing}{0.9}
 % \linespread{0.5}
 \begin{center}
 ECEN350 Computer Architecture Ref Sheet
@@ -250,6 +250,10 @@ Value: \verb|0xA0B0C0D0|\\
     \2 \verb|unit|: 1, 10, or 100, unit either s, ms, us, ps, fs
     \2 \verb|precision|: must be shorter than \verb|unit|
 
+\zzz{State Machine}
+  \1 Mealy Machine: outputs determined by current state and current inputs
+  \1 Moore Machine: outputs determined by current state only
+
 \zzz{Performance}
   \1 execution time = (\# of clock cycles) $\times$ (clock cycle time)
     = (\# of clock cycles)/(clock rate) 
@@ -284,7 +288,29 @@ Value: \verb|0xA0B0C0D0|\\
     \\ quantity of numbers on range $[2^n, 2^{n+1}) = 2^{23}$
     \2 the $2^{n+1}$ bumps it up because the exponent changes
   \1 next largest float: add $2^{-23}$ to mantissa (assuming exponent doesn't change, i.e. number isn't evenly $2^n$)
-
+  \1 
+  \begin{tabular}{|l l l|} \hline
+    exponent & mantissa & meaning     \\ \hline
+    0        & 0        & $\pm$zero        \\ \hline
+    0        & $\not=0$ & denormalized \\ \hline
+    1-254    & any      & normal      \\ \hline
+    255      & 0        & $\pm\infty$ \\ \hline
+    255      & $\not=0$ & NaN         \\ \hline
+  \end{tabular}
+  \1 
+  \begin{tabular}{|l l l|} \hline
+    $ $      & float   & double  \\ \hline
+    sign     & 1 bit   & 1 bit   \\ \hline
+    exponent & 8 bits  & 11      \\ \hline
+    exp bias & 127     & 1023    \\ \hline
+    exp min  & -126    & -1022   \\ \hline
+    exp max  & +127    & +1023   \\ \hline
+    mantissa & 23 bits & 52 bits \\ \hline
+    % max      & 
+    % min      &
+  \end{tabular}
+  \1 minimum integer that can't be exactly represented: $2^{24} + 1 = $ 16 777 217 
+% TODO: minimum and maximum of float and double?
 
 \end{outline}
 \end{flushleft}
