@@ -58,17 +58,45 @@ Last Updated: \today
 
 \small
 
+\zzz{Metric Prefixes} \\
+\begin{tabular}{|c c l l|}                                   \hline
+peta  & P     & $10^{ 15}$ & \hfill 1 000 000 000 000 000 \\ \hline
+tera  & T     & $10^{ 12}$ & \hfill     1 000 000 000 000 \\ \hline
+giga  & G     & $10^{  9}$ & \hfill         1 000 000 000 \\ \hline
+mega  & M     & $10^{  6}$ & \hfill             1 000 000 \\ \hline
+kilo  & k     & $10^{  3}$ & \hfill                 1 000 \\ \hline
+hecto & h     & $10^{  2}$ & \hfill                   100 \\ \hline
+deca  & da    & $10^{  1}$ & \hfill                    10 \\ \hline
+one   &       & $10^{ 0 }$ & \hfill       1 \hfill \hfill \\ \hline
+deci  & d     & $10^{- 1}$ & 0.1                          \\ \hline
+centi & c     & $10^{- 2}$ & 0.01                         \\ \hline
+milli & m     & $10^{- 3}$ & 0.001                        \\ \hline
+micro & $\mu$ & $10^{- 6}$ & 0.000 001                    \\ \hline
+nano  & n     & $10^{- 9}$ & 0.000 000 001                \\ \hline
+pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
+femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
+\end{tabular}
+
+
 \zzz{Complex Numbers}
   \1 $z = x+iy = re^{i\theta} = r[\cos(\theta)+i\sin(\theta)]$
   \1 $[r(\cos(\theta)+i\sin(\theta))]^n = r^n[\cos(n\theta)+i\sin(n\theta)]$
   \1 $z^n = (re^{i\theta}) = r^ne^{in\theta}$
+  \1 $\frac{1}{i}=-i$
   \1 $\sqrt[n]{z} = \sqrt[n]{r}e^{\frac{\theta}{n}+\frac{2k\pi}{n}}$ for $n\in N^*$ (ints $\geq0$)
   \1 $e^{j\theta} = \cos(\theta) + j\sin(\theta)$
   \1 $e^{-j\theta} = \cos(\theta) - j\sin(\theta)$
   \1 $\cos(\theta) = \frac{1}{2}(e^{j\theta} + e^{-j\theta})$
   \1 $\sin(\theta) = \frac{1}{2j}(e^{j\theta} - e^{-j\theta})$
-  \1 
-  \1 sinc$(t) = \frac{\sin(\pi t)}{\pi t}$
+  \1 normalized: $sinc(t) = \frac{\sin(\pi t)}{\pi t}$
+
+\zzz{Trig}
+  \1 $\cos^2(a)+\sin^2(a)=1$
+  \1 $\cos(2a)=\cos^2(a) - \sin^2(a) = 2\cos^2(a)-1 = 1-2\sin^2(a)$
+  \1 $\sin(2a) = 2\sin(a)\cos(a)$
+  \1 $\cos^2(a) = \frac{1}{2}(1 + \cos(2a))$
+  \1 $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))$
+
 
 \zzz{Signals}
   \1 \textbf{Even/Odd}
@@ -184,7 +212,6 @@ Last Updated: \today
   \1 $f_e(t) = \frac{1}{2} ( f(t) + f(-t) )$
   \1 $f_o(t) = \frac{1}{2} ( f(t) - f(-t) )$
 
-
 \zzz{Fourier Series}
   \1 Harmonic: $e^{jk2\pi F_0 t}$
   \1 Synthesis: $f(t) = \sum_{k=-\infty}^{\infty} X[k] e^{jk2\pi F_0 t}$
@@ -194,6 +221,10 @@ Last Updated: \today
   \1 Parseval's theorem: (energy of a signal)
     $\int_{-\infty}^{\infty} |x(t)|^2 dt = \frac{1}{2\pi} \int_{-\infty}^{\infty} |X(j\omega)|^2 d\omega$
   \1 FT of fraction of two polynomials: use partial fraction decomposition
+
+\zzz{Fourier Transform}
+  \1 $x(t) =       \int_{-\infty}^{\infty} X(j\omega) e^{ j \omega t} d\omega$
+  \1 $X(j\omega) = \int_{-\infty}^{\infty} x(t)       e^{-j \omega t} dt     $
 
 \zzz{Fourier Properties}%todo make a table of these
   \1 linearity: $z(t) = ax(t)+by(t) \leftrightarrow Z(k) = aX(k)+bY(k) $
@@ -209,6 +240,8 @@ Last Updated: \today
   \1 Symmetry: if $x(t)=x_r(t)+jx_i(t)$ then $x^*(t)=x_r(t)-jx_i(t)$
   \1 if $x(t)$ is real and even, $X(k)$ is real and even
   \1 if $x(t)$ is real and odd, $X(k)$ is imaginary and odd
+  \1 unnormalized sinc: $sinc(t) = \frac{sin(t)}{t}$
+  \1 normalized sinc: $sinc(t) = \frac{sin(\pi t)}{\pi t}$
 
 \zzz{Frequency Response}%L17
   \1 how the system will respond to a particular frequency
@@ -236,10 +269,38 @@ Last Updated: \today
       Typically there is vertical variation inside the pass band and stop band, and also a trans band ($\omega_s$), as transition between pass and stop band.
       % more details later in this course apparently
 
+\zzz{Sampling}
+  \1 sampling: independent variable (input); continuous $\rightarrow$ discrete
+  \1 quantization: dependent variable (output); continuous $\rightarrow$ discrete
+  \1 aliasing: different signals being indistinguishable after sampling due to sampling rate.
+  \1 $F_{CT}$: continuous time frequency; $f_{DT}$: discrete time frequency, $F_s$: sampling frequency
+  \1 $F_{CT} \rightarrow f_{DT}$ is a many to one mapping
+    \2 Folding Frequency = $F_s/2$, where frequency wraps-around
+    \2 restrict to one-to-one: satisfy $|F| < F_s / 2$
+  \1 \textbf{Nyquist Rate:} signal with maximum frequency $f_{max}$ can be recovered exactly if it is sampled at least $f_s > 2f_{max}$
+  \1 continuous to discrete:
+    \2 $x[n] = x_a(n/F_s)$
+    \2 $X(f) = F_s \sum_{k=-\infty}{\infty} X_a[(f-k)F_s]$
+  \1 sampling is equivalent to convolving with a delta chain (dirac comb) % I think, TODO
+  \1 under-sampling: $f_s<2 f_{max}$. Generally bad
+
+% http://blogs.mathworks.com/steve/2010/01/18/relationship-between-continuous-time-and-discrete-time-fourier-transforms/
+
+\zzz{DFT}
+  \1 discrete in both time domain and frequency domain
+  \1 zero padding (on the right) increases frequency domain resolution
+  \1 frequency domain is on range $[0, 2\pi)$
+  \1 TODO
 \zzz{DTFT}% HW9
   \1 Discrete Time Fourier Transform
+  \1 Discrete in time, continuous in frequency
   \1 $X(e^{j\Omega}) = \sum_{n=-\infty}^{\infty} x[n] e^{-j\Omega n}$
-  \1 $x[n] = \frac{1}{2\pi} \int{-\pi}{\pi} X(e^{j\Omega}) e^{j\Omega n} d\Omega$
+  \1 $x[n] = \frac{1}{2\pi} \int_{-\pi}^{\pi} X(e^{j\Omega}) e^{j\Omega n} d\Omega$
+  \1 frequency domain is periodic, range $[-\pi,\pi]$ is repeated
+    \2 if aliasing happens ($F_s < 2 f_{max}$) then parts will overlap, and won't work right
+  \1 maximum frequency $\rightarrow \pi$; sampling frequency $\rightarrow 2\pi$
+
+
 
 \end{outline}
 \end{flushleft}
