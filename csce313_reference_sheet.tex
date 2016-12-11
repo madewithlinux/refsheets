@@ -17,7 +17,7 @@
 % \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
 
 \begin{document}
-\begin{spacing}{0.6}
+\begin{spacing}{0.8}
 % \begin{center}
 % CSCE313 Refsheet
 % \hfill \textcopyright \space Josh Wright 2015 \hfill
@@ -38,6 +38,11 @@
 \setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
 \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
 \begin{outline}[longenum]
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\oldOne   \hspace{-8px}}
+\renewcommand{\2}{\oldTwo   \hspace{-8px}}
+\renewcommand{\3}{\oldThree \hspace{-8px}}
+\renewcommand{\4}{\oldFour  \hspace{-8px}}
 \newcommand{\zzz}[1]{\0 \textbf{#1} }
 
 \small
@@ -47,188 +52,308 @@ CSCE313 Refsheet;
 \textcopyright \space Josh Wright 2015;
 Last Updated: \today
 
+\zzz{Endianness}
+\\
+Value: \verb|0xA0B0C0D0|\\
+  \1 
+  \begin{tabular}{l r r r r}
+  index  & 0 & 1 & 2 & 3 \\
+  little & \verb|0xD0| & \verb|0xC0| & \verb|0xB0| & \verb|0xA0| \\
+  big    & \verb|0xA0| & \verb|0xB0| & \verb|0xC0| & \verb|0xD0| \\
+  \end{tabular}
+    \2 Little Endian puts the least significant (littlest) stuff first
+  \1 x86 is little endian, MIPS is big endian
+  \1 networking is done in big endian
 
-% \zzz{OS}
-%   \1 \textbf{referee:} manages shared resources, protects programs from each other
-%   \1 \textbf{illusionist:} infinite memory, dedicated machine
-%   \1 \textbf{glue:} (common services) storage, window system, networking, authorization
-%   \1 goals: reliability, availability, security, privacy, portability, performance
-%   \1 \textbf{DMA:} Direct Memory Access
-%     \2 allow a peripheral to do it's work, then put the result directly in RAM
-%     \2 generates IO interrupt when finished
-%     \2 allows schedulers to overlay IO access with CPU bursts
+% final stuff
+\zzz{IPC}
 
-\zzz{Batch OS}
-  \1 jobs are submitted in batches
-  \1 just used DMA for IO
-  \1 basically FIFO, but with using DMA for loading P2 while P1 is still running
+\zzz{Pipes (FIFO)}
+  \1 requires copying memory from sender process to kernel memory to recipient process
+  \1 can pass large quantities of data
+  \1 explicit communication channel
+  \1 used just like a regular file descriptor
+  \1 Unnamed Pipe
+    \2 create using \verb|pipe()|
+    \2 can only be used between processes with some parent-child relationship
+      (or grandchild, sibling, etc)
+    \2 can override other \verb|fd|s with 
+      \3 \verb|dup(oldfd)| (next available fd) or
+      \3 \verb|dup(oldfd, newfd)| (\verb|newfd| is closed before being overwritten)
+  \1 Named Pipe
+    \2 created on filesystem using \verb|mkfifo()|
+    \2 can be used by completely unrelated processes
 
-\zzz{Time Sharing OS}
-  \1 CPU cycles through jobs in defined order
-  \1 basically round robin
+\zzz{Message Passing}
 
-\zzz{Exception Control Flow}
-  \1 exception: transfer of control from the user program to the OS in response to an event
-  \1 event: interrupt or system call or something
-  \1 CPU checks for interrupts before every instruction
-    % \2 if there are multiple interrupts in the queue, it will handle them all in order before resuming what it was doing
-  \1 \textbf{Asynchronous Exception}: caused by something external to the processor. (e.g. not a system call)
-    \2 e.g. IO interrupts, hard/soft reset
-  \1 \textbf{Interrupt Vector Table:} stored in CPU, has function pointers at indexes identified by interrupt codes
-    \2 one slot for every possible type of interrupt
-    \2 first thing handler does is disable interrupts, then re-enable when done
-  \1 \textbf{Synchronous exceptions:} caused by executing an instruction (internal to CPU)
-    \2 Trap: intentional; system calls, breakpoints
-      \3 returns code to next userland instruction
-    \2 Faults: unintentional. maybe recoverable; generally retry or abort.
-      e.g. page fault, floating point exception
-      % \3 Page Fault: 
-      %   trying to use a page that hasn't been allocated by the kernel yet;
-      %   will retry the failing instruction
-      % \3 Floating-Point Exception (divide by 0)
-    \2 Abort: unintentional; unrecoverable
-      % \3 e.g. pairity error
-  \1 RTU: Return To User
+\zzz{Shared Memory}
+  \1 two processes directly map the same region of physical memory
+  \1 is setup using system calls, but then all access is completely in userspace (for better speed)
 
-% \zzz{Architectural Features:}
-% \\ Protection Modes, Interrupts/exceptions, System Calls, Timers, Memory Protection Mechanisms, Synchronization Primitives
+\zzz{Semaphore Sets}
+  \1 shared integer that is enforced to be $\geq0$
+  \1 \verb|P()| decrements
+    \2 blocks if the value is 0 (wait until non-zero and then immediately decrement)
+  \1 \verb|V()| increments
+    \2 will never block
+  \1 binary semaphore: either 0 or 1
+    \2 increment on 1 has no effect and does not block
 
-\zzz{Dual Mode}
-  \1 CPU supports two modes: kernel mode and user mode
-    \2 keeps a flag register depending on current mode
-  \1 user mode is disallowed some dangerous instructions and only allowed it's mapped memory regions
-  \1 kernel mode gets full control over everything
-  \1 must switch between the two, which has overhead
-  \1 Memory Protection: uses MMU hardware
-    \2 kernel has no memory protection
-  \1 hardware timer: fires interrupts at predefined intervals
-    \2 kernel will set timed interrupts to switch control back to the kernel from the user program periodically
-    % \2 this is the basis of the scheduler
-    \2 setting/clearing timers is a privileged instruction
-  \1 user$\rightarrow$kernel: on interrupt, syscall
-  \1 kernel$\rightarrow$user: end of interrupt handler, or at proc start
-  % \1 user$\rightarrow$kernel context switch:
-  %   \2 triggered by one of: interrupt, fault, whatever
-  %   \2 kernel backs up userland sate before doing things. (registers, instruction pointers, stuff)
-  %   \2 if it's a system call, kernel reads it's arguments from registers
-  % \1 kernel$\rightarrow$user
-  %   \2 happens when: starting a new process; returning from synchronous interrupt; scheduling
-  %   \2 restores userland state
+\zzz{Signals}
+  \1 SIGINT: keyboard interrupt
+  \1 SIGSTP: Ctrl-Z
+  \1 \verb|sigwait()|: wait until one of a specific set of signals is caught
+  \1 signals are not queued, they are masked.
+    \\ if the kernel delivers two duplicate signals to a process while it isn't scheduled, it will receive exactly one
 
-\zzz{Unix Processes}
-  \1 process: instance of running program
-  \1 has it's own private address space 
-    % (provided by illusionist kernel)
-    % \2 for 32bit, it's 4GB large. There isn't really 4GB physical memory per process, due to virtual memory (it's an illusion)
-  % \1 Logical Control Flow: process doesn't notice that it's being scheduled in and out (illusion)
-  \1 Zombie Process: when a child process exits, the kernel must keep it's memory around just in case the parent needs to know if it exited cleanly
-    \2 this child process is a zombie process.
-    \2 call \verb|wait()| to avoid this
-    \2 reaping is the process of killing zombies
+\zzz{Network}
+  \1 client side:
+    \2 \verb|getaddrinfo()| to get ip address from human readable address
+    \2 \verb|socket()| to make a socket (returns fd)
+    \2 \verb|connect()| to connect that socket to the address
+  \1 server side:
+    \2 \verb|getaddrinfo()| with the port to get the address
+    \2 \verb|socket()| to make socket 
+    \2 \verb|bind()| to bind your process to that socket
+    \2 \verb|listen()| to listen on that socket (with a request backlog size)
+    \2 \verb|accept()| to get a new connection to a client (returns a new fd)
+    % \2 \verb||
+  \1 you can read/write from network sockets just like regular files
+  % taken from practice exam, probably don't need to know:
+  \1 \verb|/etc/services| contains info about what services are running on what ports 
+  \1 TCP/IP has $2^32$ possible addresses, and the protocol stack is in the kernel
+  \1 routers are comprised of layers: physical, data link, and network
+  \1 \verb|retstat| (shell command) gives info about connections between this computer and remote servers/clients
+  \1 datagram socket: UDP broadcast?
 
-% \zzz{Shell}
-%   \1 is not the kernel; does IO redirection
-%   \1 to run a subcommand, \verb|fork()|s and then \verb|execv()|s
-%   \1 \verb|fork()|: clone process. One is parent, one is child
-%     \2 child must be kept around until parent either calls wait() or until the parent terminates
-%   \1 \verb|execv()|: replaces running program image.
-%     \2 you can specify arguments and environment
-%     \2 does not return, unless there is an error
 
-% \zzz{Pipes}
-%   \1 made with \verb|pipe()| or \verb|pipe2()|
-%   \1 a set of 2 file descriptors
-%   \1 has a write end and a read end
-%   \1 used for Inter Process Communication (IPC)
-%   \1 persists across \verb|fork()|
+\zzz{Files}
+  \1 descriptor table (DT):
+    \2 per each process, indexed by file descriptor
+    \2 points to entry in file table
+    \2 in user memory, but can't be directly modified
+  \1 file table (FT):
+    \2 shared by all processes
+    \2 contains:
+      \3 current cursor position
+      \3 reference count (\# of descriptors)
+      \3 pointer to v-node entry
+    \2 in kernel memory
+  \1 v-node table (VT):
+    \2 one entry per file
+    \2 contains stat structure
+    \2 in kernel memory
+  \1 when \verb|fork()|ing, the entire DT is copied and the relevant FT refcounts are increased
+  \1 unix IO vs stdlib IO:
+    \2 stdlib may introduce a layer of buffering to be more efficient
+    \2 stdlib works on non-unix OSes (portability)
+    \2 unix IO is most low level and high performance
+    \2 unix IO allows for accessing file metadata
 
-\zzz{Process Lifetime/States}
-  \1 all this stuff looks like continuous running to the process
-  \1 \textbf{Ready:} scheduled to be run
-  \1 \textbf{Running:} currently running
-  \1 \textbf{Blocked:} waiting on something. (IO or other wait)
-  \1 transitions:
-    \2 newly created processes go to ready; after exit, leaves running position
-    \2 ready$\rightarrow$running: dispatch
-    \2 running$\rightarrow$ready: preempt
-      \3 also happens when scheduling timer expires
-    \2 running$\rightarrow$blocked: triggers IO event or wait
-    \2 blocked$\rightarrow$ready: IO event or wait finishes
-  \1 only one process is in running state per CPU core
-    % \2 (and while a user process is running, the kernel isn't)
-  \1 Additional states: (managed by memory scheduler)
-    \2 Suspended Ready: ready to run, but swapped out of main memory due to memory constraints.
-      ; get here from start or ready
-      ; leave to ready when ready
-    \2 Suspended Blocked: swapped out of main memory, and also waiting on some external event
-      ; get here from blocked
-      ; leave to suspended ready or blocked
-  \1 \textbf{Process Control Block} (PCB)
-    % \2 how the kernel keeps track of process
-    \2 contains process id, state, saved registers, memory maps, child processes, owned resources, file descriptors
-    \2 whenever a context switch happens, the previous process state is stored in and restored from the PCB
-  \1 Job Queue: set of all processes in a system
-  \1 Ready Queue: in main memory, waiting to be run
-  \1 Device Queues: waiting for IO by device
 
-\zzz{Scheduling}
-  \1 Latency: how long it takes for the job to complete
-  \1 Throughput: \# of jobs can be completed per unit time
-  \1 Overhead: how much work the scheduler must do
-  \1 Fairness: do different users/process types/other factors influence scheduling priority?
-  \1 Predictability: also consistency
-  \1 Preemptive Scheduler: one that takes control away from a process (usually through timed interrupts)
-  \1 Work Conserving: never leave a CPU idle
-    % \2 We only consider preemptive, work conserving schedulers
-  \1 Time Quantum: length of scheduler interrupt timer
-  \1 Waiting Time: time spend in not running
-    % \2 includes waiting on execution (in ready queue) and total time spent in all waiting queues
-  \1 Service (Execution) Time: how long the job is running
-  \1 Response (Completion) Time: wall clock time process takes
-    ; response = waiting + ready
-  % \1 Possible scheduling goals
-  %   \2 minimum response time (latency); maximum throughput; fairness
-  \1 Long-Term Scheduler: (Job Scheduler)
-    \2 selects which job to brought into the ready queue
-    \2 should select a good mix of CPU and IO bound processes
-  \2 Short-Term Scheduler: (CPU Scheduler)
-    \2 selects what to run from the ready queue
-    \2 runs every time quantum, so it shall be fast
-  \1 Medium-Time Scheduler: swaps out programs from main memory (suspends them)
-  \1 First In First Out (FIFO), or FCFS:
-    \2 works well on one really long task with many small tasks, if the long task comes first (e.g. servers)
-  \1 \textbf{Shortest Remaining Time First:} (SRTF) (or Shortest Job First (SJF))
-    \2 the ideal scheduler in most cases
-      \3 advantage best for average response time
-      \3 disadvantage: longer tasks can get starved
-      \3 disadvantage: high variance on average response time
-    \2 not really possible because we can't know how long a job will take ahead of time
-      \3 can be approximated by guessing the next CPU burst
-    \2 if all tasks are the same length, runs them all in order, no preemption
-    \2 shortest task starts and finishes first
-  \1 \textbf{Round Robin:}
-    \2 each task gets run for one time quantum
-      \3 choice of time quantum is critical
-    \2 compromise between SJF and FIFO
-    \2 always fair
-    \2 time quantum too small: too much overhead
-    \2 time quantum approaches $\infty$: equivalent to FIFO
-  \1 \textbf{Multi-Level Feedback Scheduling:}
-    \2 have multiple ready queues
-      \3 sub-queue are prioritized
-    \2 processes start in highest priority queue, then are moved to lower queue after using CPU too much
-      % \3 means that IO bound processes get higher CPU priority  (other things to fix this)
-    \2 must schedule between queues:
-      \3 fixed priority: highest priority, then lower (not fair)
-      \3 time slicing: fixed percentage of time to each queue.
-    \2 approximates SRTF: CPU-bound suffers, lets IO bound stay near top
-  % \1 Countermeasure: something a process does to fool the scheduler into giving it a higher priority
-    \2 example: putting in superfluous IO waits 
-  \1utilization approaches 100\%, latency and throughput suffer
+\zzz{Filesystem}
+  \1 hard link shares an inode with the other file being linked
+    (because there's really only one file)
+    \2 really, it's just when two directory entries point to the same file inode
+    \2 in this scenario, the reference count will be $>1$
+  \1 soft link (symlink) is just another file that contains (in text format) the path to it's target
+  \1 superblock: contains info about entire filesystem. Size depends on version of unix/linux
+  \1 inode
+    \2 all are same size
+    \2 contained in inode table (an array of inodes)
+    \2 file metadata (permissions, timestamp, etc)
+      \3 also reference count: number of hard links
+    \2 12 direct pointers to data blocks (enough for 48KB file)
+    \2 one single indirect pointer (+4MB)
+    \2 one double indirect pointer (+4GB)
+    \2 one triple indirect pointer (+4TB)
+  \1 data area
+    \2 files can be $\geq 1$ block(s) (may not be smaller than 1 block)
 
 
 
 
+
+
+
+
+% % \zzz{OS}
+% %   \1 \textbf{referee:} manages shared resources, protects programs from each other
+% %   \1 \textbf{illusionist:} infinite memory, dedicated machine
+% %   \1 \textbf{glue:} (common services) storage, window system, networking, authorization
+% %   \1 goals: reliability, availability, security, privacy, portability, performance
+% %   \1 \textbf{DMA:} Direct Memory Access
+% %     \2 allow a peripheral to do it's work, then put the result directly in RAM
+% %     \2 generates IO interrupt when finished
+% %     \2 allows schedulers to overlay IO access with CPU bursts
+
+% \zzz{Batch OS}
+%   \1 jobs are submitted in batches
+%   \1 just used DMA for IO
+%   \1 basically FIFO, but with using DMA for loading P2 while P1 is still running
+
+% \zzz{Time Sharing OS}
+%   \1 CPU cycles through jobs in defined order
+%   \1 basically round robin
+
+% \zzz{Exception Control Flow}
+%   \1 exception: transfer of control from the user program to the OS in response to an event
+%   \1 event: interrupt or system call or something
+%   \1 CPU checks for interrupts before every instruction
+%     % \2 if there are multiple interrupts in the queue, it will handle them all in order before resuming what it was doing
+%   \1 \textbf{Asynchronous Exception}: caused by something external to the processor. (e.g. not a system call)
+%     \2 e.g. IO interrupts, hard/soft reset
+%   \1 \textbf{Interrupt Vector Table:} stored in CPU, has function pointers at indexes identified by interrupt codes
+%     \2 one slot for every possible type of interrupt
+%     \2 first thing handler does is disable interrupts, then re-enable when done
+%   \1 \textbf{Synchronous exceptions:} caused by executing an instruction (internal to CPU)
+%     \2 Trap: intentional; system calls, breakpoints
+%       \3 returns code to next userland instruction
+%     \2 Faults: unintentional. maybe recoverable; generally retry or abort.
+%       e.g. page fault, floating point exception
+%       % \3 Page Fault: 
+%       %   trying to use a page that hasn't been allocated by the kernel yet;
+%       %   will retry the failing instruction
+%       % \3 Floating-Point Exception (divide by 0)
+%     \2 Abort: unintentional; unrecoverable
+%       % \3 e.g. pairity error
+%   \1 RTU: Return To User
+
+% % \zzz{Architectural Features:}
+% % \\ Protection Modes, Interrupts/exceptions, System Calls, Timers, Memory Protection Mechanisms, Synchronization Primitives
+
+% \zzz{Dual Mode}
+%   \1 CPU supports two modes: kernel mode and user mode
+%     \2 keeps a flag register depending on current mode
+%   \1 user mode is disallowed some dangerous instructions and only allowed it's mapped memory regions
+%   \1 kernel mode gets full control over everything
+%   \1 must switch between the two, which has overhead
+%   \1 Memory Protection: uses MMU hardware
+%     \2 kernel has no memory protection
+%   \1 hardware timer: fires interrupts at predefined intervals
+%     \2 kernel will set timed interrupts to switch control back to the kernel from the user program periodically
+%     % \2 this is the basis of the scheduler
+%     \2 setting/clearing timers is a privileged instruction
+%   \1 user$\rightarrow$kernel: on interrupt, syscall
+%   \1 kernel$\rightarrow$user: end of interrupt handler, or at proc start
+%   % \1 user$\rightarrow$kernel context switch:
+%   %   \2 triggered by one of: interrupt, fault, whatever
+%   %   \2 kernel backs up userland sate before doing things. (registers, instruction pointers, stuff)
+%   %   \2 if it's a system call, kernel reads it's arguments from registers
+%   % \1 kernel$\rightarrow$user
+%   %   \2 happens when: starting a new process; returning from synchronous interrupt; scheduling
+%   %   \2 restores userland state
+
+% \zzz{Unix Processes}
+%   \1 process: instance of running program
+%   \1 has it's own private address space 
+%     % (provided by illusionist kernel)
+%     % \2 for 32bit, it's 4GB large. There isn't really 4GB physical memory per process, due to virtual memory (it's an illusion)
+%   % \1 Logical Control Flow: process doesn't notice that it's being scheduled in and out (illusion)
+%   \1 Zombie Process: when a child process exits, the kernel must keep it's memory around just in case the parent needs to know if it exited cleanly
+%     \2 this child process is a zombie process.
+%     \2 call \verb|wait()| to avoid this
+%     \2 reaping is the process of killing zombies
+
+% % \zzz{Shell}
+% %   \1 is not the kernel; does IO redirection
+% %   \1 to run a subcommand, \verb|fork()|s and then \verb|execv()|s
+% %   \1 \verb|fork()|: clone process. One is parent, one is child
+% %     \2 child must be kept around until parent either calls wait() or until the parent terminates
+% %   \1 \verb|execv()|: replaces running program image.
+% %     \2 you can specify arguments and environment
+% %     \2 does not return, unless there is an error
+
+% % \zzz{Pipes}
+% %   \1 made with \verb|pipe()| or \verb|pipe2()|
+% %   \1 a set of 2 file descriptors
+% %   \1 has a write end and a read end
+% %   \1 used for Inter Process Communication (IPC)
+% %   \1 persists across \verb|fork()|
+
+% \zzz{Process Lifetime/States}
+%   \1 all this stuff looks like continuous running to the process
+%   \1 \textbf{Ready:} scheduled to be run
+%   \1 \textbf{Running:} currently running
+%   \1 \textbf{Blocked:} waiting on something. (IO or other wait)
+%   \1 transitions:
+%     \2 newly created processes go to ready; after exit, leaves running position
+%     \2 ready$\rightarrow$running: dispatch
+%     \2 running$\rightarrow$ready: preempt
+%       \3 also happens when scheduling timer expires
+%     \2 running$\rightarrow$blocked: triggers IO event or wait
+%     \2 blocked$\rightarrow$ready: IO event or wait finishes
+%   \1 only one process is in running state per CPU core
+%     % \2 (and while a user process is running, the kernel isn't)
+%   \1 Additional states: (managed by memory scheduler)
+%     \2 Suspended Ready: ready to run, but swapped out of main memory due to memory constraints.
+%       ; get here from start or ready
+%       ; leave to ready when ready
+%     \2 Suspended Blocked: swapped out of main memory, and also waiting on some external event
+%       ; get here from blocked
+%       ; leave to suspended ready or blocked
+%   \1 \textbf{Process Control Block} (PCB)
+%     % \2 how the kernel keeps track of process
+%     \2 contains process id, state, saved registers, memory maps, child processes, owned resources, file descriptors
+%     \2 whenever a context switch happens, the previous process state is stored in and restored from the PCB
+%   \1 Job Queue: set of all processes in a system
+%   \1 Ready Queue: in main memory, waiting to be run
+%   \1 Device Queues: waiting for IO by device
+
+% \zzz{Scheduling}
+%   \1 Latency: how long it takes for the job to complete
+%   \1 Throughput: \# of jobs can be completed per unit time
+%   \1 Overhead: how much work the scheduler must do
+%   \1 Fairness: do different users/process types/other factors influence scheduling priority?
+%   \1 Predictability: also consistency
+%   \1 Preemptive Scheduler: one that takes control away from a process (usually through timed interrupts)
+%   \1 Work Conserving: never leave a CPU idle
+%     % \2 We only consider preemptive, work conserving schedulers
+%   \1 Time Quantum: length of scheduler interrupt timer
+%   \1 Waiting Time: time spend in not running
+%     % \2 includes waiting on execution (in ready queue) and total time spent in all waiting queues
+%   \1 Service (Execution) Time: how long the job is running
+%   \1 Response (Completion) Time: wall clock time process takes
+%     ; response = waiting + ready
+%   % \1 Possible scheduling goals
+%   %   \2 minimum response time (latency); maximum throughput; fairness
+%   \1 Long-Term Scheduler: (Job Scheduler)
+%     \2 selects which job to brought into the ready queue
+%     \2 should select a good mix of CPU and IO bound processes
+%   \2 Short-Term Scheduler: (CPU Scheduler)
+%     \2 selects what to run from the ready queue
+%     \2 runs every time quantum, so it shall be fast
+%   \1 Medium-Time Scheduler: swaps out programs from main memory (suspends them)
+%   \1 First In First Out (FIFO), or FCFS:
+%     \2 works well on one really long task with many small tasks, if the long task comes first (e.g. servers)
+%   \1 \textbf{Shortest Remaining Time First:} (SRTF) (or Shortest Job First (SJF))
+%     \2 the ideal scheduler in most cases
+%       \3 advantage best for average response time
+%       \3 disadvantage: longer tasks can get starved
+%       \3 disadvantage: high variance on average response time
+%     \2 not really possible because we can't know how long a job will take ahead of time
+%       \3 can be approximated by guessing the next CPU burst
+%     \2 if all tasks are the same length, runs them all in order, no preemption
+%     \2 shortest task starts and finishes first
+%   \1 \textbf{Round Robin:}
+%     \2 each task gets run for one time quantum
+%       \3 choice of time quantum is critical
+%     \2 compromise between SJF and FIFO
+%     \2 always fair
+%     \2 time quantum too small: too much overhead
+%     \2 time quantum approaches $\infty$: equivalent to FIFO
+%   \1 \textbf{Multi-Level Feedback Scheduling:}
+%     \2 have multiple ready queues
+%       \3 sub-queue are prioritized
+%     \2 processes start in highest priority queue, then are moved to lower queue after using CPU too much
+%       % \3 means that IO bound processes get higher CPU priority  (other things to fix this)
+%     \2 must schedule between queues:
+%       \3 fixed priority: highest priority, then lower (not fair)
+%       \3 time slicing: fixed percentage of time to each queue.
+%     \2 approximates SRTF: CPU-bound suffers, lets IO bound stay near top
+%   % \1 Countermeasure: something a process does to fool the scheduler into giving it a higher priority
+%     \2 example: putting in superfluous IO waits 
+%   \1utilization approaches 100\%, latency and throughput suffer
 
 \end{outline}
 \end{flushleft}
