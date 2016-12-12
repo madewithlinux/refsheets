@@ -12,16 +12,16 @@
 \usepackage{outlines} % for outline
 \usepackage{paralist} % for compactitem (compact itemize)
 \usepackage{multicol} % for multicolumn layout
-\geometry{letterpaper, margin=0.5in, top=0.3in}
+\geometry{letterpaper, margin=0.4in, top=0.3in}
 % \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
-
+\pagenumbering{gobble}
 \begin{document}
 % \linespread{0.5}
-\begin{center}
-Signals and Systems Reference Sheet
-\hfill \textcopyright \space Josh Wright 2015 \hfill
-Last Updated: \today
-\end{center}
+% \begin{center}
+% Signals and Systems Reference Sheet
+% \hfill \textcopyright \space Josh Wright 2015 \hfill
+% Last Updated: \today
+% \end{center}
 
 %%%%%%%%%%%%%%%%%%
 %% main section %%
@@ -51,12 +51,13 @@ Last Updated: \today
 % \renewcommand\labelitemii{\labelitemi}
 % redefine the sub-headings to inject our space-saver
 \let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
-\renewcommand{\1}{\upspace \oldOne  }
-\renewcommand{\2}{\upspace \oldTwo  }
-\renewcommand{\3}{\upspace \oldThree}
-\renewcommand{\4}{\upspace \oldFour }
-
+\renewcommand{\1}{\upspace \oldOne   \hspace{-7px}}
+\renewcommand{\2}{\upspace \oldTwo   \hspace{-7px}}
+\renewcommand{\3}{\upspace \oldThree \hspace{-7px}}
+\renewcommand{\4}{\upspace \oldFour  \hspace{-7px}}
 \small
+
+ECEN314 refsheet \textcopyright \space Josh Wright \today
 
 \zzz{Metric Prefixes} \\
 \begin{tabular}{|c c l l|}                                   \hline
@@ -253,27 +254,11 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 magnitude: $|H(\omega)|$, phase: $\theta_H(\omega)$
   \1 magnitude and phase can be linearly combined
 
-\zzz{Filtering}%L17
-  \1 multiply signal by a filter to filter it
-  \1 pass: allow through (not filtered out)
-  \1 stop: filter out, remove
-  \1 $something$ pass filter passes $something$; same for stop
-  \1 low pass filter: passes $\omega$ lower than $b$, drops higher
-    $H(\omega)=\{ _{1:|\omega|<b}^{0:|\omega|>b}$
-  \1 high pass filter: opposite of low pass filter
-  \1 band pass filter: pass a specific band of frequency.
-    \2 That frequency is specified by magnitude, so it can be on the positive or negative side of the graph
-  \1 Notch filter: band stop filter with a narrow stop band
-  \1 An ideal filter has exact edges, but real filters don't
-    \2 This is impossible in practice. 
-      Typically there is vertical variation inside the pass band and stop band, and also a trans band ($\omega_s$), as transition between pass and stop band.
-      % more details later in this course apparently
-
 \zzz{Sampling}
   \1 sampling: independent variable (input); continuous $\rightarrow$ discrete
   \1 quantization: dependent variable (output); continuous $\rightarrow$ discrete
   \1 aliasing: different signals being indistinguishable after sampling due to sampling rate.
-  \1 $F_{CT}$: continuous time frequency; $f_{DT}$: discrete time frequency, $F_s$: sampling frequency
+  \1 $F_{CT}$: continuous time frequency; $f_{DT}$: discrete time frequency, $F_s$: sampling frequency 
   \1 $F_{CT} \rightarrow f_{DT}$ is a many to one mapping
     \2 Folding Frequency = $F_s/2$, where frequency wraps-around
     \2 restrict to one-to-one: satisfy $|F| < F_s / 2$
@@ -291,14 +276,128 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 zero padding (on the right) increases frequency domain resolution
   \1 frequency domain is on range $[0, 2\pi)$
   \1 TODO
-\zzz{DTFT}% HW9
+\zzz{DTFT}
   \1 Discrete Time Fourier Transform
   \1 Discrete in time, continuous in frequency
   \1 $X(e^{j\Omega}) = \sum_{n=-\infty}^{\infty} x[n] e^{-j\Omega n}$
   \1 $x[n] = \frac{1}{2\pi} \int_{-\pi}^{\pi} X(e^{j\Omega}) e^{j\Omega n} d\Omega$
-  \1 frequency domain is periodic, range $[-\pi,\pi]$ is repeated
+  \1 frequency domain is \textbf{periodic}, range $[-\pi,\pi]$ is repeated
     \2 if aliasing happens ($F_s < 2 f_{max}$) then parts will overlap, and won't work right
   \1 maximum frequency $\rightarrow \pi$; sampling frequency $\rightarrow 2\pi$
+
+%%%%%%%%%%%%%%%%%
+%% final stuff %%
+%%%%%%%%%%%%%%%%%
+
+\zzz{Laplace Transform}
+  \1 $X(s) = \int_{0}^{\infty} x(t) e^{st} dt$
+  \1 $s = \sigma - j\omega$
+  \1 relation to Fourier Transform: $X(j\omega)=X(s)|_{s=j\omega, \sigma=0}$
+  \1 zeros: numerator is 0, so value is 0
+  \1 poles: denominator is 0, so value is $+$ or $-$ $\infty$
+    \2 effect on impulse response on $t>0$:
+    \\ poles left of $s=0$: decaying exponential
+    \\ poles right of $s=0$: increasing exponential
+    \\ (reversed on $t<0$)
+  \1 Specified on a Region of Convergence (ROC)
+    \1 ROC must contain no poles
+  \1 Unilateral: integral starts from 0
+    \2 assumes signals is 0 before $t=0$ 
+    \2 i.e. multiplied by $u(t)$
+  \1 Bilateral: starts from $-\infty$
+    \2 same as unilateral iff $x(t)=0$ for $t<0$
+  \1 Shifting:
+    \2 $x(t-T) \leftrightarrow e^{-sT}X(s)$
+    \2 $T$ such that $x(t-T)u(t) = x(t-T)u(t-T)$
+    \\ i.e. doesn't shift any non-zero part of the signal left of $t=0$
+    \\ (Doesn't apply for Bilateral transform)
+  \1 Initial Value Theorem:
+    \2 $\lim_{s\to\infty}sX(s)=\lim_{t\to0^+}x(t)=x(0^+)$
+    \2 order of numerator $<$ denominator
+    \2 $x(t)=0$ for $t<0$
+  \1 Final Value Theorem:
+    \2 $\lim_{s\to0}sX(s)=\lim_{t\to\infty}x(t)=x(\infty)$
+    \2 $x(t)=0$ for $t<0$, $x(t)$ finite as $t\to\infty$
+    \2 all poles on left of plane with at most one at $s=0$
+  \1 System Response:
+    \2 take Laplace Transform to get equation in form $a(s)Y(s) - c(s) = b(s)X(s)$
+    \2 solve $Y(s)=\frac{b(s)X(s)}{a(s)} + \frac{c(s)}{a(s)} = Y^{(f)}(s) + Y^{(n)}(s)$
+    \2 $Y^{(f)}(s)$: forced response; $Y^{(n)}(s)$: natural response
+    \2 Frequency Response (transfer function): $H(\omega)=\frac{Y(\omega)}{X(\omega)}$
+  \1 Stability: system is stable $\leftrightarrow$ all poles left of $s=0$
+
+\zzz{Filters}
+  \1 multiply signal by a filter to filter it
+  \1 pass: allow through (not filtered out)
+  \1 stop: filter out, remove
+  \1 $something$ pass filter passes $something$; same for stop
+  \1 low pass filter: passes $\omega$ lower than $b$, drops higher
+    $H(\omega)=\{ _{1:|\omega|<b}^{0:|\omega|>b}$
+  \1 high pass filter: opposite of low pass filter
+  \1 band pass filter: pass a specific band of frequency.
+    \2 That frequency is specified by magnitude, so it can be on the positive or negative side of the graph
+  \1 Notch filter: band stop filter with a narrow stop band
+  \1 An ideal filter has exact edges, but real filters don't
+    \2 This is impossible in practice. 
+      Typically there is vertical variation inside the pass band and stop band, and also a trans band ($\omega_s$), as transition between pass and stop band.
+      % more details later in this course apparently
+  \1 series RC circuit with $x(t)$ as input and $y(t)$ on capacitor: 
+    $RC y'(t) + y(t) = x(t)$
+    or $y'(t) + \frac{1}{RC}y(t) = \frac{1}{RC}x(t)$
+    \2 capacitor: $I(t) = C*\frac{d}{dt}(V(t))$
+    \2 inductor: $V(t) = L*\frac{d}{dt}(I(t))$
+  \1 highpass and band-stop filters do not have bandwidth
+  \1 Absolute Bandwidth: width of passband
+  \1 3-dB Bandwidth: (for low pass): width of passband where $H(j\omega) \geq |H(0)|/\sqrt{2}$
+    \2 because low pass has max at $\omega=0$. Different for other filter types
+    \2 AKA half power bandwidth
+  \1 Bode Plot: frequency response ($H(s=jw, \sigma=0)$) in $dB$ as a function of logarithm of frequency
+  \1 ideal filter has linear phase response
+    \2 so that the response to different frequencies is the same
+    \2 constant delay is linear phase response (it's just $H(j\omega)=e^{-j\omega a}$)
+  \1 ideal filter magnitude response is 1 in passband and 0 in stopband
+  \1 real filter has $E, \delta$ and transition band $(\omega_p, \omega_s)$ such that:
+    \2 passband: $1 - E \leq H(j\omega) < 1$ for $0\leq |\omega| \leq \omega_p$
+    \2 stopband: $|H(j\omega)| < \delta$ for $\omega > \omega_s$
+  \1 FIR filter: Finite Impulse Response
+    \2 finite memory (lower startup transient time)
+    \2 always BIBO stable
+    \2 desired magnitude response with exactly linear phase response
+  \1 IIR filter: Infinite Impulse Response
+    \2 output governed by recursive linear constant coefficient differential equations
+    \2 uses z transform
+    \2 allows shorter (lower order?) filters
+    \2 has phase distortion (nonlinear phase response)
+    \2 non-finite transient startup
+  \1 Butterworth Filter
+    \2 looks like a nice simple slope, relatively large transition band though
+    \2 $\omega_c$: cutoff frequency
+    \2 $|H(j\omega)|^2 = 1/(1+(\frac{\omega}{\omega_c})^{1/(2K)}), K=1,2,3,\ldots$
+    \\ $H(s)H(-s)|_{s=j\omega}=|H(jw)|^2$
+    \2 passband: $\omega_p = \omega_c(\frac{\epsilon}{1-\epsilon})^{1/(2K)}$
+    \2 stopband: $\omega_s = \omega_c(\frac{1-\delta}{\delta})^{1/(2K)}$
+    \2 poles: $\omega_c e^{i\pi (2k+1)/(2K)}, k=0,1,\ldots,(2K-1)$
+      \3 never pure imaginary
+      \3 left of $s=0$ belong to $H(s)$, right of $s=0$ belong to $H(-s)$
+    \2 to get transfer function, find poles and make fraction from there
+  \1 Chebyshev Filter
+    \2 poles on ellipse in $s$-plane
+    \2 ripples in either passband or stopband, not both
+    \2 smaller transition band
+  \1 Elliptic Filter
+    \2 smallest transition band
+    \2 ripples in both passband and stopband
+
+\zzz{Communication Systems}
+  \1 frequency range: what frequencies are best transmitted, and what are lost
+  \1 modulation: embedding a signal inside a carrier signal that propagates better
+  \1 simultaneous transmission (multiplexing): use modulation to transmit more than one signal simultaneously
+
+\zzz{Amplitude Modulation (AM)}
+  \1 mix (convolve) payload and carrier in frequency domain (multiply in time domain)
+  \1 carrier is typically a high frequency cosine, which is two impulses in frequency domain, so the convolution makes two shifted copies of the input signals, each centered around $\pm$ carrier frequency
+  \1 demodulation: recover original signal: shift it back to the origin and apply low-pass filter
+  \1 Frequency Modulation is another (different) kind of modulation
 
 
 

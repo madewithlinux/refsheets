@@ -13,31 +13,22 @@
 \usepackage{outlines} % for outline
 \usepackage{paralist} % for compactitem (compact itemize)
 \usepackage{multicol} % for multicolumn layout
-\geometry{letterpaper, margin=0.5in, top=0.3in}
+\geometry{letterpaper, margin=0.4in, top=0.2in}
 % \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
-
-\graphicspath{ {images/} }
-
+\pagenumbering{gobble}
 \begin{document}
-\begin{spacing}{0.9}
-% \linespread{0.5}
-\begin{center}
-ECEN350 Computer Architecture Ref Sheet
-\hfill \textcopyright \space Josh Wright 2015 \hfill
-Last Updated: \today
-\end{center}
-
+\begin{spacing}{0.8}
 %%%%%%%%%%%%%%%%%%
 %% main section %%
 %%%%%%%%%%%%%%%%%%
 \begin{multicols*}{2}
 \begin{flushleft}
 \newlist{longenum}{itemize}{5}
-\setlist[longenum,1]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\bullet$}
-\setlist[longenum,2]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=$\ast$}
-\setlist[longenum,3]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=-}
-\setlist[longenum,4]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=>}
-\setlist[longenum,5]{nosep,leftmargin=0.4cm,labelwidth=0px,align=left,label=@}
+\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
 % \begin{outline}[compactitem]
 \begin{outline}[longenum]
 
@@ -55,11 +46,13 @@ Last Updated: \today
 % \renewcommand\labelitemii{\labelitemi}
 % redefine the sub-headings to inject our space-saver
 \let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
-\renewcommand{\1}{\upspace \oldOne  }
-\renewcommand{\2}{\upspace \oldTwo  }
-\renewcommand{\3}{\upspace \oldThree}
-\renewcommand{\4}{\upspace \oldFour }
+\renewcommand{\1}{\oldOne   \hspace{-8px}}
+\renewcommand{\2}{\oldTwo   \hspace{-8px}}
+\renewcommand{\3}{\oldThree \hspace{-8px}}
+\renewcommand{\4}{\oldFour  \hspace{-8px}}
 \small
+
+\noindent ECEN350 Ref Sheet \hfill \textcopyright \space Josh Wright \today
 
 % \zzz{Hex}
 %   \\
@@ -122,15 +115,16 @@ Last Updated: \today
   period   & rate    \\ \hline
     1 msec &   1 MHz \\ \hline
   100 nsec &  10 MHz \\ \hline
-   10 nsec & 100 MHz \\ \hline
-    5 nsec & 200 MHz \\ \hline
+    % 5 nsec & 200 MHz \\ \hline
 \end{tabular}
 \begin{tabular}{|r r|}    \hline
-    2 nsec & 500 MHz \\ \hline
+   10 nsec & 100 MHz \\ \hline
+    % 2 nsec & 500 MHz \\ \hline
     1 nsec & 1 GHz   \\ \hline
-  500 psec & 2 GHz   \\ \hline
-  250 psec & 4 GHz   \\ \hline
-  200 psec & 5 GHz   \\ \hline
+  % 500 psec & 2 GHz   \\ \hline
+  % 250 psec & 4 GHz   \\ \hline
+  % 200 psec & 5 GHz   \\ \hline
+  100 psec & 10 GHz   \\ \hline
 \end{tabular}
 
 \zzz{Metric Prefixes} \\
@@ -152,30 +146,30 @@ pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
 femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 \end{tabular}
 
-\zzz{J format (absolute branching)}
-  \1 cannot change the top 4 bits of PC. (\verb|PC[31:28]|)
-  \1 range:
-    \2 total of $2^{26}$ instructions or $2^{28}$ bytes
-      \3 because range is $[0,2^{26}-1]$
-    \2 farthest possible next instruction is $2^{26}$ away (if \verb|PC+4| lies at the beginning of a $2^{28}$ byte boundary)
-    \2 worst case is you can only jump 1 instruction ahead (if \verb|PC+4| lies at the end of a $2^{28}$ byte boundary)
-  \1 conversion:
-    \2 instruction stores 26 bits
-    \2 right pad with two 0s to get 28
-    \2 take the top four bits from current PC to get 32
-  \1 mask of top 4 bits: \verb|0xF0000000|
-  \1 \verb|target = (PC AND 0xF0000000) OR (addr << 2)|
-  % python: j = lambda PC,addr: hex((PC & 0xF0000000) | (addr << 2))
+% \zzz{J format (absolute branching)}
+%   \1 cannot change the top 4 bits of PC. (\verb|PC[31:28]|)
+%   \1 range:
+%     \2 total of $2^{26}$ instructions or $2^{28}$ bytes
+%       \3 because range is $[0,2^{26}-1]$
+%     \2 farthest possible next instruction is $2^{26}$ away (if \verb|PC+4| lies at the beginning of a $2^{28}$ byte boundary)
+%     \2 worst case is you can only jump 1 instruction ahead (if \verb|PC+4| lies at the end of a $2^{28}$ byte boundary)
+%   \1 conversion:
+%     \2 instruction stores 26 bits
+%     \2 right pad with two 0s to get 28
+%     \2 take the top four bits from current PC to get 32
+%   \1 mask of top 4 bits: \verb|0xF0000000|
+%   \1 \verb|target = (PC AND 0xF0000000) OR (addr << 2)|
+%   % python: j = lambda PC,addr: hex((PC & 0xF0000000) | (addr << 2))
 
-\zzz{Relative Branching}
-  \1 range: $[ PC - 2^{17}, PC + 2^{17} - 4 ]$
-    \2 that's in bytes. It's a range of $2^{15}-1$ words
-    \2 you lose one from the exponent because it's 2's complement
-  \1 conversion
-    \2 take 16 bit offset, zero pad by 2 (multiply by 4)
-    \2 add to PC+4 (next PC)
-  \1 \verb|target = (PC + 4) + (addr << 2)|
-  \1 due to the \verb|PC+4| thing, if you want to jump back to the same instruction, the immediate value will be -1
+% \zzz{Relative Branching}
+%   \1 range: $[ PC - 2^{17}, PC + 2^{17} - 4 ]$
+%     \2 that's in bytes. It's a range of $2^{15}-1$ words
+%     \2 you lose one from the exponent because it's 2's complement
+%   \1 conversion
+%     \2 take 16 bit offset, zero pad by 2 (multiply by 4)
+%     \2 add to PC+4 (next PC)
+%   \1 \verb|target = (PC + 4) + (addr << 2)|
+%   \1 due to the \verb|PC+4| thing, if you want to jump back to the same instruction, the immediate value will be -1
 
 \zzz{Endianness}
 \\
@@ -231,28 +225,30 @@ Value: \verb|0xA0B0C0D0|\\
     \2 does not contain addresses of labels
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% exam 2
+%%%%%%%%%%%%%%
+%%% exam 2 %%%
+%%%%%%%%%%%%%%
 
-\zzz{Verilog}
-  \1 always block: synthesize to combinational logic iff:
-    \2 everything written to is always written exactly once for every case of inputs
-    \2 the outputs of the always block depend only on inputs that are in the sensitivity list
-    \2 stuff assigned to inside an always block must be declard \verb|reg|
-      \3 will be optimized out if it's combinational
-  \1 bitwise not is $\sim$
-  \1 ternary operator: \verb|cond ? if_true : if_false|
-  \1 assignments: \verb|=| is blocking, \verb|<=| is non-blocking
-    \2 \verb|=|: happens in order
-    \2 \verb|<=|: happens all at once
-  \1 case statement: can use \verb|?| to specify `don't care' for some bits
-  \1 \verb|`timescale unit/precision|:
-    \2 \verb|unit|: 1, 10, or 100, unit either s, ms, us, ps, fs
-    \2 \verb|precision|: must be shorter than \verb|unit|
+% \zzz{Verilog}
+%   \1 always block: synthesize to combinational logic iff:
+%     \2 everything written to is always written exactly once for every case of inputs
+%     \2 the outputs of the always block depend only on inputs that are in the sensitivity list
+%     \2 stuff assigned to inside an always block must be declard \verb|reg|
+%       \3 will be optimized out if it's combinational
+%   \1 bitwise not is $\sim$
+%   \1 ternary operator: \verb|cond ? if_true : if_false|
+%   \1 assignments: \verb|=| is blocking, \verb|<=| is non-blocking
+%     \2 \verb|=|: happens in order
+%     \2 \verb|<=|: happens all at once
+%   \1 case statement: can use \verb|?| to specify `don't care' for some bits
+%   \1 \verb|`timescale unit/precision|:
+%     \2 \verb|unit|: 1, 10, or 100, unit either s, ms, us, ps, fs
+%     \2 \verb|precision|: must be shorter than \verb|unit|
 
 \zzz{State Machine}
-  \1 Mealy Machine: outputs determined by current state and current inputs
-  \1 Moore Machine: outputs determined by current state only
+  \1 outputs determined by:
+  \1 Mealy Machine: current state and current inputs
+  \1 Moore Machine: current state only
 
 \zzz{Performance}
   \1 execution time = (\# of clock cycles) $\times$ (clock cycle time)
@@ -266,7 +262,7 @@ Value: \verb|0xA0B0C0D0|\\
 
 \zzz{IEEE Floating-Point}
   \1 1 bit sign; 8 bit exponent; 23 bit mantissa
-    \2 $x = (-1)^s \cdot (1::m) \cdot 2^{e-127}$
+    \2 $x = (-1)^s \cdot (1.m) \cdot 2^{e-127}$
   \1 sign: 0 for positive, 1 for negative
   \1 exponent: bias is $-127$
   \1 mantissa: the fractional part; denominator $2^{23}$
@@ -298,10 +294,10 @@ Value: \verb|0xA0B0C0D0|\\
     255      & $\not=0$ & NaN         \\ \hline
   \end{tabular}
   \1 
-  \begin{tabular}{|l l l|} \hline
+  \begin{tabular}{|l r r|} \hline
     $ $      & float   & double  \\ \hline
     sign     & 1 bit   & 1 bit   \\ \hline
-    exponent & 8 bits  & 11      \\ \hline
+    exponent & 8 bits  & 11 bits \\ \hline
     exp bias & 127     & 1023    \\ \hline
     exp min  & -126    & -1022   \\ \hline
     exp max  & +127    & +1023   \\ \hline
@@ -311,6 +307,93 @@ Value: \verb|0xA0B0C0D0|\\
   \end{tabular}
   \1 minimum integer that can't be exactly represented: $2^{24} + 1 = $ 16 777 217 
 % TODO: minimum and maximum of float and double?
+
+
+%%%%%%%%%%%%%%%%%%
+%%% Final Exam %%%
+%%%%%%%%%%%%%%%%%%
+
+\zzz{Pipelining}
+  \1 5 stages: IF, ID, EX, MEM, WB
+  \1 branch delay stalls when decision made in stage:
+    \2 MEM: 3 stalls; EX: 2; ID: 1
+  \1 if a branch is predicted wrong, you must flush the pipeline
+  \1 ALU data hazards:
+    \2 w/o forwarding: 2 stalls if the next instruction is dependent
+    \2 w/forwarding: no delays ever
+  \1 load-use hazard:
+    \2 w/o forwarding: 2 delays
+    \2 w/forwarding: 1 delay for next instruction, then forward from data memory
+
+\zzz{Branch Prediction}
+  \1 if predict wrong, flush the pipeline after the branch
+    \2 set all control and opcode to 0 (\verb|nop|)
+  \1 static
+  \1 1-bit: keep a cache of the PC of the branch and last taken/not taken
+  \1 2-bit: keep a cache of the PC of the branch and state in a state machine
+    \2 4 states: strong taken, taken, not taken, strong not taken
+      (ST,T,N,SN)
+    \2 taken moves state toward ST, not taken moves toward SN
+    \2 allows otherwise consistent branches to have some variation
+
+\zzz{Cache}
+  \1 sources of cache miss:
+    \2 compulsory: when the cache's valid bit is $0$
+      \3 cannot be avoided because cache must start empty
+    \2 conflict: the wrong data is there
+      \3 solve by increasing cache size or associativity
+    \2 capacity: when all blocks are full and data isn't there
+      \3 really only happens with fully associative, otherwise it would be conflict
+      \3 solve by increasing cache size
+  \1 locality types:
+    \2 spacial: accessing data that is close to other data 
+    \2 temporal: accessing data that was recently accessed before
+  \1 fully associative
+    \2 any data can go anywhere
+    \2 tag is full address of data
+    \2 must search entire cache to find anything
+  \1 directly mapped (1-way associative)
+    \2 use some low-order bits of the memory address to decide where to put the data in the cache (the index)
+    \2 means that the tag only needs to be only those bits that aren't in the index (saves space)
+    \2 also means that other unrelated data can collide with the existing data by simply having the same low-order bits
+  \1 $n$-way associative
+    \2 same as directly-mapped except there's $n$ total banks of directly mapped cache to check
+    \2 (if it's not in one, it might be in another)
+    \2 you want to replace stuff in LRU order: Least Recently Used
+      \3 thus every cache line must have a counter that is incremented on every cache read
+  \1 multi-block
+    \2 combined with above concepts
+    \2 store multiple adjacent words from memory together in the cache
+    \2 whenever you would fetch just one word in a block, fetch the whole block
+    \2 for each word, you have a block offset and an index
+    \2 tag is highest order bits of address, then line index, then block index, (then byte offset)
+  \1 write handling:
+    \2 naive solution: stall (not optimal) 
+    \2 write allocate (writeback)
+      \3 write into the cache and set dirty bit
+      \3 then write to memory when that data is evicted by other data
+    \2 no-write allocate
+      \3 set dirty bit, but write to write buffer instead
+      \3 don't need to stall on writes
+      \3 must stall for reads of data that was written to the buffer
+        (stall until buffer is flushed)
+  \1 CPUtime = IC $*$ CPI $*$ CC
+    \2 IC: instruction count
+    \2 CC: clock cycles
+  \1 CPUtime = IC $*$ (CPI-ideal + Memory-stall cycles ) $*$ CC
+  \1 write-buffering: 
+    \2 read-stall cycles = reads/program $*$ read miss rate $*$ read miss penalty
+    \2 write-stall cycles = writes/program $*$ write miss rate $*$ write miss penalty + write buffer stalls
+  \1 write-back: memory-stall = miss rate $*$ miss penalty
+
+\zzz{Exceptions}
+  \1 procedure:
+    \2 set offending instruction and all following to \verb|nop|
+      (flush pipeline)
+      \3 but keep instructions that came before offending
+    \2 set cause and EPC register values
+    \2 load (hard-coded?) PC of correct exception handler
+    \2 carry on (in exception handler)
 
 \end{outline}
 \end{flushleft}
