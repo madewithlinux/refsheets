@@ -324,6 +324,7 @@ Value: \verb|0xA0B0C0D0|\\
   \1 load-use hazard:
     \2 w/o forwarding: 2 delays
     \2 w/forwarding: 1 delay for next instruction, then forward from data memory
+  \1 ideal speedup: instruction time pipelined pipelined $=$ instruction time before / number of stages
 
 \zzz{Branch Prediction}
   \1 if predict wrong, flush the pipeline after the branch
