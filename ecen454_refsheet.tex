@@ -91,14 +91,80 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 no bubble
     \2 on when input is on, off when input is off
 
+
+\zzz{D Flip Flop vs Latch}
+  \1 latch is level triggered
+  \1 flip flop is edge triggered
+
 \zzz{Fabrication}
   \1 n-well: use diffusion or ion implantation
   \1 positive lithography: expose to UV where you want to remove material
   \1 negative lithography: expose to UV where you want to keep material
 
-\zzz{D Flip Flop vs Latch}
-  \1 latch is level triggered
-  \1 flip flop is edge triggered
+% lecture 4
+\zzz{Stick Diagram vs Boolean Function}
+  \1 TODO
+  \1 there is more than one way of making a stick diagram for an expression
+    \2 stuff in series could be in different order, for instance
+  \1 if you do it manually, you need to check it with tools:
+    \2 LVS: Layout Vs Schematic
+    \2 DRC: Design Re-Check
+    \2 These aren't really needed for designs automatically generated from verilog code, because of course that's correct
+
+\zzz{Lithography}
+  \1 the process of printing onto a chip at nanometer scale
+  \1 generally uses UV light, wavelength around 150nm
+    \2 must use fancy tricks to make 10nm features with 150nm light
+    \2 would be nice to use even lower wavelength X-rays, but those are hard to focus
+  \1 negative lithography: use the lithography mask to cover what you want to keep.
+  \1 positive lithography: mask what you want to remove
+  \1 a lens is used to focus the light
+    \2 ideally, want a point source for the light, but that is not practical
+    \2 Optical Proximity Effect: what happens when your focus from the lens is not just right
+    \2 results in rounded corners, inaccurate critical dimensions, and shorter wire ends
+    \2 can use Optical Proximity Correction to fix:
+    \\ basically over-emphasize all the features, and/or add extra lines at outset
+
+\zzz{MOS transitive I-V Characteristics and Parasitics}
+  \1 Transistors are not really ideal switches, they have 3 zones of operation: cutoff, linear, saturation
+  \1 definitions:
+    \\ $V_{gs}$: voltage gate to source
+    \\ $V_{gd}$: voltage gate to drain
+    \\ $V_{ds}$: voltage source to drain (across the channel)
+    \\ $V_t$: critical voltage at which transistor is saturated
+    \\ channel: space between the source and drain, where the electrons flow
+  \1 remember that the gate is insulated from the area under it by a thin layer of Silicon Dioxide (SiO$_2$)
+  \1 by convention, the source is the terminal at lower voltage
+  \1 \textbf{cutoff}:
+    \2 when $V_{gs}<0$
+    \2 electrons on the gate attract positive voids in the silicon below, and inhibit current flow. Therefore, the transistor is closed.
+    \2 $I_{ds}=0$
+  \1 \textbf{linear}:
+    \2 $V_{gs}>V_t, V_{gd}=V_{gs}, V_{ds}=0$
+    or $V_{gs}>V_t, V_{gs}>V_{gd}>V_t, 0<V_{ds}<V_{gs}-V_t$
+    \2 $I_{ds}$ linearly proportional to $V_{ds}$
+    \2 channel of electrons forms, allowing current to flow
+  \1 \textbf{saturated:}
+    \2 $V_{gs}>V_t, V_{gd}<V_t, V_{ds}>V_{gs}-V_t$
+    \2 channel pinches off due to electrons attracting to source
+    \2 $I_{ds}$ is independent of $V_{ds}$
+  \1 capacitor effect:
+    \2 gate and channel can have a parallel plate capacitor effect, with the thin layer of SiO$_2$ acting as the insulator
+    \2 $C=\frac{Q}{V}=\eta_{SiO_2}wl/t_{SiO_2}, V = V+{gc}-V_t=(v_{gs}-V{ds}/2)-V_t$
+    \\ $l,w$: length, width of section of gate above channel
+  \1 carrier velocity: velocity of the electrons?
+    \2 proportional to the electric field running horizontally between source and drain
+    \2 $v=\mu E, E=V_{ds}/L, t=L/v=L/(\mu E)=L/(\mu\frac{V_{ds}}{L})$
+    \\ $\mu$: mobility. electrons move about twice as fast as positive voids
+    \\ $L$: length of channel
+  \1 Shockley model of transistor: TODO
+    \2 1st order model: $\beta=\mu C_{SiO_2}\frac{w}{l}$
+    \\ $I_{ds}|V_{gs}<V_t=0$: cutoff
+    \\ $I_{ds}|V_{ds}<V_{dstat}=\beta(V_{gs}-V_t-V_{ds}/2)V_{ds}$: linear
+    \\ $I_{ds}|V_{ds}<V_{dstat}=\frac{\beta}{2}(V_{gs}-V_t)^2$: saturation
+    \2 Must be able to derive this model on exam!
+
+
 
 
 \end{outline}
