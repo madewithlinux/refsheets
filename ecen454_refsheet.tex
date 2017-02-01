@@ -1,0 +1,108 @@
+% (c) Copyright 2017 Josh Wright
+\documentclass[12pt]{article}
+\usepackage{verbatim}
+% \usepackage{syntonly}
+\usepackage{ragged2e}
+\usepackage{geometry}
+\usepackage{enumitem} % for longenum
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{outlines} % for outline
+\usepackage{paralist} % for compactitem (compact itemize)
+\usepackage{multicol} % for multicolumn layout
+\geometry{letterpaper, margin=0.4in, top=0.2in}
+% \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
+\pagenumbering{gobble}
+\begin{document}
+\begin{spacing}{0.8}
+%%%%%%%%%%%%%%%%%%
+%% main section %%
+%%%%%%%%%%%%%%%%%%
+\begin{multicols*}{2}
+\begin{flushleft}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+% \begin{outline}[compactitem]
+\begin{outline}[longenum]
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newlength{\upspacelength}
+\setlength{\upspacelength}{0px}
+\newcommand{\upspace}{\vspace{\upspacelength}}
+% section titles
+\newcommand{\zzz}[1]{\upspace \0 \textbf{#1} }
+% \newcommand{\zzz}[1]{\0 \hspace{-1.25in} \textbf{#1} \vspace{-10px} }
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\oldOne   \hspace{-6px}}
+\renewcommand{\2}{\oldTwo   \hspace{-6px}}
+\renewcommand{\3}{\oldThree \hspace{-6px}}
+\renewcommand{\4}{\oldFour  \hspace{-6px}}
+\small
+
+\noindent ECEN454 Ref Sheet \hfill \textcopyright \space Josh Wright \today
+
+\zzz{Metric Prefixes} \\
+\begin{tabular}{|c c l l|}                                   \hline
+peta  & P     & $10^{ 15}$ & \hfill 1 000 000 000 000 000 \\ \hline
+tera  & T     & $10^{ 12}$ & \hfill     1 000 000 000 000 \\ \hline
+giga  & G     & $10^{  9}$ & \hfill         1 000 000 000 \\ \hline
+mega  & M     & $10^{  6}$ & \hfill             1 000 000 \\ \hline
+kilo  & k     & $10^{  3}$ & \hfill                 1 000 \\ \hline
+hecto & h     & $10^{  2}$ & \hfill                   100 \\ \hline
+deca  & da    & $10^{  1}$ & \hfill                    10 \\ \hline
+one   &       & $10^{ 0 }$ & \hfill       1 \hfill \hfill \\ \hline
+deci  & d     & $10^{- 1}$ & 0.1                          \\ \hline
+centi & c     & $10^{- 2}$ & 0.01                         \\ \hline
+milli & m     & $10^{- 3}$ & 0.001                        \\ \hline
+micro & $\mu$ & $10^{- 6}$ & 0.000 001                    \\ \hline
+nano  & n     & $10^{- 9}$ & 0.000 000 001                \\ \hline
+pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
+femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
+\end{tabular}
+
+\zzz{De Morgan's Laws}
+  \1 $\overline{AB}=\overline {A}+\overline{B}$
+  \1 $\overline{A+B}=(\overline{A})(\overline{B})$
+
+\zzz{Silicon}
+  \1 Si
+  \1 P-type:
+    \2 doped with material to remove electrons (add electron holes), usually Boron (B), Aluminum (Al), or Gallium (Ga)
+  \1 N-type:
+    \2 doped with material to add electrons, usually Antimony (Sb), Arsenic (As), or Phosphorous (P)
+  \1 Silicon dioxide: SiO$_2$
+
+\zzz{Transistors}
+  \1 pMOS:
+    \2 has the bubble
+    \2 on when input is 0, off when input is 1
+  \1 nMOS
+    \2 no bubble
+    \2 on when input is on, off when input is off
+
+\zzz{Fabrication}
+  \1 n-well: use diffusion or ion implantation
+  \1 positive lithography: expose to UV where you want to remove material
+  \1 negative lithography: expose to UV where you want to keep material
+
+\zzz{D Flip Flop vs Latch}
+  \1 latch is level triggered
+  \1 flip flop is edge triggered
+
+
+\end{outline}
+\end{flushleft}
+\end{multicols*}
+\end{spacing}
+\end{document}

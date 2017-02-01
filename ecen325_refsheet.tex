@@ -1,0 +1,113 @@
+% (c) Copyright 2017 Josh Wright
+\documentclass[12pt]{article}
+\usepackage{verbatim}
+% \usepackage{syntonly}
+\usepackage{ragged2e}
+\usepackage{geometry}
+\usepackage{enumitem} % for longenum
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{outlines} % for outline
+\usepackage{paralist} % for compactitem (compact itemize)
+\usepackage{multicol} % for multicolumn layout
+\geometry{letterpaper, margin=0.4in, top=0.2in}
+% \geometry{letterpaper, margin=0.5in, top=0.35in, left=1.5in}
+\pagenumbering{gobble}
+\begin{document}
+\begin{spacing}{0.8}
+%%%%%%%%%%%%%%%%%%
+%% main section %%
+%%%%%%%%%%%%%%%%%%
+\begin{multicols*}{2}
+\begin{flushleft}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+% \begin{outline}[compactitem]
+\begin{outline}[longenum]
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newlength{\upspacelength}
+\setlength{\upspacelength}{0px}
+\newcommand{\upspace}{\vspace{\upspacelength}}
+% section titles
+\newcommand{\zzz}[1]{\upspace \0 \textbf{#1} }
+% \newcommand{\zzz}[1]{\0 \hspace{-1.25in} \textbf{#1} \vspace{-10px} }
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\renewcommand{\1}{\oldOne   \hspace{-8px}}
+\renewcommand{\2}{\oldTwo   \hspace{-8px}}
+\renewcommand{\3}{\oldThree \hspace{-8px}}
+\renewcommand{\4}{\oldFour  \hspace{-8px}}
+\small
+
+\noindent ECEN325 Ref Sheet \hfill \textcopyright \space Josh Wright \today
+
+\zzz{Metric Prefixes} \\
+\begin{tabular}{|c c l l|}                                   \hline
+peta  & P     & $10^{ 15}$ & \hfill 1 000 000 000 000 000 \\ \hline
+tera  & T     & $10^{ 12}$ & \hfill     1 000 000 000 000 \\ \hline
+giga  & G     & $10^{  9}$ & \hfill         1 000 000 000 \\ \hline
+mega  & M     & $10^{  6}$ & \hfill             1 000 000 \\ \hline
+kilo  & k     & $10^{  3}$ & \hfill                 1 000 \\ \hline
+hecto & h     & $10^{  2}$ & \hfill                   100 \\ \hline
+deca  & da    & $10^{  1}$ & \hfill                    10 \\ \hline
+one   &       & $10^{ 0 }$ & \hfill       1 \hfill \hfill \\ \hline
+deci  & d     & $10^{- 1}$ & 0.1                          \\ \hline
+centi & c     & $10^{- 2}$ & 0.01                         \\ \hline
+milli & m     & $10^{- 3}$ & 0.001                        \\ \hline
+micro & $\mu$ & $10^{- 6}$ & 0.000 001                    \\ \hline
+nano  & n     & $10^{- 9}$ & 0.000 000 001                \\ \hline
+pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
+femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
+\end{tabular}
+
+
+\zzz{RC Filter}
+  \1 Transmission Function: $T(s) = \frac{V_o(s)}{V_i(s)}$
+  \1 Corner frequency: frequency $s$ at which $T(s)=\frac{1}{\sqrt{2}}$
+  \1 for simple circuit:
+    ground$\rightarrow$source$\rightarrow R \rightarrow C\rightarrow$ground
+    \2 $T(s)=\frac{1}{1+RCs}$
+    \\ $|T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
+    \\ $|\angle T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
+
+\zzz{Bode Plots}
+  \1 magnitude is plotted in $dB$: $|T(j\omega)|_{dB}=20\log_{10}|T(j\omega)|$
+  \1 starts on y-axis at DC offset with slope 0
+  \1 just add together the bode plots of each individual pole, zero, and the DC offset
+  \1 poles always slope down, zeros slope up
+    \\ (applies for both magnitude and phase)
+  \1 $dec$=decade, e.g. from $10^0$ to $10^1$
+  \1 magnitude:
+    \2 Pole/Zero at origin: 
+      \\ constant slope $\pm20db/dec$ for all $\omega$; $0dB$ at $\omega=10^0=1$
+    \2 Pole/Zero at $\omega_0$:
+      \\ 0 for $\omega<\omega_0$
+      \\ slope $\pm20\frac{db}{dec}$ after
+    \2 Constant $C$: constant line at $20\log_{10}(|C|)$
+  \1 phase:
+    \2 Pole at origin: constant $-\frac{\pi}{2}$ or $-90^\circ$
+    \2 Zero at origin: constant $+\frac{\pi}{2}$ or $+90^\circ$
+    \2 Pole/Zero at $\omega_0$:
+      \\ $0$ for $\omega<\frac{\omega_0}{10}$
+      \\ slope linearly ($\pm45^\circ/dec$) until $10\omega_0$
+      \\ $0$ slope for $\omega>10\omega_0$
+    \2 Constant $C$: no effect ($0$ for all $\omega$)
+
+
+
+\end{outline}
+\end{flushleft}
+\end{multicols*}
+\end{spacing}
+\end{document}
