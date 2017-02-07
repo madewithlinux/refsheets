@@ -26,7 +26,7 @@
 \setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
 \setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
 \setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
-\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\cdot$}
 \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
 % \begin{outline}[compactitem]
 \begin{outline}[longenum]
@@ -82,6 +82,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 N-type:
     \2 doped with material to add electrons, usually Antimony (Sb), Arsenic (As), or Phosphorous (P)
   \1 Silicon dioxide: SiO$_2$
+  \1 Polysilicon is just silicon without the crystal structure
 
 \zzz{Transistors}
   \1 pMOS:
@@ -90,7 +91,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 nMOS
     \2 no bubble
     \2 on when input is on, off when input is off
-
+  \1 CMOS: when you combine a nMOS and pMOS network together to make a gate, where one is the compliment of the other
 
 \zzz{D Flip Flop vs Latch}
   \1 latch is level triggered
@@ -100,6 +101,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 n-well: use diffusion or ion implantation
   \1 positive lithography: expose to UV where you want to remove material
   \1 negative lithography: expose to UV where you want to keep material
+
+
 
 % lecture 4
 \zzz{Stick Diagram vs Boolean Function}
@@ -125,7 +128,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 can use Optical Proximity Correction to fix:
     \\ basically over-emphasize all the features, and/or add extra lines at outset
 
-\zzz{MOS transitive I-V Characteristics and Parasitics}
+\zzz{MOS transitive $I$-$V$ Characteristics and Parasitics}
+  \1 $I$-$V$: current-voltage relationship
   \1 Transistors are not really ideal switches, they have 3 zones of operation: cutoff, linear, saturation
   \1 definitions:
     \\ $V_{gs}$: voltage gate to source
@@ -148,21 +152,64 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 $V_{gs}>V_t, V_{gd}<V_t, V_{ds}>V_{gs}-V_t$
     \2 channel pinches off due to electrons attracting to source
     \2 $I_{ds}$ is independent of $V_{ds}$
-  \1 capacitor effect:
-    \2 gate and channel can have a parallel plate capacitor effect, with the thin layer of SiO$_2$ acting as the insulator
-    \2 $C=\frac{Q}{V}=\eta_{SiO_2}wl/t_{SiO_2}, V = V+{gc}-V_t=(v_{gs}-V{ds}/2)-V_t$
-    \\ $l,w$: length, width of section of gate above channel
+\zzz{capacitor effect}
+  \1 gate and channel can have a parallel plate capacitor effect, with the thin layer of SiO$_2$ acting as the insulator
+  \1 $C=\frac{Q}{V}=\epsilon_{SiO_2}wl/t_{SiO_2}, V = V+{gc}-V_t=(v_{gs}-V{ds}/2)-V_t$
+    \2 $l,w$: length, width of section of gate above channel
+    \2 $\epsilon_{SiO_2}$: permittivity of SiO$_2$ layer
+    \2 $t_{SiO_2}$: thickness of SiO$_2$ layer
+  \1 general capacitance per unit area: $C_{ox}=\frac{\epsilon_{ox}}{t_{ox}}$
+    \2 $\epsilon_{ox}$: permittivity of oxidation layer
+    \2 $t_{ox}$: thickness of oxidation layer
   \1 carrier velocity: velocity of the electrons?
     \2 proportional to the electric field running horizontally between source and drain
     \2 $v=\mu E, E=V_{ds}/L, t=L/v=L/(\mu E)=L/(\mu\frac{V_{ds}}{L})$
     \\ $\mu$: mobility. electrons move about twice as fast as positive voids
     \\ $L$: length of channel
-  \1 Shockley model of transistor: TODO
-    \2 1st order model: $\beta=\mu C_{SiO_2}\frac{w}{l}$
-    \\ $I_{ds}|V_{gs}<V_t=0$: cutoff
-    \\ $I_{ds}|V_{ds}<V_{dstat}=\beta(V_{gs}-V_t-V_{ds}/2)V_{ds}$: linear
-    \\ $I_{ds}|V_{ds}<V_{dstat}=\frac{\beta}{2}(V_{gs}-V_t)^2$: saturation
-    \2 Must be able to derive this model on exam!
+  \1 actual velocity of electrons is the speed of light, but they don't travel in a straight line, they travel atom-to-atom
+    \2 this slowdown is called the \textbf{scattering} effect
+\zzz{Shockley model of transistor}
+  \1 1st order model: $\beta=\mu C_{SiO_2}\frac{w}{l}$
+  \begin{tabular}{l l l}
+  $V_{gs} < V_t     $ & $I_{ds}=0$                                        & cutoff  \\
+  $V_{ds} < V_{dsat}$ & $I_{ds}=\beta(V_{gs}-V_t-\frac{V_{ds}}{2})V_{ds}$ & linear \\
+  $V_{ds} > V_{dsat}$ & $I_{ds}=\frac{\beta}{2}(V_{gs}-V_t)^2$            & saturation  \\
+  \end{tabular}
+  \1 Must be able to derive this model on exam!
+
+\zzz{Non-Ideal $I$-$V$ Effects}
+  \1 velocity saturation (due to scattering)
+    \2 also called short channel effect
+    \2 this is hard to make into a mathematical formula
+  \1 sub-threshold leakage, junction leakage, gate tunneling
+  \1 \textbf{Body Effect}
+    \2 affected by $V_{sb}$: voltage of the p-substrate (which should be ground)
+    \2 $V_t=V_{t0}+\lambda(\sqrt{|-2\phi_F+V_{sb}|}-\sqrt{|-2\phi_F})$
+      \3 $V_{t0}$: threshold without body bias
+      \3 $\phi_F$: Fermi potential
+        \4 negative for nMOS, positive for pMOS
+      \3 $\lambda$: body effect coefficient
+        \4 positive for nMOS, negative for pMOS (reversed)
+    \2 generally fixed/caused by biasing
+    \2 Forward Body Bias (FBB):
+      \3 $V_{sb}<0, V_t<V_{s0}$
+      \3 gates switch faster, but leak more current
+    \2 Reverse Body Bias (RBB):
+      \3 $V_{sb}>0, V_t>V_{s0}$
+      \3 gates switch slower, but consume less power (because less leakage)
+  \1 \textbf{Temperature}
+    \2 higher temperature means higher electron mobility, more leakage, and threshold decreases
+  \1 \textbf{Diffusion Capacitance}
+    \2 capacitance on the source/drain: $C_{sb}, C_{db}$
+      \3 source/drain are diffusion nodes
+      \3 $C$ is comparable to $C_g$ (gate) for connected nodes, $\frac{1}{2}C_g$ for unconnected
+      \3 (depends on process)
+    \2 this is the capacitance we care most about (because we must fill it every time the gate switches?)
+    \2 if two capacitors share a source/drain, that reduces diffusion capacitance (reducing this is a good thing)
+    \2 also, you can remove unconnected diffusion spots
+% end lecture 4
+
+
 
 
 
