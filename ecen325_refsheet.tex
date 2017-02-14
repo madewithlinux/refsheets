@@ -7,6 +7,7 @@
 \usepackage{enumitem} % for longenum
 \usepackage{setspace}
 \usepackage{hyperref}
+\usepackage{circuitikz}
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{outlines} % for outline
@@ -108,8 +109,63 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 	\1 step 0: if the op amp is ideal, write out ideal properties:
 		\2 $V_+=V_-$
 		\2 $I_-=0,I_+=0$
-	\1 avoid doing KCL/KVL on the output node of the op amp
+	\1 avoid doing KCL/KVL directly on the output node of the op amp
 	\1 ignore resistors from a point at $0V$ to ground
+
+\zzz{Op Amp Equations}
+  \1 general form: $T(s)=\frac{K_0}{1+\frac{s}{\omega_0}}$
+    \2 $T(0)=K_0$: DC offset. For these simple ones, it's equal to ideal response
+    \2 $\omega_0=\frac{\omega_t}{1+R_2/R_1}$
+  \1 inverting op amp: 
+    \2 ideal: $T(s)=\frac{V_o}{V_i}=-\frac{R_2}{R_1}$
+    \2 non-ideal: $T(s)=\frac{V_o}{V_i}
+      =\frac{-R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
+      =\frac{-R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}$
+    \\\begin{circuitikz}
+      \draw  (5,2) 
+      node[op amp] (opamp) {}  
+      (1,2.5) to [short, o-, l=$V_i$] (1,2.5)
+      (1,2.5) to [R, l=$R_1$] (opamp.-)
+      (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
+      (opamp.+) to (3.8,1.2) node[ground]{}
+      (3.8,3.5) to [short, -*] (opamp.-)
+      (6.2,3.5) to [short, -*] (opamp.out)
+      (opamp.out) to [short, -o, l=$V_o$] (7, 2);
+      \end{circuitikz}
+  \1 non-inverting op-amp:
+    \2 ideal: $T(s)=\frac{V_o}{V_i}=1+\frac{R_2}{R_1}$
+    \2 non-ideal: $T(s)=\frac{V_o}{V_i}
+      =\frac{1+R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
+      =\frac{1+R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}$
+    \\\begin{circuitikz}
+      \draw  (5,2) 
+      node[op amp] (opamp) {}  
+      (1,2.5) to [short, -] (1,2) node[ground]{}
+      (1,2.5) to [R, l=$R_1$] (opamp.-)
+      (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
+      (opamp.+) to (3.5,1.5)
+      (3.5,1.5) to [short, o-, l=$V_i$] (3.5,1.5)
+      (3.8,3.5) to [short, -*] (opamp.-)
+      (6.2,3.5) to [short, -*] (opamp.out)
+      (opamp.out) to [short, -o, l=$V_o$] (7, 2);
+      \end{circuitikz}
+
+\zzz{Non-Ideal Op Amps}
+  \1 open-loop gain dependent on frequency: $A(s)=\frac{A_0}{1-\frac{s}{\omega_b}}$
+    \2 open-loop response drops off after $\omega_b$
+      \\(usually $2\pi \leq \omega_b \leq 2\pi100$)
+    \2 $A_0$: DC gain
+    \2 $\omega_t$: unity gain frequency: $dB(T(\omega_t))=1$
+      \\ $\omega_t \approx A_o \omega_b$
+      \\ AKA gain bandwidth product
+    \2 in this case, we still assume $I_-=I_+=0$ and $V_-=V_+$?
+  \1 slew rate
+    \2 max rate at which the output can change
+    \2 for a sinusoidal signal: ($V_{pk}$: peak voltage)
+      \\ $SR > 2 \pi f V_{pk}$ or $SR > \omega V_{pk}$
+
+
+
 
 \end{outline}
 \end{flushleft}

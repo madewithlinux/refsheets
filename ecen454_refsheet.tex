@@ -92,6 +92,14 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 no bubble
     \2 on when input is on, off when input is off
   \1 CMOS: when you combine a nMOS and pMOS network together to make a gate, where one is the compliment of the other
+  \1 $V_t$: Threshold voltage. Nominal voltage below which the transistor is off
+    \2 below as in closer to 0, not less
+    \2 $V_t>0$ for nMOS, $V_t<0$ for pMOS
+    \2 this is compared to the gate to source voltage, $V_{gs}$
+  \1 regions: (for nMOS)
+    \2 accumulation: gate is negatively charged, attracts positive voids in p-substrate, which block flow in the channel
+    \2 depletion: small positive charge on gate repels positive voids from channel, forming a depletion below the gate
+    \2 inversion: higher positive charge ($>V_t$) is applied to gate, attracting electrons to the channel and allowing flow
 
 \zzz{D Flip Flop vs Latch}
   \1 latch is level triggered
@@ -169,6 +177,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 actual velocity of electrons is the speed of light, but they don't travel in a straight line, they travel atom-to-atom
     \2 this slowdown is called the \textbf{scattering} effect
 \zzz{Shockley model of transistor}
+  \1 $V_{dsat}=V_{gs}-V_t$
   \1 1st order model: $\beta=\mu C_{SiO_2}\frac{w}{l}$
   \begin{tabular}{l l l}
   $V_{gs} < V_t     $ & $I_{ds}=0$                                        & cutoff  \\
