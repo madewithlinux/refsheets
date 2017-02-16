@@ -52,6 +52,34 @@
 
 \noindent ECEN454 Ref Sheet \hfill \textcopyright \space Josh Wright \today
 
+\newcommand{\VDD}{V_{DD}}
+
+\newcommand{\Vt}{V_{t}}
+\newcommand{\Vtn}{V_{tn}}
+\newcommand{\Vtp}{V_{tp}}
+
+\newcommand{\Vg}{V_{g}}
+\newcommand{\Vs}{V_{s}}
+\newcommand{\Vd}{V_{d}}
+\newcommand{\Vgn}{V_{gn}}
+\newcommand{\Vsn}{V_{sn}}
+\newcommand{\Vdn}{V_{dn}}
+\newcommand{\Vgp}{V_{gp}}
+\newcommand{\Vsp}{V_{sp}}
+\newcommand{\Vdp}{V_{dp}}
+
+\newcommand{\Vgs}{V_{gs}}
+\newcommand{\Vgd}{V_{gd}}
+\newcommand{\Vds}{V_{ds}}
+\newcommand{\Vgsn}{V_{gsn}}
+\newcommand{\Vgdn}{V_{gdn}}
+\newcommand{\Vdsn}{V_{dsn}}
+\newcommand{\Vgsp}{V_{gsp}}
+\newcommand{\Vgdp}{V_{gdp}}
+\newcommand{\Vdsp}{V_{dsp}}
+% \newcommand{\V}{V_{}}
+% \newcommand{\V}{V_{}}
+
 \zzz{Metric Prefixes} \\
 \begin{tabular}{|c c l l|}                                   \hline
 peta  & P     & $10^{ 15}$ & \hfill 1 000 000 000 000 000 \\ \hline
@@ -193,7 +221,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 sub-threshold leakage, junction leakage, gate tunneling
   \1 \textbf{Body Effect}
     \2 affected by $V_{sb}$: voltage of the p-substrate (which should be ground)
-    \2 $V_t=V_{t0}+\lambda(\sqrt{|-2\phi_F+V_{sb}|}-\sqrt{|-2\phi_F})$
+    \2 $V_t=V_{t0}+\lambda(\sqrt{|-2\phi_F+V_{sb}|}-\sqrt{|-2\phi_F|})$
       \3 $V_{t0}$: threshold without body bias
       \3 $\phi_F$: Fermi potential
         \4 negative for nMOS, positive for pMOS
@@ -218,7 +246,75 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 also, you can remove unconnected diffusion spots
 % end lecture 4
 
+% lecture 5
+\zzz{DC Response}
+  \1 example: inverter
+  \1 $V_{tn}, V_{tp}$: threshold voltages for nMOS and pMOS 
+    (defined in Non-Ideal $I$-$V$ Effects)
+  \1 $V_{in}=V_{DD} \rightarrow V_{out}=0$, $V_{in}=0 \rightarrow V_{out}=V_{DD}$
+  \1 nMOS
+    \2 $V_{gsn}=V_{in}, V_{dsn}=V_{out}$
+    \2 cutoff:    $V_{in}<V_{tn}$
+    \2 linear:    $V_{in}>V_{tn}, V_{out}<V_{in}-V_{tn}$
+    \2 saturated: $V_{in}>V_{tn}, V_{out}>V_{in}-V_{tn}$
+  \1 pMOS
+    \2 $V_{gsp}=V_{in}-V_{DD}, V_{dsp}=V_{out}-V_{DD}, T_{tp}<0$
+    \2 cutoff:    $V_{in}>V_{DD}+V_{tp}$
+    \2 linear:    $V_{in}<V_{DD}+V_{tp}, V_{out}>V_{in}-V_{tp}$
+    \2 saturated: $V_{in}<V_{DD}+V_{tp}, V_{out}<V_{in}-V_{tp}$
+  \1 to calculate actual output voltage, balance $I_{dsn}=I_{dsp}$ (easiest to do graphically)
+    \2 end up with a graph of $V_{out}$ as function of $V_{in}$
+    \includegraphics[width=\columnwidth]{ecen454/DC__response_Vo_Vi_nMOS_pMOS.png}
+    \2 don't want to switch nMOS and pMOS because then nMOS would saturate at far end of graph (and vice versa for pMOS)
+    \2 horizontal position of graph can be varied by tuning $\beta_p / \beta_n$
+      \3 called beta ratio, or skewed gate
+      \3 $\beta_p / \beta_n>1 \rightarrow$ right, $\beta_p / \beta_n\rightarrow$ left
+    \2 unity gain slope: part of response graph where the slope is $-1$
+      \3 want to tune $\beta_p / \beta_n$ to put logic levels at these regions to maximize noise margins
+    \2 Noise Margins:
+      \3 $NM_H=|V_{OH}-V_{IH}|, NM_L=|V_{OL}-V_{IL}|$
+      \3 that's just the higher/lower of the two axes
 
+\zzz{Transient Analysis}
+  \1 for instance, find step response of gate to determine rise time.
+  \1 rise/fall delay: time from when $V_{in}$ crosses $\frac{V_{DD}}{2}$ to when $V_{out}$ crosses it
+  \1 rise/fall time: (of $V_{in}$ or $V_{out}$): time for that signal to go from $0.1V_{DD}$ to $0.9V_{DD}$ (or reverse)
+  \1 TODO many equations and such for inverter step response (from slides)
+  \1 TODO pass transistors (form slides)
+
+\zzz{Pass Transistors}
+  \1 for nMOS trying to pass $\VDD$ or pMOS trying to pass 0
+  \1 nMOS can pull no higher than $\VDD-\Vtn$ if $\Vg=\VDD$
+    \2 more generally, $\Vg-\Vtn$
+    \2 called degraded 1
+  \1 pMOS can pull no lower than $|\Vtp|$
+% end lecture 5
+
+% lecture 6
+\zzz{Delay}
+  \1 generally estimated with RC models
+  \1 effective R for transistors and C of gate caps and parasitic caps
+  \2 exactly what parasitic caps depends on exact layout (which stuff is shared between transistors)
+  \1 width:
+    \2 C proportional to width
+     (approx 2 fF/$\mu$m)
+    \2 R inversely proportional to width
+      (approx 6k$\Omega$*$\mu$m)
+    \2 TODO unity transistors
+  \1 use effective resistance in RC model: $I_{ds}=V_{ds}/R$
+    (just good enough for a RC model, not for current at arbitrary time)
+  \1 find delay of circuit
+    \2 decompose to RC model (take into account widths of each transistor)
+      \3 replace transistors with resistors
+      \3 add parasitic caps
+    \2 add together all R and C's to get delay
+  \1 Elmore Delay:
+    \2 ON transistors look like resistors, so pullup/pulldown network is modeled as RC ladder
+    \2 $t = \sum_{i\in nodes} R_{i-to-source}C_i$
+    $= R_1C_1 + (R_1+R_2)C_2+\ldots+(R_1+\ldots+R_n)C_n$
+    
+
+\zzz{Power Estimation}
 
 
 
