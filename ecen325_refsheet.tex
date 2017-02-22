@@ -90,7 +90,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \\ (applies for both magnitude and phase)
   \1 $dec$=decade, e.g. from $10^0$ to $10^1$
   \1 magnitude:
-    \2 Pole/Zero at origin: 
+    \2 Pole/Zero at origin:
       \\ constant slope $\pm20db/dec$ for all $\omega$; $0dB$ at $\omega=10^0=1$
     \2 Pole/Zero at $\omega_0$:
       \\ 0 for $\omega<\omega_0$
@@ -116,14 +116,14 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 general form: $T(s)=\frac{K_0}{1+\frac{s}{\omega_0}}$
     \2 $T(0)=K_0$: DC offset. For these simple ones, it's equal to ideal response
     \2 $\omega_0=\frac{\omega_t}{1+R_2/R_1}$
-  \1 inverting op amp: 
+  \1 inverting op amp:
     \2 ideal: $T(s)=\frac{V_o}{V_i}=-\frac{R_2}{R_1}$
     \2 non-ideal: $T(s)=\frac{V_o}{V_i}
       =\frac{-R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
       =\frac{-R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}$
     \\\begin{circuitikz}
-      \draw  (5,2) 
-      node[op amp] (opamp) {}  
+      \draw  (5,2)
+      node[op amp] (opamp) {}
       (1,2.5) to [short, o-, l=$V_i$] (1,2.5)
       (1,2.5) to [R, l=$R_1$] (opamp.-)
       (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
@@ -138,8 +138,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
       =\frac{1+R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
       =\frac{1+R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}$
     \\\begin{circuitikz}
-      \draw  (5,2) 
-      node[op amp] (opamp) {}  
+      \draw  (5,2)
+      node[op amp] (opamp) {}
       (1,2.5) to [short, -] (1,2) node[ground]{}
       (1,2.5) to [R, l=$R_1$] (opamp.-)
       (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
@@ -163,6 +163,10 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 max rate at which the output can change
     \2 for a sinusoidal signal: ($V_{pk}$: peak voltage)
       \\ $SR > 2 \pi f V_{pk}$ or $SR > \omega V_{pk}$
+      \\ $\frac{dV}{dt}|_{MAX} < SR$
+
+
+
 
 
 
