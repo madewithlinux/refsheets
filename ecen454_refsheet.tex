@@ -313,9 +313,39 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 ON transistors look like resistors, so pullup/pulldown network is modeled as RC ladder
     \2 $t = \sum_{i\in nodes} R_{i-to-source}C_i$
     $= R_1C_1 + (R_1+R_2)C_2+\ldots+(R_1+\ldots+R_n)C_n$
-    
+
+\zzz{Static Timing Analysis}
+  \1 worst case at each step
+  \1 in form arrival time / required arrival time / slack
+  \1 arrival time: input to output, take max
+  \1 required arrival time: output, take min?
+    \2 or work backward?
+  \1 slack: required arrival time $-$ arrival time
 
 \zzz{Power Estimation}
+  \1 Dynamic Power
+    \2 power required to charge the load capacitor
+    \2 only counted when transistor switches
+      \3 therefore this power usage is data dependent
+      \3 therefore, you have to count the falling transitions in the output per time period
+    \2 $P_{dynamic} = \frac{1}{T}\int_0^T i_{DD}(t) \VDD dt$
+    \2 for simple inverter case: $P_{dynamic} = C \VDD^2 f_{sw}$
+      \3 possibly for all cases?
+  \1 Activity Factor $\alpha$
+    \2 $\alpha$: how often this gate switches in terms of the base clock frequency
+    \2 $\alpha=1$: clock; $\alpha=0.5$: every other cycle, etc...
+    \2 for system clock at frequency $f$, $P_{dynamic} = \alpha C \VDD^2 f$
+  \1 Short Circuit Current
+    \2 nMOS and pMOS may both be on for a short instant during switching, leading to a short instant of short circuit current (from $\VDD$ to ground)
+    \2 $P_s \propto (\VDD -2V_t)^3 t_r f_p$
+      \\ assume $t_r=t_f$ for input
+      \\ $f_p$: frequency of input
+    \2 this is less than $10\%$ of dynamic power if the rise/fall times are comparable
+  \1 Static Power
+    \2 leakage when gate is off
+    \2 
+    $$ I_{ds} = I_{ds0} e^{\frac{\Vgs-\Vt}{nv_T}} \left( 1 - e^{\frac{-\Vds}{v_T}} \right) $$
+    $$ V_t = V_{t0} - \eta\Vds + \gamma \left( \sqrt{\phi_s + V_{sb}} - \sqrt{\phi_s} \right) $$
 
 
 
