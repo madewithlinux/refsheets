@@ -335,6 +335,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 slack: required arrival time $-$ arrival time
   \1 Contamination delay: just best case delay (smallest delay)
     \2 in this case, you'll count parallel transistors as parallel resistors
+  \1 not sure about this stuff, Peter just said to not worry about this question on the homework
 
 \zzz{Power Estimation}
   \1 Dynamic Power
@@ -343,8 +344,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
       \3 therefore this power usage is data dependent
       \3 therefore, you have to count the falling transitions in the output per time period
     \2 $P_{dynamic} = \frac{1}{T}\int_0^T i_{DD}(t) \VDD dt$
-    \2 for simple inverter case: $P_{dynamic} = C \VDD^2 f_{sw}$
-      \3 possibly for all cases?
+    \2 for any gate: $P_{dynamic} = C \VDD^2 f_{sw}$
   \1 Activity Factor $\alpha$
     \2 $\alpha$: how often this gate switches in terms of the base clock frequency
     \2 $\alpha=1$: clock; $\alpha=0.5$: every other cycle, etc...
