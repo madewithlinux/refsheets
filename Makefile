@@ -14,5 +14,5 @@ clean:
 	mkdir -p .latex
 	$(TEX) $(TEXOPTS) $<
 	# this compresses the output pdf file
-	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ .latex/$@
-
+	#gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ .latex/$@
+	cp .latex/$@ $@

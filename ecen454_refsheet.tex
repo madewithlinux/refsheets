@@ -294,25 +294,43 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 % lecture 6
 \zzz{Delay}
   \1 generally estimated with RC models
-  \1 effective R for transistors and C of gate caps and parasitic caps
-  \2 exactly what parasitic caps depends on exact layout (which stuff is shared between transistors)
+    \2 for nMOS with width $k$:
+    \2 resistance of $R/k$
+    \2 caps of $kC$ on all terminals
+    \2 pMOS same except resistance is $2R/k$
+  \1 depends on effective $R$ and $C$ of transistors 
+    \2 exactly what parasitic caps depends on exact layout (which stuff is shared between transistors)
   \1 width:
     \2 C proportional to width
      (approx 2 fF/$\mu$m)
     \2 R inversely proportional to width
       (approx 6k$\Omega$*$\mu$m)
     \2 TODO unity transistors
+  \1 find widths necessary for rise and fall resistance to be same as standard inverter
+    \2 pMOS is about half as conductive as nMOS, so the inverter has nMOS=1, pMOS=2
+    \2 larger width $\rightarrow$ smaller $R$
+    \2 transistors in series: delay adds, so double the width
+    \2 transistors in parallel: same as a single transistor (because we assume worst case of only one being active)
   \1 use effective resistance in RC model: $I_{ds}=V_{ds}/R$
     (just good enough for a RC model, not for current at arbitrary time)
   \1 find delay of circuit
     \2 decompose to RC model (take into account widths of each transistor)
       \3 replace transistors with resistors
-      \3 add parasitic caps
+      \3 add parasitic caps on either side of every transistor (cap value = width of transistor)
+        \4 caps with both pins short to ground don't count, are never charged
+        \4 caps from $\VDD$ to ground don't count, always charged
     \2 add together all R and C's to get delay
+      \3 don't count $R$ of nMOS and pMOS at the same time, because they're never on at the same time
   \1 Elmore Delay:
     \2 ON transistors look like resistors, so pullup/pulldown network is modeled as RC ladder
     \2 $t = \sum_{i\in nodes} R_{i-to-source}C_i$
     $= R_1C_1 + (R_1+R_2)C_2+\ldots+(R_1+\ldots+R_n)C_n$
+  \1 Contamination delay: just best case delay (smallest delay)
+    \2 in this case, you'll count parallel transistors as parallel resistors
+
+\zzz{Static Timing Analysis}
+  \1 format is Arrival / Required Arrival / Slack
+  \1 Arrival Time: maximum time from input to output
     
 
 \zzz{Power Estimation}
