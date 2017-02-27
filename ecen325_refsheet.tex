@@ -81,6 +81,28 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 $T(s)=\frac{1}{1+RCs}$
     \\ $|T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
     \\ $|\angle T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
+  \1 low pass
+    \2\begin{circuitikz}
+      \draw
+      (0,3) to [short, o-,l=$V_i$] (0,3)
+      (0,3) to [R, -*, l=$R$] (3,3)
+      (3,3) to [C, -, l=$C$] (3,2)
+      (3,2) to node[ground]{} (3,2)
+      (3,3) to [short, -o,l=$V_o$] (4,3);
+      \end{circuitikz}
+    \2 $T(s)=\frac{V_o}{V_i}=\frac{1}{1 + RCs}$
+    \2 corner frequency: $s=\frac{1}{RC}$ (also pole)
+  \1 high pass
+    \2\begin{circuitikz}
+      \draw
+      (0,3) to [short, o-,l=$V_i$] (0,3)
+      (0,3) to [C, -*, l=$C$] (3,3)
+      (3,3) to [R, -, l=$R$] (3,1)
+      (3,1) to node[ground]{} (3,1.5)
+      (3,3) to [short, -o,l=$V_o$] (4,3);
+      \end{circuitikz}
+    \2 $T(s)=\frac{V_o}{V_i}=\frac{RCs}{1+RCs}$
+    \2 zero: $s=0$, pole: $s=\frac{1}{RC}$
 
 \zzz{Bode Plots}
   \1 magnitude is plotted in $dB$: $|T(j\omega)|_{dB}=20\log_{10}|T(j\omega)|$
@@ -109,8 +131,28 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 	\1 step 0: if the op amp is ideal, write out ideal properties:
 		\2 $V_+=V_-$
 		\2 $I_-=0,I_+=0$
+    \2 $A \approx \infty$
 	\1 avoid doing KCL/KVL directly on the output node of the op amp
 	\1 ignore resistors from a point at $0V$ to ground
+
+\zzz{Non-Ideal Op Amps}
+  \1 $V_o = A (V_{+} - V_{-})$
+    \2 $A$: open-loop gain. Typically very large, 100,000 or more
+  \1 open-loop gain dependent on frequency: $A(s)=\frac{A_0}{1-\frac{s}{\omega_b}}$
+    \2 open-loop response drops off after $\omega_b$
+      \\(usually $2\pi \leq \omega_b \leq 2\pi100$)
+    \2 $A_0$: DC gain
+    \2 $\omega_t$: unity gain frequency: $dB(T(\omega_t))=1$
+      \\ $\omega_t \approx A_o \omega_b$
+      \\ AKA gain bandwidth product
+    \2 in this case, we still assume $I_-=I_+=0$ and $V_-=V_+$?
+  \1 slew rate
+    \2 max rate at which the output can change
+    \2 for a sinusoidal signal: ($V_{pk}$: peak voltage)
+      \\ $SR > 2 \pi f V_{pk}$ or $SR > \omega V_{pk}$
+      \\ $\frac{dV_o}{dt}|_{MAX} < SR$
+
+
 
 \zzz{Op Amp Equations}
   % http://pdp7.org/synthwiki/OpAmpCircuits.html
@@ -213,23 +255,6 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
       (opamp.-) -- (2.8,5.5)
       (2.8,5.5) -- (2.8,5.5) -- (3.2,5.5);
       \end{circuitikz}
-
-
-\zzz{Non-Ideal Op Amps}
-  \1 open-loop gain dependent on frequency: $A(s)=\frac{A_0}{1-\frac{s}{\omega_b}}$
-    \2 open-loop response drops off after $\omega_b$
-      \\(usually $2\pi \leq \omega_b \leq 2\pi100$)
-    \2 $A_0$: DC gain
-    \2 $\omega_t$: unity gain frequency: $dB(T(\omega_t))=1$
-      \\ $\omega_t \approx A_o \omega_b$
-      \\ AKA gain bandwidth product
-    \2 in this case, we still assume $I_-=I_+=0$ and $V_-=V_+$?
-  \1 slew rate
-    \2 max rate at which the output can change
-    \2 for a sinusoidal signal: ($V_{pk}$: peak voltage)
-      \\ $SR > 2 \pi f V_{pk}$ or $SR > \omega V_{pk}$
-      \\ $\frac{dV_o}{dt}|_{MAX} < SR$
-
 
 
 
