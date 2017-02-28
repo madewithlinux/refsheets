@@ -330,8 +330,9 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 worst case at each step
   \1 in form arrival time / required arrival time / slack
   \1 arrival time: input to output, take max
-  \1 required arrival time: output, take min?
-    \2 or work backward?
+  \1 required arrival time: output to input, take min
+    \2 work backward
+    \2 if a gate drives only one gate on it's output, this is trivial
   \1 slack: required arrival time $-$ arrival time
   \1 Contamination delay: just best case delay (smallest delay)
     \2 in this case, you'll count parallel transistors as parallel resistors

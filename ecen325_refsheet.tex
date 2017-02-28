@@ -126,6 +126,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
       \\ slope linearly ($\pm45^\circ/dec$) until $10\omega_0$
       \\ $0$ slope for $\omega>10\omega_0$
     \2 Constant $C$: no effect ($0$ for all $\omega$)
+  \1 Prof wants us to actually show the -3dB drop curve, not just a straight intersection
 
 \zzz{Solving systems with Op Amps}
 	\1 step 0: if the op amp is ideal, write out ideal properties:
@@ -136,6 +137,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 	\1 ignore resistors from a point at $0V$ to ground
 
 \zzz{Non-Ideal Op Amps}
+  \1 still assume that current at input terminals is 0
   \1 $V_o = A (V_{+} - V_{-})$
     \2 $A$: open-loop gain. Typically very large, 100,000 or more
   \1 open-loop gain dependent on frequency: $A(s)=\frac{A_0}{1-\frac{s}{\omega_b}}$
