@@ -72,6 +72,33 @@ pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
 femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 \end{tabular}
 
+\zzz{Ohm's Law}
+  $V = IR$,
+  \quad $I = \frac{V}{R}$,
+  \quad $R = \frac{V}{I}$
+
+
+\zzz{Complex Numbers}
+  \1 $z = x+iy = re^{i\theta} = r[\cos(\theta)+i\sin(\theta)]$
+  \1 $[r(\cos(\theta)+i\sin(\theta))]^n = r^n[\cos(n\theta)+i\sin(n\theta)]$
+  \1 $z^n = (re^{i\theta}) = r^ne^{in\theta}$
+  \1 $\frac{1}{i}=-i$
+  \1 $\sqrt[n]{z} = \sqrt[n]{r}e^{\frac{\theta}{n}+\frac{2k\pi}{n}}$ for $n\in N^*$ (ints $\geq0$)
+  \1 $e^{j\theta} = \cos(\theta) + j\sin(\theta)$
+  \1 $e^{-j\theta} = \cos(\theta) - j\sin(\theta)$
+  \1 $\cos(\theta) = \frac{1}{2}(e^{j\theta} + e^{-j\theta})$
+  \1 $\sin(\theta) = \frac{1}{2j}(e^{j\theta} - e^{-j\theta})$
+  \1 normalized: $sinc(t) = \frac{\sin(\pi t)}{\pi t}$
+  \1 $|\frac{a}{b}| = \frac{|a|}{|b|}$
+  \1 $\angle\frac{a}{b} = \angle{a} - \angle{b}$
+
+\zzz{Trig}
+  \1 $\cos^2(a)+\sin^2(a)=1$
+  \1 $\cos(2a)=\cos^2(a) - \sin^2(a) = 2\cos^2(a)-1 = 1-2\sin^2(a)$
+  \1 $\sin(2a) = 2\sin(a)\cos(a)$
+  \1 $\cos^2(a) = \frac{1}{2}(1 + \cos(2a))$
+  \1 $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))$
+
 
 \zzz{RC Filter}
   \1 Transmission Function: $T(s) = \frac{V_o(s)}{V_i(s)}$
@@ -166,7 +193,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 ideal: $T(s)=\frac{V_o}{V_i}=-\frac{R_2}{R_1}$
     \2 non-ideal: $T(s)=\frac{V_o}{V_i}
       =\frac{-R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
-      =\frac{-R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}$
+      =\frac{-R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
+      =\frac{-R_2/R_1}{1+\frac{s}{\omega_0}}$
     \\\begin{circuitikz}
       \draw
       (5,2) node[op amp] (opamp) {}
@@ -182,7 +210,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 ideal: $T(s)=\frac{V_o}{V_i}=1+\frac{R_2}{R_1}$
     \2 non-ideal: $T(s)=\frac{V_o}{V_i}
       =\frac{1+R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
-      =\frac{1+R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}$
+      =\frac{1+R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
+      =\frac{1+R_2/R_1}{1+\frac{s}{\omega_0}}$
     \\\begin{circuitikz}
       \draw
       (5,2) node[op amp] (opamp) {}
