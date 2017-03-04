@@ -12,11 +12,12 @@
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{multicol}
+\usepackage{minted}
 \usepackage{hyperref}
 \hypersetup{
-  pdftitle={CSCE 221 Reference Sheet},
+  pdftitle={CSCE 314 Reference Sheet},
   pdfauthor={Josh Wright},
-  pdfsubject={CSCE 221},
+  pdfsubject={CSCE 314},
   bookmarksnumbered=true,
   bookmarksopen=true,
   bookmarksopenlevel=1,
@@ -27,18 +28,6 @@
   linkcolor=blue,
   filecolor=magenta,      
   urlcolor=cyan,
-}
-\lstset{
-  basicstyle=\small\ttfamily, % font size and style of code
-  frame=single,
-  frame=l,
-  literate={~} {$\sim$}{1}, % this fixes ~ in code
-  tabsize=4,
-  numbers=none,
-  % numbersep=5pt,
-  % numberstyle=\footnotesize
-  % numberstyle=\scriptsize
-  % numberstyle=\tiny
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% paper size, orientation, margins %%
@@ -95,6 +84,10 @@
 \setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
 \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
 \begin{outline}[longenum]
+
+\AtBeginEnvironment{minted}{
+  \fontsize{10}{10}\selectfont
+}
 
 %%%%%%%%%%%%%%%%%%%%
 %% spacing config %%
@@ -158,15 +151,15 @@
   \1 \texttt{(+++)} choice: 
     \2 parse first argument if possible, else parse second argument
     \2 first successfully parsed argument is returned
-\vspace{-0.2cm}\begin{lstlisting}
+\begin{minted}{haskell}
 (+++) :: Parser a -> Parser a -> Parser a
 p +++ q =  P (\inp -> case parse p inp of
                   []        -> parse q inp
                   [(v,out)] -> [(v,out)])
-\end{lstlisting} \vspace{-0.2cm}
+\end{minted}
   \1 \texttt{((>>=))} sequential composition
     \2 \texttt{a >>= b} unboxes monad \texttt{a} into an output \texttt{a0} and then unboxes monad \texttt{b} with input \texttt{a0}
-\vspace{-0.2cm}\begin{lstlisting}
+\begin{minted}{haskell}
 type Parser a = String -> [(a, String)]
 -- implementation for in-class mostly-complete
 -- parser `monads'
@@ -174,9 +167,9 @@ type Parser a = String -> [(a, String)]
 (>>=) p1 p2 = \inp -> case parse p1 inp of
       []  ->  []
       [(v, out)] -> parse (p2 v) out
-\end{lstlisting} \vspace{-0.2cm}
+\end{minted}
   \2 usage:
-\vspace{-0.2cm}\begin{lstlisting}
+\begin{minted}{haskell}
 doubleDigit :: Parser [Char]
 doubleDigit =
   digit >>= \a ->
@@ -188,14 +181,14 @@ doubleDigit' = do
   a <- digit
   b <- digit
   return [a,b]
-\end{lstlisting} \vspace{-0.2cm}
+\end{minted}
   \2 \texttt{(>>)} is the same except that it discards the result of the first monad (thus it has signature \texttt{(>>) :: Parser a -> Parser b -> Parser b})
 
 \zzz{Parsing Examples}
   \1 bind and lambda method of parsing:
     \2 parse a number:
   \1 parse arithmetic expressions using do syntax:
-\vspace{-0.2cm}\begin{lstlisting}
+\begin{minted}{haskell}
 expr :: Parser Int
 expr  = do t <- term
            do {char '+'
@@ -221,7 +214,39 @@ factor  = do d <- digit
 
 eval   :: String -> Int
 eval xs = fst (head (parse expr xs))
-\end{lstlisting} \vspace{-0.2cm}
+\end{minted}
+
+\zzz{Trees}
+  \1 represent either a leaf node or some kind of internal node
+  \1 arithmetic tree declaration:
+\begin{minted}{haskell}
+data Expr = Val Int
+          | Neg Expr 
+          | Add Expr Expr 
+          | Mul Expr Expr
+\end{minted}
+  \1 how to fold over a tree:
+\begin{minted}{haskell}
+-- exprFold  valF        negF      addF     
+exprFold :: (Int->b) -> (b->b) -> (b->b->b) ->
+-- mulF        input   output
+  (b->b->b) -> Expr -> b
+exprFold valF _ _ _ (Val i) = valF i
+exprFold valF negF addF mulF (Neg e) 
+  = negF  (exprFold valF negF addF mulF e)
+exprFold valF negF addF mulF (Add s1 s2) 
+  = addF  (exprFold valF negF addF mulF s1)
+          (exprFold valF negF addF mulF s2)
+exprFold valF negF addF mulF (Mul s1 s2) 
+  = mulF  (exprFold valF negF addF mulF s1)
+          (exprFold valF negF addF mulF s2)
+\end{minted}
+
+
+
+
+% \begin{minted}{haskell}
+% \end{minted}
 
 
 \end{outline}
