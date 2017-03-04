@@ -1,0 +1,215 @@
+% # (c) Copyright 2017 Josh Wright
+\documentclass{article}
+\usepackage{mathrsfs,amsmath,amsthm,latexsym,paralist}
+\usepackage{mathtools} 
+\usepackage{bm} 
+\usepackage{listings}
+\usepackage{amssymb}   % for \varnothing, \therefore
+\usepackage{centernot} % for \centernot
+\usepackage{geometry}  % for margins
+\usepackage{outlines}  % for outline
+\usepackage{paralist}  % for compactitem, compactenum
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle={CSCE 221 Reference Sheet},
+  pdfauthor={Josh Wright},
+  pdfsubject={CSCE 221},
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1,
+  colorlinks=true,
+  pdfstartview=Fit,
+  pdfpagemode=UseOutlines,
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,      
+  urlcolor=cyan,
+}
+\lstset{
+  basicstyle=\small\ttfamily, % font size and style of code
+  frame=single,
+  frame=l,
+  literate={~} {$\sim$}{1}, % this fixes ~ in code
+  tabsize=4,
+  numbers=none,
+  % numbersep=5pt,
+  % numberstyle=\footnotesize
+  % numberstyle=\scriptsize
+  % numberstyle=\tiny
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% paper size, orientation, margins %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % good for on screen-only viewing
+% \def \columncount {3}
+\geometry{letterpaper, landscape, margin=0.25in}
+% good for printing
+\def \columncount {2}
+\geometry{letterpaper, portrait, margin=0.125in}
+
+
+% makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemi{\cdot}
+\renewcommand\labelitemi{\hspace{-1in}\tiny$\bullet$}
+\renewcommand\labelitemii{\labelitemi}
+
+
+\newcommand{\p}{\partial}
+\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\prt}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\grad}{\nabla}
+\newcommand{\vrt}[1]{\rotatebox{90}{#1}}
+\newcommand{\vrta}[2]{\rotatebox{90}{#1} \rotatebox{90}{#2}}
+\newcommand{\vrtb}[3]{\rotatebox{90}{#1} \rotatebox{90}{#2} \rotatebox{90}{#3}}
+\newcommand{\vrtc}[4]{\rotatebox{90}{#1} \rotatebox{90}{#2} \rotatebox{90}{#3} \rotatebox{90}{#4}}
+
+\newcommand{\remove}[1]{}
+% \newcommand{\remove}[1]{#1}
+
+\newcommand{\tabletextsize}{\large}
+
+
+% \setlength{\parindent}{0em}
+% \setdefaultleftmargin{0em}{0em}{}{}
+
+
+\begin{document}
+\allowdisplaybreaks
+% \large
+% \Large
+\noindent
+\textbf{CSCE 314 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright 2017
+\vspace{-0.4cm}
+% asterisk makes multicols finish one column before going onto the next
+\begin{multicols*}{\columncount}
+\setlength{\columnseprule}{0.2pt}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+\begin{outline}[longenum]
+
+%%%%%%%%%%%%%%%%%%%%
+%% spacing config %%
+%%%%%%%%%%%%%%%%%%%%
+% just in case I need even more space
+\newcommand{\upspace}{\vspace{-0.8px}\linespread{0}}
+% section titles
+% makes second-level itemize bullets instead of dashes
+\renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}} \upspace}
+\renewcommand{\1}{\upspace \oldOne   \hspace{-6px}}
+\renewcommand{\2}{\upspace \oldTwo   \hspace{-6px}}
+\renewcommand{\3}{\upspace \oldThree \hspace{-6px}}
+\renewcommand{\4}{\upspace \oldFour  \hspace{-6px}}
+% super-dense mode:
+% \renewcommand{\1}{\upspace $\bullet$\hspace{-0.5em} }
+% \renewcommand{\2}{\upspace $\bullet\bullet$\hspace{-0.5em} }
+% \renewcommand{\3}{\upspace $\bullet\bullet\bullet$\hspace{-0.5em} }
+% \renewcommand{\4}{\upspace $\bullet\bullet\bullet\bullet$\hspace{-0.5em} }
+
+% \newcommand{\zzz}[1]{{\noindent\textbf{#1:}}}
+% \renewcommand{\1}{$\bullet$}
+% \renewcommand{\2}{$\bullet$}
+% \renewcommand{\3}{$\bullet$}
+% \renewcommand{\4}{$\bullet$}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% real content starts here %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\zzz{General}
+  \1 \texttt{newtype Parser a = P (String -> [(a,String)])}
+  \1 Predicate: a function that takes one argument and returns a boolean
+    \2 if \texttt{pred x == True} then \texttt{x} satisfies predicate \texttt{pred}
+
+\zzz{Parsing.hs}
+  \1 \texttt{sat :: (Char -> Bool) -> Parser Char}
+    \2 returns a character if that character satisfies the given predicate
+  \1 \texttt{digit, letter, alphanum :: Parser Char}
+    \2 parses a digit, letter, or alpha-numeric letter respectively
+  \1 \texttt{char :: Char -> Parser Char}
+    \2 \texttt{char `a'} parses exactly the character \texttt{`a'}
+  \1 similar to above:
+    \texttt{
+      digit
+      letter
+      alphanum
+      lower
+      upper
+      string
+    }
+  \1 \texttt{many :: Parser a -> Parser [a]}
+    \2 parses 0 or more instances of \texttt{a} and collects them into a list
+  \1 \texttt{many1 :: Parser a -> Parser [a]}
+    \2 same as \texttt{many}, but 
+  \1 \texttt{+++} choice: 
+    \2 parse first argument if possible, else parse second argument
+    \2 first successfully parsed argument is returned
+\vspace{-0.2cm}\begin{lstlisting}
+(+++) :: Parser a -> Parser a -> Parser a
+p +++ q =  P (\inp -> case parse p inp of
+                  []        -> parse q inp
+                  [(v,out)] -> [(v,out)])
+\end{lstlisting} \vspace{-0.2cm}
+  \1 \texttt{>>=} sequential composition
+    \2 \texttt{a >>= b} unboxes monad \texttt{a} into an output \texttt{a0} and then unboxes monad \texttt{b} with input \texttt{a0}
+\vspace{-0.2cm}\begin{lstlisting}
+type Parser a = String -> [(a, String)]
+-- implementation for in-class mostly-complete
+-- parser `monads'
+(>>=) :: Parser a -> (a -> Parser b) -> Parser b
+(>>=) p1 p2 = \inp -> case parse p1 inp of
+      []  ->  []
+      [(v, out)] ->   parse (p2 v) out
+\end{lstlisting} \vspace{-0.2cm}
+
+
+\zzz{Parsing Examples}
+  \1 bind and lambda method of parsing:
+    \2 parse a number:
+  \1 parse arithmetic expressions using do syntax:
+\vspace{-0.2cm}\begin{lstlisting}
+expr :: Parser Int
+expr  = do t <- term
+           do {char '+'
+              ;e <- expr
+              ;return (t + e)
+              }
+            +++ return t
+
+term :: Parser Int
+term  = do f <- factor
+           do char '*'
+              t <- term
+              return (f * t)
+            +++ return f
+
+factor :: Parser Int
+factor  = do d <- digit
+             return (digitToInt d)
+           +++ do char '('
+                  e <- expr
+                  char ')'
+                  return e
+
+eval   :: String -> Int
+eval xs = fst (head (parse expr xs))
+\end{lstlisting} \vspace{-0.2cm}
+
+
+\end{outline}
+\end{multicols*}
+\end{document}
