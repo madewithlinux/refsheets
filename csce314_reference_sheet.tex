@@ -86,7 +86,7 @@
 \begin{outline}[longenum]
 
 \AtBeginEnvironment{minted}{
-  \fontsize{10}{10}\selectfont
+  \fontsize{9}{9}\selectfont
 }
 
 %%%%%%%%%%%%%%%%%%%%
@@ -127,6 +127,36 @@
   \1 \texttt{newtype Parser a = P (String -> [(a,String)])}
   \1 Predicate: a function that takes one argument and returns a boolean
     \2 if \texttt{pred x == True} then \texttt{x} satisfies predicate \texttt{pred}
+  \1 function composition:
+\begin{minted}{haskell}
+-- the . operator composes functions:
+(f . g) x == f (g x)
+\end{minted}
+
+\0 useful functions:
+\begin{minted}{haskell}
+-- 
+nubBy :: (a -> a -> Bool) -> [a] -> [a]
+nubBy pred xs = -- unique elements only from xs as 
+                -- determined by pred
+nub :: Eq a => [a] -> [a]
+nub xs = nubBy (==) a -- unique elements from xs
+-- 
+words :: String -> [String]
+words xs =  -- list of whitespace-separated 
+            -- words from xs
+--
+-- concatenate container of lists
+concat :: Foldable t => t [a] -> [a]
+-- or for list-of-lists specifically:
+concat :: [[a]] -> [a]
+concat xs = foldl (++) [] xs
+--
+-- like concat, but use a function to get the inner lists
+concatMap :: (a -> [b]) -> [a] -> [b]
+concatMap f xs =  foldr ((++) . f) [] xs
+\end{minted}
+
 
 \zzz{Parsing.hs}
   \1 \texttt{sat :: (Char -> Bool) -> Parser Char}
@@ -241,13 +271,122 @@ exprFold valF negF addF mulF (Mul s1 s2)
   = mulF  (exprFold valF negF addF mulF s1)
           (exprFold valF negF addF mulF s2)
 \end{minted}
+    \2 basically, just collect values into some type \texttt{b} and use supplied functions at each node to fold into single value
+    \2 useful for evaluating simple things like:
+\begin{minted}{haskell}
+-- evaluate an expression
+evalExpr'    = exprFold id (\x -> 0 - x) (+) (*)
+id --  integers map to integers
+(\x -> 0 - x) -- negation
+-- everything else is just simple numeric operators
+-- 
+-- count leaves in a tree
+countLeaves' = exprFold (\_ -> 1) id (+) (+)
+(\_ -> 1) -- leaf integer node is one node
+id -- negation node has only one child, pass on count
+(+) (+) -- nodes with two children: add number 
+        -- of leaf grandchildren
+\end{minted}
+
+
+\zzz{HW2: Water Gates}
+\begin{minted}{haskell}
+
+
+waterGate :: Int -> Int
+waterGate n =
+ length -- number of True's
+ $ filter id -- filter just True's
+ $ waterGate' n initial -- initial call to helper
+ where
+  -- start with all gates closed
+  initial = replicate n False
+  --
+  -- flip states
+  waterGate' 1 state = map not state 
+    -- base case: flip every state
+  waterGate' n state = flip n $ waterGate' (n-1) state
+    -- otherwise, first get the state for (n-1) and then flip every nth state
+  --
+  -- flip every nth gate
+  flip :: Int -> [Bool] -> [Bool]
+  flip 1 xs = map not xs -- flip every gate
+  -- flip only gates which index are multiples of n
+  flip nth xs = [ if (i `mod` nth == 0) then not x else x
+                -- zip each state with it's index
+                | (x,i) <- (zip xs [1..])  ]
+
+\end{minted}
+
+\zzz{HW2: Goldbach's Other Conjecture}
+\begin{minted}{haskell}
+-- check if a number is prime
+primeTest :: Integer -> Bool
+primeTest 1 = False
+primeTest t =  and [ (gcd t i) == 1 | i <- [2..t-1]]
+
+-- all numbers less than n that are double a square
+twiceSquares :: Integer -> [Integer]
+twiceSquares n = takeWhile (<n) [ 2 *x^2 | x <- [1..]]
+
+-- list of odd numbers
+oddList = map (\x -> 2*x + 1) [0..]
+-- all odd numbers that are composite (not prime)
+allOddComp = [ o | o <- (drop 1 oddList)
+                 , not (primeTest o)     ]
+
+-- if a number satisfies conditions for conjecture
+-- method: for enough square nubmers, check if n-(that number)
+-- is prime
+satsConds n = or [ primeTest k | 
+                  k <- map (\x->(n-x)) (twiceSquares n) ]
+
+-- find the first number 
+goldbachNum = head [ x | x <- allOddComp, not (satsConds x) ]
+\end{minted}
+
+
+\zzz{HW4: Sets}
+\begin{minted}{haskell}
+type Set a = [a]
+
+a = mkSet [1,2,3,4,5]
+b = mkSet [1,2,3]
+
+
+addToSet :: Eq a => Set a -> a -> Set a
+addToSet s a | a `elem` s = s
+             | otherwise = a : s
+
+mkSet :: Eq a => [a] -> Set a
+mkSet lst = foldl addToSet [] lst
+
+isInSet :: Eq a => Set a -> a -> Bool
+isInSet [] _ = False
+isInSet [a] b = a == b
+isInSet (x:xs) b | x == b = True
+                 | otherwise = isInSet xs b
+
+subset :: Eq a => Set a -> Set a -> Bool
+subset sub super = and [ isInSet super x | x <- sub  ]
+
+setEqual :: Eq a => Set a -> Set a -> Bool
+setEqual a b = subset a b && subset b a
+
+-- instance (Eq a) => Eq (Set a) where
+--   a == b = subset a b && subset b a
+
+setProd :: Set a -> Set a -> [(a,a)]
+setProd a b = [ (ai,bj) | ai <- a
+                        , bj <- b
+                        ]
+
+\end{minted}
 
 
 
-
-% \begin{minted}{haskell}
-% \end{minted}
-
+\begin{minted}{haskell}
+\end{minted}
 
 \end{outline}
 \end{multicols*}
