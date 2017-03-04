@@ -137,7 +137,7 @@
 
 \zzz{Parsing.hs}
   \1 \texttt{sat :: (Char -> Bool) -> Parser Char}
-    \2 returns a character if that character satisfies the given predicate
+    \2 returns a character if that character satisfies the predicate
   \1 \texttt{digit, letter, alphanum :: Parser Char}
     \2 parses a digit, letter, or alpha-numeric letter respectively
   \1 \texttt{char :: Char -> Parser Char}
@@ -155,7 +155,7 @@
     \2 parses 0 or more instances of \texttt{a} and collects them into a list
   \1 \texttt{many1 :: Parser a -> Parser [a]}
     \2 same as \texttt{many}, but 
-  \1 \texttt{+++} choice: 
+  \1 \texttt{(+++)} choice: 
     \2 parse first argument if possible, else parse second argument
     \2 first successfully parsed argument is returned
 \vspace{-0.2cm}\begin{lstlisting}
@@ -164,7 +164,7 @@ p +++ q =  P (\inp -> case parse p inp of
                   []        -> parse q inp
                   [(v,out)] -> [(v,out)])
 \end{lstlisting} \vspace{-0.2cm}
-  \1 \texttt{>>=} sequential composition
+  \1 \texttt{((>>=))} sequential composition
     \2 \texttt{a >>= b} unboxes monad \texttt{a} into an output \texttt{a0} and then unboxes monad \texttt{b} with input \texttt{a0}
 \vspace{-0.2cm}\begin{lstlisting}
 type Parser a = String -> [(a, String)]
@@ -173,9 +173,23 @@ type Parser a = String -> [(a, String)]
 (>>=) :: Parser a -> (a -> Parser b) -> Parser b
 (>>=) p1 p2 = \inp -> case parse p1 inp of
       []  ->  []
-      [(v, out)] ->   parse (p2 v) out
+      [(v, out)] -> parse (p2 v) out
 \end{lstlisting} \vspace{-0.2cm}
-
+  \2 usage:
+\vspace{-0.2cm}\begin{lstlisting}
+doubleDigit :: Parser [Char]
+doubleDigit =
+  digit >>= \a ->
+  digit >>= \b ->
+  return [a,b]
+-- is equivalent to
+doubleDigit' :: Parser [Char]
+doubleDigit' = do
+  a <- digit
+  b <- digit
+  return [a,b]
+\end{lstlisting} \vspace{-0.2cm}
+  \2 \texttt{(>>)} is the same except that it discards the result of the first monad (thus it has signature \texttt{(>>) :: Parser a -> Parser b -> Parser b})
 
 \zzz{Parsing Examples}
   \1 bind and lambda method of parsing:
