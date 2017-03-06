@@ -165,6 +165,8 @@ concatMap f xs =  foldr ((++) . f) [] xs
     \2 parses a digit, letter, or alpha-numeric letter respectively
   \1 \texttt{char :: Char -> Parser Char}
     \2 \texttt{char `a'} parses exactly the character \texttt{`a'}
+  \1 \texttt{item :: Parser Char}
+    \2 parses any character
   \1 similar to above:
     \texttt{
       digit
@@ -383,6 +385,28 @@ setProd a b = [ (ai,bj) | ai <- a
 
 \end{minted}
 
+
+\zzz{Prev Exam: Run Length Encoding}
+\begin{minted}{haskell}
+import Parsing
+import Data.Char
+
+q4 = do 
+  d <- sat isUpper
+  e <- char (toLower d)
+  f <- many item
+  return [d,e]
+
+ones = (map (\_ -> 1) [1..])
+
+myRLE [] = []
+myRLE ls = myhelper (zip ones ls)
+
+myhelper [(n,c)] =  [(n,c)] 
+myhelper ((n,c):(m,d):rest)
+  | (d == c)    = myhelper (((n+m),c):rest)
+  | otherwise	= (n,c):myhelper ((m,d):rest)
+\end{minted}
 
 
 \begin{minted}{haskell}
