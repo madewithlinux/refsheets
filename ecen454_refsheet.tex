@@ -331,6 +331,10 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 ON transistors look like resistors, so pullup/pulldown network is modeled as RC ladder
     \2 $t = \sum_{i\in nodes} R_{i-to-source}C_i$
     $= R_1C_1 + (R_1+R_2)C_2+\ldots+(R_1+\ldots+R_n)C_n$
+  \1 Ideal number of stages for inverter driving large load
+    \2 delay $ = \left( \frac{C_{load}}{C_{inv}} \right) ^\frac{1}{k} k R_{inv} C_{inv}$
+    \2 $k$: number of stages
+    \2 stage size ratio: $\left( \frac{C_{load}}{C_{inv}} \right) ^\frac{1}{k}$
 
 \zzz{Static Timing Analysis}
   \1 worst case at each step
