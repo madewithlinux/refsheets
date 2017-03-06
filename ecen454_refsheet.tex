@@ -113,12 +113,18 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 Polysilicon is just silicon without the crystal structure
 
 \zzz{Transistors}
-  \1 pMOS:
-    \2 has the bubble
-    \2 on when input is 0, off when input is 1
   \1 nMOS
     \2 no bubble
     \2 on when input is on, off when input is off
+    \2 base (of whole chip) is p-substrate
+    \2 spot of n+ for source and drain, joined by a small layer of oxide (SiO$_2$) and polysilicon (gate). also has a spot of p+ (base) connected to ground
+  \1 pMOS:
+    \2 has the bubble
+    \2 on when input is 0, off when input is 1
+    \2 whole thing sits in an n-well (inside the p-substrate base)
+    \2 source and drain are spots of p+ connected by gate.
+      Gate is polysilicon layer separated from rest of chip by thin layer of SiO$_2$ on bottom.
+      Also has a n+ spot for base (connected to VDD)
   \1 CMOS: when you combine a nMOS and pMOS network together to make a gate, where one is the compliment of the other
   \1 $V_t$: Threshold voltage. Nominal voltage below which the transistor is off
     \2 below as in closer to 0, not less
@@ -265,7 +271,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 saturated: $V_{in}<V_{DD}+V_{tp}, V_{out}<V_{in}-V_{tp}$
   \1 to calculate actual output voltage, balance $I_{dsn}=I_{dsp}$ (easiest to do graphically)
     \2 end up with a graph of $V_{out}$ as function of $V_{in}$
-    \includegraphics[width=\columnwidth]{ecen454/DC__response_Vo_Vi_nMOS_pMOS.png}
+    \includegraphics[width=\columnwidth]{../ecen454/DC__response_Vo_Vi_nMOS_pMOS.png}
     \2 don't want to switch nMOS and pMOS because then nMOS would saturate at far end of graph (and vice versa for pMOS)
     \2 horizontal position of graph can be varied by tuning $\beta_p / \beta_n$
       \3 called beta ratio, or skewed gate
