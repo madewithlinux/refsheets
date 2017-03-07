@@ -33,8 +33,8 @@
 %% paper size, orientation, margins %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % good for on screen-only viewing
-% \def \columncount {3}
-\geometry{letterpaper, landscape, margin=0.25in}
+% \def \columncount {2}
+% \geometry{letterpaper, landscape, margin=0.25in}
 % good for printing
 \def \columncount {2}
 \geometry{letterpaper, portrait, margin=0.125in}
@@ -71,9 +71,6 @@
 \allowdisplaybreaks
 % \large
 % \Large
-\noindent
-\textbf{CSCE 314 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright 2017
-\vspace{-0.4cm}
 % asterisk makes multicols finish one column before going onto the next
 \begin{multicols*}{\columncount}
 \setlength{\columnseprule}{0.2pt}
@@ -116,7 +113,9 @@
 % \renewcommand{\3}{$\bullet$}
 % \renewcommand{\4}{$\bullet$}
 
-
+\noindent
+\textbf{CSCE 314 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright 2017
+% \vspace{-0.4cm}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,9 +132,9 @@
 (f . g) x == f (g x)
 \end{minted}
 
-\0 useful functions:
+\0 useful library functions:
 \begin{minted}{haskell}
--- 
+-- Data.List
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 nubBy pred xs = -- unique elements only from xs as 
                 -- determined by pred
@@ -155,6 +154,20 @@ concat xs = foldl (++) [] xs
 -- like concat, but use a function to get the inner lists
 concatMap :: (a -> [b]) -> [a] -> [b]
 concatMap f xs =  foldr ((++) . f) [] xs
+-- 
+-- get the longest prefix of xs for which pred is true
+-- and also return the rest of the list
+span :: (a -> Bool) -> [a] -> ([a], [a])
+span pred xs = (takeWhile pred xs, dropWhile pred xs)
+-- 
+-- repeat a = infinite list of a
+repeat :: a -> [a]
+repeat x = map (\_ -> x) [1..]
+repeat x = [ x | _ <- [1..] ]
+-- replicate n a = list of length n repeating a
+replicate :: Int -> a -> [a]
+replicate n x = map (\_ -> x) [1..n]
+replicate n x = [ x | _ <- [1..n] ]
 \end{minted}
 
 
@@ -270,7 +283,7 @@ exprFold valF negF addF mulF (Add s1 s2)
   = addF  (exprFold valF negF addF mulF s1)
           (exprFold valF negF addF mulF s2)
 exprFold valF negF addF mulF (Mul s1 s2) 
-  = mulF  (exprFold valF negF addF mulF s1)
+  = mulF  (exprFold valF negF addF mulF s1) 
           (exprFold valF negF addF mulF s2)
 \end{minted}
     \2 basically, just collect values into some type \texttt{b} and use supplied functions at each node to fold into single value
@@ -404,8 +417,40 @@ myRLE ls = myhelper (zip ones ls)
 
 myhelper [(n,c)] =  [(n,c)] 
 myhelper ((n,c):(m,d):rest)
-  | (d == c)    = myhelper (((n+m),c):rest)
-  | otherwise	= (n,c):myhelper ((m,d):rest)
+  | (d == c)  = myhelper (((n+m),c):rest)
+  | otherwise = (n,c):myhelper ((m,d):rest)
+\end{minted}
+
+\zzz{Rock Paper Scissors}
+\begin{minted}{haskell}
+data RPS = Rock | Paper | Scissors
+  deriving (Eq, Show)
+
+rps :: RPS -> RPS -> Int
+rps a b | a == b = 0
+rps Rock     Scissors = 1
+rps Paper    Rock     = 1
+rps Scissors Paper    = 1
+rps _        _        = 2
+
+rps2 :: RPS -> RPS -> Int
+rps2 a b =
+  if a == b then 0 else case (a,b) of
+    (Rock,     Scissors) -> 1
+    (Paper,    Rock)     -> 1
+    (Scissors, Paper)    -> 1
+    _ -> 2
+
+\end{minted}
+
+\zzz{99 problems}
+\begin{minted}{haskell}
+-- 9. pack consecutive duplicates into sublists
+pack (x:xs) = let (first,rest) = span (==x) xs
+               in (x:first) : pack rest
+pack [] = []
+-- example:
+pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 \end{minted}
 
 
