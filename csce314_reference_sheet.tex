@@ -168,6 +168,25 @@ repeat x = [ x | _ <- [1..] ]
 replicate :: Int -> a -> [a]
 replicate n x = map (\_ -> x) [1..n]
 replicate n x = [ x | _ <- [1..n] ]
+--
+-- folds (works on any foldable, not just lists)
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f z [a,b,c] = a `f` (b `f`  (c `f` z))
+foldr f z [a,b,c] = f a $ f b $ f c z
+-- combines into z from right to left
+-- can potentially work on an empty list if one of the folds
+-- does not evaluate it's second argument
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl f z [a,b,c] = ((z `f` a) `f` b) `f` c
+foldl f z [a,b,c] = f (f (f z a) b) c
+-- evaluates from right to left
+-- will not work on infinite list because it must start at 
+-- the end of the list
+-- 
+-- these are the same as above, except they take the first 
+-- two elements for the first application of f
+foldr1 :: (a -> a -> a) -> [a] -> a
+foldl1 :: (a -> a -> a) -> [a] -> a                                                                                                                                                                                                                                                                                                                                                                       =
 \end{minted}
 
 
@@ -212,6 +231,7 @@ type Parser a = String -> [(a, String)]
 (>>=) p1 p2 = \inp -> case parse p1 inp of
       []  ->  []
       [(v, out)] -> parse (p2 v) out
+                                                                                                                                                                                                                                                                                                                                                                       =
 \end{minted}
   \2 usage:
 \begin{minted}{haskell}
