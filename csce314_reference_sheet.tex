@@ -37,7 +37,7 @@
 % \geometry{letterpaper, landscape, margin=0.25in}
 % good for printing
 \def \columncount {2}
-\geometry{letterpaper, portrait, margin=0.125in}
+\geometry{letterpaper, portrait, margin=0.375in}
 
 
 % makes second-level itemize bullets instead of dashes
@@ -174,8 +174,8 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr f z [a,b,c] = a `f` (b `f`  (c `f` z))
 foldr f z [a,b,c] = f a $ f b $ f c z
 -- combines into z from right to left
--- can potentially work on an empty list if one of the folds
--- does not evaluate it's second argument
+-- can potentially work on an empty list if one of the
+-- folds does not evaluate it's second argument
 foldl :: (b -> a -> b) -> b -> [a] -> b
 foldl f z [a,b,c] = ((z `f` a) `f` b) `f` c
 foldl f z [a,b,c] = f (f (f z a) b) c
@@ -341,7 +341,8 @@ waterGate n =
   waterGate' 1 state = map not state 
     -- base case: flip every state
   waterGate' n state = flip n $ waterGate' (n-1) state
-    -- otherwise, first get the state for (n-1) and then flip every nth state
+  -- otherwise, first get the state for (n-1) and then 
+  -- flip every nth state
   --
   -- flip every nth gate
   flip :: Int -> [Bool] -> [Bool]
@@ -371,13 +372,14 @@ allOddComp = [ o | o <- (drop 1 oddList)
                  , not (primeTest o)     ]
 
 -- if a number satisfies conditions for conjecture
--- method: for enough square nubmers, check if n-(that number)
--- is prime
+-- method: for enough square nubmers, check if
+-- n-(that number) is prime
 satsConds n = or [ primeTest k | 
                   k <- map (\x->(n-x)) (twiceSquares n) ]
 
 -- find the first number 
-goldbachNum = head [ x | x <- allOddComp, not (satsConds x) ]
+goldbachNum = head [ x | x <- allOddComp
+                       , not (satsConds x) ]
 \end{minted}
 
 
