@@ -26,7 +26,7 @@
 \newlist{longenum}{itemize}{5}
 \setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
 \setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
-\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=\texttt{\%}}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=\texttt{=}}
 \setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
 \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
 % \begin{outline}[compactitem]
@@ -287,6 +287,31 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
       (opamp.-) -- (2.8,5.5)
       (2.8,5.5) -- (2.8,5.5) -- (3.2,5.5);
       \end{circuitikz}
+
+\zzz{Diodes}
+  \1 $I_D = I_S \left( e^{\frac{V_D}{n V_T}} - 1 \right)$
+    \2 $I_S=10^{-12}$A
+    \2 $V_T=25$mV
+  \1 small signal resistance: $R_D = \frac{nV_T}{I_D}$
+    \2 $I_D$: average (DC) current through diode (due to forward bias)
+  \1 bridge rectifier shape: all the diodes point toward the + end of the output (away from ground)
+\zzz{Design an (unregulated) AC adapter}
+  \1 $V_S$: AC voltage input
+  \1 $V_{S2}$: output of transformer (still AC)
+  \1 $V_p$: peak DC output
+  \2 $V_r$: peak-to-peak ripple voltage (maximum variation)
+  \1 $V_p=V_{S2}-$ (diode voltage)
+    \2 diode voltage = 0.7V for single wave rectifier or center-tapped transformer
+    \2 diode voltage = 1.4V for full-wave rectifier
+  \1 turns ratio = $n=\frac{V_S}{V_{S2}}$
+  \1 apparent load resistance: $R_L = \frac{V_o}{I_L}$
+  \1 ripple voltage: $V_r=\frac{f}{R_L C}$
+    \2 $f$: actual ripple frequency (double for full-wave rectifier)
+    \2 $C$: filter cap size
+  \1 Peak Inverse Voltage: $ PIV = V_{S2}-0.7V$
+  \1 avg diode current: $I_{Davg}=I_L \left( 1+\pi\sqrt{\frac{2}{V_r}} \right)$
+  \1 max diode current: $I_{Dmax}=I_L \left( 1+2\pi\sqrt{\frac{2}{V_r}} \right)$
+    \2 only difference is $\pi \rightarrow 2\pi$
 
 
 
