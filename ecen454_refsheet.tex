@@ -327,6 +327,15 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
         \4 caps from $\VDD$ to ground don't count, always charged
     \2 add together all R and C's to get delay
       \3 don't count $R$ of nMOS and pMOS at the same time, because they're never on at the same time
+  \1 \textbf{Delay} $d=f+p$
+  \1 \textbf{Effort Delay} $f = gh$
+    \2 $g$: logical effort: relative ability of gate to deliver current
+      \3 $g=1$ for standard inverter
+    \2 $h$: electrical effort: ratio of input to output capacitance
+      \3 also called fanout
+  \1 \textbf{Parasitic Delay} $p$
+    \2 independent of load (represents delay of gate driving no load)
+    \2 set by internal parasitic capacitance
   \1 Elmore Delay:
     \2 ON transistors look like resistors, so pullup/pulldown network is modeled as RC ladder
     \2 $t = \sum_{i\in nodes} R_{i-to-source}C_i$
@@ -372,7 +381,23 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     $$ I_{ds} = I_{ds0} e^{\frac{\Vgs-\Vt}{nv_T}} \left( 1 - e^{\frac{-\Vds}{v_T}} \right) $$
     $$ V_t = V_{t0} - \eta\Vds + \gamma \left( \sqrt{\phi_s + V_{sb}} - \sqrt{\phi_s} \right) $$
 
+% lecture 8? (HW7)
 
+\zzz{Wire Delay}
+  \1 $n$-segment $\pi$ model:
+  \\ to model, find total R and C of wire; then split up according to $n$ segment model, then combine adjacent caps
+
+\zzz{Miller Effect}
+  \1 AKA crosstalk; it's when one wire affects another
+  \1 it's dynamic; depends on what signal the wires are carrying
+  \1 MCF: Miller factor (or something)
+  \1 for two wires A and B, model as $C_{eff} = C_{gnd} + MCF \cdot C_{adj}$
+  \1 MCF: \begin{tabular}{l|l}
+  behavior of B & MCF \\ \hline
+  constant   & 1 \\
+  with A     & 0 \\
+  opposite A & 2 \\
+  \end{tabular}
 
 
 \end{outline}
