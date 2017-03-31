@@ -314,7 +314,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 only difference is $\pi \rightarrow 2\pi$
 
 \zzz{Transistors}
-  \1 $V_T = 25$mV at room temperature (according to textbook)
+  \1 $V_T = 25$mV at room temperature (according to textbook and prof),
+  \\ $V_T = 26$mV at room temperature (according to lab)
   \1 $\beta$: a physical constant of the transistor. Usually about 100 or 200
   \1 
     $I_B + I_C = I_E$, 
@@ -325,7 +326,24 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     $I_C = \alpha I_E$
   \1
     $I_C = I_S ( e^{\frac{V_{BE}}{n V_T}} )$,
+  \1 AC (assumes correct DC bias):
+    $g_m = \frac{1}{r_e} = \frac{I_C}{V_T}$
 
+\zzz{Transistor circuits by inspection}
+  \1 this all assumes that the transistor is properly DC biased
+  \1 three types of amplifier circuits: common emitter, common base, common collector
+    \2 CE, CB, CC
+    \2 the ``common'' pin is the one that is neither AC input nor output
+  \1 intrinsic gain: gain directly from the input pin of the transistor to the output, ignoring any source resistance or such things whatever
+    \2 when you chain multiple amplifiers together, this is the one you use
+  \1 when you're driving a finite-impedance load (a load other than open circuit), you have to consider $R_o$ as $R_o||R_L$
+    \2 this will change the gain, which is why it's often helpful to put a CC buffer at the end of an amplifier
+  \1 $R_i$: input impedance: impedance as seen from the input
+    \2 includes the transistor, does not include $R_s$
+  \1 CE: Common Emitter
+    \2 input: base; output: collector
+    \2 intrinsic gain: $\frac{V_o}{V_i}= -\alpha\frac{R_C}{r_e + R_E} \approx -\frac{R_C}{r_e + R_E}$
+    \2 $R_o = R_C$
 
 
 
