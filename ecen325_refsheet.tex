@@ -340,10 +340,26 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 this will change the gain, which is why it's often helpful to put a CC buffer at the end of an amplifier
   \1 $R_i$: input impedance: impedance as seen from the input
     \2 includes the transistor, does not include $R_s$
+  \1 $g_m = \frac{I_C}{V_T}$
+  \\ $r_\pi = \frac{beta}{g_m}$
+  \\ $r_e = \frac{V_T}{I_E} = \frac{\alpha}{g_m} \approx \frac{1}{g_m}$
+  \\ $r_o = \frac{V_A}{I_C} \approx \infty$
+  \1 TODO pictures!
   \1 CE: Common Emitter
     \2 input: base; output: collector
-    \2 intrinsic gain: $\frac{V_o}{V_i}= -\alpha\frac{R_C}{r_e + R_E} \approx -\frac{R_C}{r_e + R_E}$
+    \2 intrinsic gain: $\frac{V_o}{V_b}= -\alpha\frac{R_C}{r_e + R_E} \approx -\frac{R_C}{r_e + R_E}$
+    \2 $R_i=(\beta+1)(r_e+R_E)$
     \2 $R_o = R_C$
+    \2 if you have a $R_L$ then you have to put that in parallel with $R_C$ when calculating $\frac{V_o}{V_b}$
+  \1 CB: Common Base
+    \2 $\frac{V_o}{V_b} = \alpha\frac{R_C}{R_i} \approx \frac{R_C}{R_i}$
+    \2 $R_i = r_e + \frac{R_B}{\beta+1}$
+    \2 $R_o=R_C$
+  \1 CC: Common Collector
+    \2 gain $\approx 1$ because it's a buffer
+    \2 $\frac{V_o}{V_b} = \frac{R_E}{r_e+R_E}$
+    \2 $R_i = (\beta+1)(r_e+R_E)$
+    \2 $R_o = R_E||r_e = \frac{R_E*r_e}{R_E+r_e}$
 
 
 
