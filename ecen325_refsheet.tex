@@ -329,6 +329,20 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 AC (assumes correct DC bias):
     $g_m = \frac{1}{r_e} = \frac{I_C}{V_T}$
 
+\zzz{Current Mirror}\\
+\includegraphics[width=0.46\columnwidth]{../ecen325/current_mirror_npn.png}
+\includegraphics[width=0.44\columnwidth]{../ecen325/current_mirror_pnp.png}
+  \1 Q1 has the base shorted to collector, Q2 does not
+  \1 $R_{bias}=R_{ref}$: the current that is mirrored
+  \1 $I_{ref}=(V_{CC}-0.7)/R_{ref}$
+  \1 $R_{load}$ has the same current through it as $R_{ref}$ does
+    \2 that is, $I_{ref} = I_{load}$
+  \1 you can chain together multiple transistors (Q3,Q4...) all off of
+    the same Q1 and they will all get the same current
+    \2 In this case, each Q2,Q3... output is considered separate from each other
+      in both DC and AC analysis
+  \1 only applies when transistors are matched! (we assume they are)
+
 \zzz{Transistor circuits by inspection}
   \1 this all assumes that the transistor is properly DC biased
   \1 three types of amplifier circuits: common emitter, common base, common collector
