@@ -26,7 +26,7 @@
 \newlist{longenum}{itemize}{5}
 \setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
 \setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
-\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=\texttt{=}}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\cdot$}
 \setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
 \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
 % \begin{outline}[compactitem]
@@ -131,31 +131,31 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 %       \end{circuitikz}
 %     \2 $T(s)=\frac{V_o}{V_i}=\frac{RCs}{1+RCs}$
 %     \2 zero: $s=0$, pole: $s=\frac{1}{RC}$
-% 
-% \zzz{Bode Plots}
-%   \1 magnitude is plotted in $dB$: $|T(j\omega)|_{dB}=20\log_{10}|T(j\omega)|$
-%   \1 starts on y-axis at DC offset with slope 0
-%   \1 just add together the bode plots of each individual pole, zero, and the DC offset
-%   \1 poles always slope down, zeros slope up
-%     \\ (applies for both magnitude and phase)
-%   \1 $dec$=decade, e.g. from $10^0$ to $10^1$
-%   \1 magnitude:
-%     \2 Pole/Zero at origin:
-%       \\ constant slope $\pm20db/dec$ for all $\omega$; $0dB$ at $\omega=10^0=1$
-%     \2 Pole/Zero at $\omega_0$:
-%       \\ 0 for $\omega<\omega_0$
-%       \\ slope $\pm20\frac{db}{dec}$ after
-%     \2 Constant $C$: constant line at $20\log_{10}(|C|)$
-%   \1 phase:
-%     \2 Pole at origin: constant $-\frac{\pi}{2}$ or $-90^\circ$
-%     \2 Zero at origin: constant $+\frac{\pi}{2}$ or $+90^\circ$
-%     \2 Pole/Zero at $\omega_0$:
-%       \\ $0$ for $\omega<\frac{\omega_0}{10}$
-%       \\ slope linearly ($\pm45^\circ/dec$) until $10\omega_0$
-%       \\ $0$ slope for $\omega>10\omega_0$
-%     \2 Constant $C$: no effect ($0$ for all $\omega$)
-%   \1 Prof wants us to actually show the -3dB drop curve, not just a straight intersection
-% 
+
+\zzz{Bode Plots}
+  \1 magnitude is plotted in $dB$: $|T(j\omega)|_{dB}=20\log_{10}|T(j\omega)|$
+  \1 starts on y-axis at DC offset with slope 0
+  \1 just add together the bode plots of each individual pole, zero, and the DC offset
+  \1 poles always slope down, zeros slope up
+    \\ (applies for both magnitude and phase)
+  \1 $dec$=decade, e.g. from $10^0$ to $10^1$
+  \1 magnitude:
+    \2 Pole/Zero at origin:
+      \\ constant slope $\pm20db/dec$ for all $\omega$; $0dB$ at $\omega=10^0=1$
+    \2 Pole/Zero at $\omega_0$:
+      \\ 0 for $\omega<\omega_0$
+      \\ slope $\pm20\frac{db}{dec}$ after
+    \2 Constant $C$: constant line at $20\log_{10}(|C|)$
+  \1 phase:
+    \2 Pole at origin: constant $-\frac{\pi}{2}$ or $-90^\circ$
+    \2 Zero at origin: constant $+\frac{\pi}{2}$ or $+90^\circ$
+    \2 Pole/Zero at $\omega_0$:
+      \\ $0$ for $\omega<\frac{\omega_0}{10}$
+      \\ slope linearly ($\pm45^\circ/dec$) until $10\omega_0$
+      \\ $0$ slope for $\omega>10\omega_0$
+    \2 Constant $C$: no effect ($0$ for all $\omega$)
+  \1 Prof wants us to actually show the -3dB drop curve, not just a straight intersection
+
 % \zzz{Solving systems with Op Amps}
 %     \1 step 0: if the op amp is ideal, write out ideal properties:
 %         \2 $V_+=V_-$
@@ -163,7 +163,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 %     \2 $A \approx \infty$
 %     \1 avoid doing KCL/KVL directly on the output node of the op amp
 %     \1 ignore resistors from a point at $0V$ to ground
-% 
+%
 % \zzz{Non-Ideal Op Amps}
 %   \1 still assume that current at input terminals is 0
 %   \1 $V_o = A (V_{+} - V_{-})$
@@ -181,49 +181,49 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 %     \2 for a sinusoidal signal: ($V_{pk}$: peak voltage)
 %       \\ $SR > 2 \pi f V_{pk}$ or $SR > \omega V_{pk}$
 %       \\ $\frac{dV_o}{dt}|_{MAX} < SR$
-% 
-% 
-% 
-% \zzz{Op Amp Equations}
-%   % http://pdp7.org/synthwiki/OpAmpCircuits.html
-%   \1 general form: $T(s)=\frac{K_0}{1+\frac{s}{\omega_0}}$
-%     \2 $T(0)=K_0$: DC offset. For these simple ones, it's equal to ideal response
-%     \2 $\omega_0=\frac{\omega_t}{1+R_2/R_1}$
-%   \1 inverting op amp:
-%     \2 ideal: $T(s)=\frac{V_o}{V_i}=-\frac{R_2}{R_1}$
-%     \2 non-ideal: $T(s)=\frac{V_o}{V_i}
-%       =\frac{-R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
-%       =\frac{-R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
-%       =\frac{-R_2/R_1}{1+\frac{s}{\omega_0}}$
-%     \\\begin{circuitikz}
-%       \draw
-%       (5,2) node[op amp] (opamp) {}
-%       (1,2.5) to [short, o-, l=$V_i$] (1,2.5)
-%       (1,2.5) to [R, l=$R_1$] (opamp.-)
-%       (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
-%       (opamp.+) to (3.8,1.2) node[ground]{}
-%       (3.8,3.5) to [short, -*] (opamp.-)
-%       (6.2,3.5) to [short, -*] (opamp.out)
-%       (opamp.out) to [short, -o, l=$V_o$] (7, 2);
-%       \end{circuitikz}
-%   \1 non-inverting op-amp:
-%     \2 ideal: $T(s)=\frac{V_o}{V_i}=1+\frac{R_2}{R_1}$
-%     \2 non-ideal: $T(s)=\frac{V_o}{V_i}
-%       =\frac{1+R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
-%       =\frac{1+R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
-%       =\frac{1+R_2/R_1}{1+\frac{s}{\omega_0}}$
-%     \\\begin{circuitikz}
-%       \draw
-%       (5,2) node[op amp] (opamp) {}
-%       (1,2.5) to [short, -] (1,2) node[ground]{}
-%       (1,2.5) to [R, l=$R_1$] (opamp.-)
-%       (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
-%       (opamp.+) to (3.5,1.5)
-%       (3.5,1.5) to [short, o-, l=$V_i$] (3.5,1.5)
-%       (3.8,3.5) to [short, -*] (opamp.-)
-%       (6.2,3.5) to [short, -*] (opamp.out)
-%       (opamp.out) to [short, -o, l=$V_o$] (7, 2);
-%       \end{circuitikz}
+
+
+
+\zzz{Op Amp Equations}
+  % http://pdp7.org/synthwiki/OpAmpCircuits.html
+  \1 general form: $T(s)=\frac{K_0}{1+\frac{s}{\omega_0}}$
+    \2 $T(0)=K_0$: DC offset. For these simple ones, it's equal to ideal response
+    \2 $\omega_0=\frac{\omega_t}{1+R_2/R_1}$
+  \1 inverting op amp:
+    \2 ideal: $T(s)=\frac{V_o}{V_i}=-\frac{R_2}{R_1}$
+    \2 non-ideal: $T(s)=\frac{V_o}{V_i}
+      =\frac{-R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
+      =\frac{-R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
+      =\frac{-R_2/R_1}{1+\frac{s}{\omega_0}}$
+    \\\begin{circuitikz}
+      \draw
+      (5,2) node[op amp] (opamp) {}
+      (1,2.5) to [short, o-, l=$V_i$] (1,2.5)
+      (1,2.5) to [R, l=$R_1$] (opamp.-)
+      (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
+      (opamp.+) to (3.8,1.2) node[ground]{}
+      (3.8,3.5) to [short, -*] (opamp.-)
+      (6.2,3.5) to [short, -*] (opamp.out)
+      (opamp.out) to [short, -o, l=$V_o$] (7, 2);
+      \end{circuitikz}
+  \1 non-inverting op-amp:
+    \2 ideal: $T(s)=\frac{V_o}{V_i}=1+\frac{R_2}{R_1}$
+    \2 non-ideal: $T(s)=\frac{V_o}{V_i}
+      =\frac{1+R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
+      =\frac{1+R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
+      =\frac{1+R_2/R_1}{1+\frac{s}{\omega_0}}$
+    \\\begin{circuitikz}
+      \draw
+      (5,2) node[op amp] (opamp) {}
+      (1,2.5) to [short, -] (1,2) node[ground]{}
+      (1,2.5) to [R, l=$R_1$] (opamp.-)
+      (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
+      (opamp.+) to (3.5,1.5)
+      (3.5,1.5) to [short, o-, l=$V_i$] (3.5,1.5)
+      (3.8,3.5) to [short, -*] (opamp.-)
+      (6.2,3.5) to [short, -*] (opamp.out)
+      (opamp.out) to [short, -o, l=$V_o$] (7, 2);
+      \end{circuitikz}
 %   \1 integrating
 %     \2 ideal: $V_o = -\int_{0}^{t} \frac{V_i}{RC} dt + C$
 %       \3 $C=$ $V_o(t)$ at $t=0$
@@ -312,17 +312,23 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 standard AC voltage is $110\sqrt{2}V \approx155.563V$
   \1 $V_{S2}$: output of transformer (still AC)
   \1 $V_p$: peak DC output
-  \2 $V_r$: peak-to-peak ripple voltage (maximum variation)
+  \1 $V_r$: peak-to-peak ripple voltage (maximum variation)
+    \2 often given as a small percentage of $V_p$
   \1 $V_p=V_{S2}-$ (diode voltage)
     \2 diode voltage = 0.7V for single wave rectifier or center-tapped transformer
     \2 diode voltage = 1.4V for full-wave rectifier
     \2 (corresponds to how many diodes you need)
   \1 turns ratio = $n=\frac{V_S}{V_{S2}}$
+    \2 if the transformer is center-tapped, each sub-coil only gets half of $V_{S2}$; so use $n=\frac{1}{2}\frac{V_S}{V_{S2}}$
   \1 apparent load resistance: $R_L = \frac{V_o}{I_L}$
-  \1 ripple voltage: $V_r=\frac{f}{R_L C}$
+  \1 ripple voltage: $V_r=V_p\frac{T}{R_L C}$
+    \2 $T$: period of ripple (half of frequency of AC input)
+        \3 $T=\frac{1}{f}$
     \2 $f$: actual ripple frequency (double for full-wave rectifier)
     \2 $C$: filter cap size
-  \1 Peak Inverse Voltage: $ PIV = V_{S2}-0.7V$
+  \1 Peak Inverse Voltage: minimum reverse bias breakdown voltage of the diodes
+    \2 center-tapped transformer, two diodes: $PIV = 2V_{S2}-0.7$
+    \2 bridge rectifier topology (two-terminal transformer): $PIV = V_{S2}-0.7V$
   \1 avg diode current: $I_{Davg}=I_L \left( 1+\pi\sqrt{\frac{2}{V_r}} \right)$
   \1 max diode current: $I_{Dmax}=I_L \left( 1+2\pi\sqrt{\frac{2}{V_r}} \right)$
     \2 only difference is $\pi \rightarrow 2\pi$
@@ -331,8 +337,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 $V_T = 25$mV at room temperature (according to textbook and prof),
   \\ $V_T = 26$mV at room temperature (according to lab)
   \1 $\beta$: a physical constant of the transistor. Usually about 100 or 200
-  \1 
-    $I_B + I_C = I_E$, 
+  \1
+    $I_B + I_C = I_E$,
     $I_C = \beta I_B$,
     $I_E = (1+\beta) I_B$
   \1
@@ -382,13 +388,13 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 \end{minipage}
 \begin{minipage}{0.3\columnwidth}
 \includegraphics[width=\columnwidth]{../ecen325/bjt_cb.png}
-\begin{center} 
+\begin{center}
 {\footnotesize Common Base (CB) }
 \end{center}
 \end{minipage}
 \begin{minipage}{0.3\columnwidth}
 \includegraphics[width=\columnwidth]{../ecen325/bjt_cc.png}
-\begin{center} 
+\begin{center}
 {\footnotesize Common Collector (CC) }
 \end{center}
 \end{minipage}
