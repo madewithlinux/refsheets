@@ -54,6 +54,7 @@
 \noindent ECEN325 Ref Sheet \hfill \textcopyright \space Josh Wright \today
 
 \zzz{Metric Prefixes} \\
+{\footnotesize
 \begin{tabular}{|c c l l|}                                   \hline
 peta  & P     & $10^{ 15}$ & \hfill 1 000 000 000 000 000 \\ \hline
 tera  & T     & $10^{ 12}$ & \hfill     1 000 000 000 000 \\ \hline
@@ -71,6 +72,7 @@ nano  & n     & $10^{- 9}$ & 0.000 000 001                \\ \hline
 pico  & p     & $10^{-12}$ & 0.000 000 000 001            \\ \hline
 femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 \end{tabular}
+}
 
 \zzz{Ohm's Law}
   $V = IR$,
@@ -86,20 +88,28 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 $z^n = (re^{i\theta}) = r^ne^{in\theta}$
   \1 $\frac{1}{i}=-i$
   \1 $\sqrt[n]{z} = \sqrt[n]{r}e^{\frac{\theta}{n}+\frac{2k\pi}{n}}$ for $n\in N^*$ (ints $\geq0$)
-  \1 $e^{j\theta} = \cos(\theta) + j\sin(\theta)$
-  \1 $e^{-j\theta} = \cos(\theta) - j\sin(\theta)$
-  \1 $\cos(\theta) = \frac{1}{2}(e^{j\theta} + e^{-j\theta})$
-  \1 $\sin(\theta) = \frac{1}{2j}(e^{j\theta} - e^{-j\theta})$
+  \1\begin{tabular}{l|l}
+  $e^{j\theta} = \cos(\theta) + j\sin(\theta)$
+  &
+  $e^{-j\theta} = \cos(\theta) - j\sin(\theta)$
+  \\
+  $\cos(\theta) = \frac{1}{2}(e^{j\theta} + e^{-j\theta})$
+  &
+  $\sin(\theta) = \frac{1}{2j}(e^{j\theta} - e^{-j\theta})$
+  \\
+  \end{tabular}
   \1 normalized: $sinc(t) = \frac{\sin(\pi t)}{\pi t}$
   \1 $|\frac{a}{b}| = \frac{|a|}{|b|}$
-  \1 $\angle\frac{a}{b} = \angle{a} - \angle{b}$
+  \hfill $\angle\frac{a}{b} = \angle{a} - \angle{b}$
 
 \zzz{Trig}
-  \1 $\cos^2(a)+\sin^2(a)=1$
-  \1 $\cos(2a)=\cos^2(a) - \sin^2(a) = 2\cos^2(a)-1 = 1-2\sin^2(a)$
-  \1 $\sin(2a) = 2\sin(a)\cos(a)$
-  \1 $\cos^2(a) = \frac{1}{2}(1 + \cos(2a))$
-  \1 $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))$
+\\
+$\cos(2a)=\cos^2(a) - \sin^2(a) = 2\cos^2(a)-1 = 1-2\sin^2(a)$
+\\
+\begin{tabular}{l|l}
+$\cos^2(a)+\sin^2(a)=1$ & $\sin(2a) = 2\sin(a)\cos(a)$ \\
+$\cos^2(a) = \frac{1}{2}(1 + \cos(2a))$ & $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))$ \\
+\end{tabular}
 
 
 % \zzz{RC Filter}
@@ -158,14 +168,15 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 Constant $C$: no effect ($0$ for all $\omega$)
   \1 Prof wants us to actually show the -3dB drop curve, not just a straight intersection
 
-% \zzz{Solving systems with Op Amps}
-%     \1 step 0: if the op amp is ideal, write out ideal properties:
-%         \2 $V_+=V_-$
-%         \2 $I_-=0,I_+=0$
-%     \2 $A \approx \infty$
-%     \1 avoid doing KCL/KVL directly on the output node of the op amp
-%     \1 ignore resistors from a point at $0V$ to ground
-%
+\zzz{Solving systems with Op Amps}
+  \1 only applies if the op-amp has feedback
+  \1 step 0: if the op amp is ideal, write out ideal properties:
+    \2 $V_+=V_-$
+    \2 $I_-=0,I_+=0$
+  \2 $A \approx \infty$
+  \1 avoid doing KCL/KVL directly on the output node of the op amp
+  \1 ignore resistors from a point at $0V$ to ground
+
 % \zzz{Non-Ideal Op Amps}
 %   \1 still assume that current at input terminals is 0
 %   \1 $V_o = A (V_{+} - V_{-})$
@@ -187,6 +198,44 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 
 
 \zzz{Op Amp Equations}
+\\
+\begin{minipage}{0.49\columnwidth}
+\begin{circuitikz}[scale=0.6,transform shape]
+\draw
+(5,2) node[op amp] (opamp) {}
+(1,2.5) to [short, o-, l=$V_i$] (1,2.5)
+(1,2.5) to [R, l=$R_1$] (opamp.-)
+(3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
+(opamp.+) to (3.8,1.2) node[ground]{}
+(3.8,3.5) to [short, -*] (opamp.-)
+(6.2,3.5) to [short, -*] (opamp.out)
+(opamp.out) to [short, -o, l=$V_o$] (7, 2);
+\end{circuitikz}
+\begin{center}
+{\footnotesize Inverting Amplifier}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.49\columnwidth}
+\begin{circuitikz}[scale=0.6,transform shape]
+\draw
+(5,2) node[op amp] (opamp) {}
+(1,2.5) to [short, -] (1,2) node[ground]{}
+(1,2.5) to [R, l=$R_1$] (opamp.-)
+(3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
+(opamp.+) to (3.5,1.5)
+(3.5,1.5) to [short, o-, l=$V_i$] (3.5,1.5)
+(3.8,3.5) to [short, -*] (opamp.-)
+(6.2,3.5) to [short, -*] (opamp.out)
+(opamp.out) to [short, -o, l=$V_o$] (7, 2);
+\end{circuitikz}
+\begin{center}
+{\footnotesize Non-Inverting Amplifier}
+\end{center}
+\end{minipage}
+
+  \1 ideal open-loop behavior:
+    $(V_p-V_n)>0 \rightarrow V_o=V_{DD}$
+    $(V_p-V_n)<0 \rightarrow V_o=-V_{DD}$
   % http://pdp7.org/synthwiki/OpAmpCircuits.html
   \1 general form: $T(s)=\frac{K_0}{1+\frac{s}{\omega_0}}$
     \2 $T(0)=K_0$: DC offset. For these simple ones, it's equal to ideal response
@@ -197,35 +246,14 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
       =\frac{-R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
       =\frac{-R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
       =\frac{-R_2/R_1}{1+\frac{s}{\omega_0}}$
-    \\\begin{circuitikz}
-      \draw
-      (5,2) node[op amp] (opamp) {}
-      (1,2.5) to [short, o-, l=$V_i$] (1,2.5)
-      (1,2.5) to [R, l=$R_1$] (opamp.-)
-      (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
-      (opamp.+) to (3.8,1.2) node[ground]{}
-      (3.8,3.5) to [short, -*] (opamp.-)
-      (6.2,3.5) to [short, -*] (opamp.out)
-      (opamp.out) to [short, -o, l=$V_o$] (7, 2);
-      \end{circuitikz}
+      \vspace{-5px}
   \1 non-inverting op-amp:
     \2 ideal: $T(s)=\frac{V_o}{V_i}=1+\frac{R_2}{R_1}$
     \2 non-ideal: $T(s)=\frac{V_o}{V_i}
       =\frac{1+R_2/R_1}{1+\frac{1+R_2/R_1}{A(s)}}
       =\frac{1+R_2/R_1}{1+\frac{s}{\left(\frac{\omega_t}{1+R_2/R_1}\right)}}
       =\frac{1+R_2/R_1}{1+\frac{s}{\omega_0}}$
-    \\\begin{circuitikz}
-      \draw
-      (5,2) node[op amp] (opamp) {}
-      (1,2.5) to [short, -] (1,2) node[ground]{}
-      (1,2.5) to [R, l=$R_1$] (opamp.-)
-      (3.8,3.5) to [R, l=$R_2$] (6.2,3.5)
-      (opamp.+) to (3.5,1.5)
-      (3.5,1.5) to [short, o-, l=$V_i$] (3.5,1.5)
-      (3.8,3.5) to [short, -*] (opamp.-)
-      (6.2,3.5) to [short, -*] (opamp.out)
-      (opamp.out) to [short, -o, l=$V_o$] (7, 2);
-      \end{circuitikz}
+
 %   \1 integrating
 %     \2 ideal: $V_o = -\int_{0}^{t} \frac{V_i}{RC} dt + C$
 %       \3 $C=$ $V_o(t)$ at $t=0$
@@ -290,17 +318,17 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 %       (2.8,5.5) -- (2.8,5.5) -- (3.2,5.5);
 %       \end{circuitikz}
 
-% move the diode symbol over to the right side and up
+% move the diode symbol over to the right side and up (ugly hack)
 \zzz{Diodes}
-\\\vspace{-40px}
-\hfill\includegraphics[width=0.25\columnwidth]{../ecen325/diode.png}
+\\
 \vspace{-20px}
+\hfill\includegraphics[width=0.25\columnwidth]{../ecen325/diode.png}
+\vspace{-40px}
   \1 ideal:
-    \2 $I_D(V_D <    0) = 0$
-    \2 $I_D(V_D \geq 0) = \infty$
-  \1 constant drop model: (just the ideal model shifted right by 0.7V)
-    \2 $I_D(V_D <    0.7) = 0$
-    \2 $I_D(V_D \geq 0.7) = \infty$
+    \2 $I_D(V_D <    0) = 0$; $I_D(V_D \geq 0) = \infty$
+  \1 constant drop model: 
+  \\ (ideal model shifted right by 0.7V)
+    \2 $I_D(V_D <    0.7) = 0$; $I_D(V_D \geq 0.7) = \infty$
   \1 exponential model: $I_D = I_S ( e^{\frac{V_D}{n V_T}} - 1 )$
     \2 $I_S=10^{-12}$A (saturation current)
     \2 $V_T=25$mV
@@ -309,11 +337,13 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 $I_D$: average (DC) current through diode (due to forward bias)
   \1 bridge rectifier shape: square/diamond with all the diodes point toward the + end of the output (away from ground)
   \1 To solve a circuit with an op-amp and diodes, try individually solving with each possible combination of diodes off/on, and throw out the ones that cause contradictions
+    \2 Prof says try all diodes off first
+    \2 if an op-amp has no feedback, you can't assume that $V_p=V_n$. Instead, use the open-loop behavior
 
 \zzz{Diode DC biasing for approximating AC linearity}
   \1 assumes $v(t) \ll n V_T$ (AC signal is much smaller than $V_T$)
   \1 $r_D = \frac{nV_T}{I_D}$
-  \1 first find DC solution to find $I_D$
+  \1 first find DC solution to find $I_D$ (it's the DC current)
   \1 find $r_D$, then find AC solution
 
 \zzz{Design an (unregulated) AC adapter}
@@ -383,10 +413,12 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 this will change the gain, which is why it's often helpful to put a CC buffer at the end of an amplifier
   \1 $R_i$: input impedance: impedance as seen from the input
     \2 includes the transistor, does not include $R_s$
-  \1 $g_m = \frac{I_C}{V_T}$
-  \\ $r_\pi = \frac{beta}{g_m}$
-  \\ $r_e = \frac{V_T}{I_E} = \frac{\alpha}{g_m} \approx \frac{1}{g_m}$
-  \\ $r_o = \frac{V_A}{I_C} \approx \infty$
+  \1
+  \begin{tabular}{l|l}
+  $g_m = \frac{I_C}{V_T}$ & $r_\pi = \frac{beta}{g_m}$ \\
+  $r_e = \frac{V_T}{I_E} = \frac{\alpha}{g_m} \approx \frac{1}{g_m}$
+  & $r_o = \frac{V_A}{I_C} \approx \infty$ \\
+  \end{tabular}
 \0
 \begin{minipage}{0.3\columnwidth}
   \includegraphics[width=\columnwidth]{../ecen325/bjt_ce.png}
