@@ -77,6 +77,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \quad $I = \frac{V}{R}$,
   \quad $R = \frac{V}{I}$
 
+\zzz{Battery Symbol}
+\\ The side with the longer line is the positive side
 
 \zzz{Complex Numbers}
   \1 $z = x+iy = re^{i\theta} = r[\cos(\theta)+i\sin(\theta)]$
@@ -302,14 +304,21 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 exponential model: $I_D = I_S ( e^{\frac{V_D}{n V_T}} - 1 )$
     \2 $I_S=10^{-12}$A (saturation current)
     \2 $V_T=25$mV
+  \1 current goes $\rightarrow$ from cathode (-) to anode (+)
   \1 small signal resistance: $R_d = \frac{nV_T}{I_D}$
     \2 $I_D$: average (DC) current through diode (due to forward bias)
   \1 bridge rectifier shape: square/diamond with all the diodes point toward the + end of the output (away from ground)
-  \\ current goes $\rightarrow$ from cathode (-) to anode (+)
+  \1 To solve a circuit with an op-amp and diodes, try individually solving with each possible combination of diodes off/on, and throw out the ones that cause contradictions
+
+\zzz{Diode DC biasing for approximating AC linearity}
+  \1 assumes $v(t) \ll n V_T$ (AC signal is much smaller than $V_T$)
+  \1 $r_D = \frac{nV_T}{I_D}$
+  \1 first find DC solution to find $I_D$
+  \1 find $r_D$, then find AC solution
 
 \zzz{Design an (unregulated) AC adapter}
   \1 $V_S$: AC voltage input
-    \2 standard AC voltage is $110\sqrt{2}V \approx155.563V$
+    \2 standard AC voltage is $110\sqrt{2}V \approx 155.563V$
   \1 $V_{S2}$: output of transformer (still AC)
   \1 $V_p$: peak DC output
   \1 $V_r$: peak-to-peak ripple voltage (maximum variation)
