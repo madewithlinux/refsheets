@@ -399,6 +399,17 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   opposite A & 2 \\
   \end{tabular}
 
+\zzz{Timing}
+  \1 setup time: minimum time that signal must remain stead \textbf{before} clock edge
+  \1 hold time:  minimum time that signal must remain stead \textbf{after}  clock edge
+  \1 propagation delay: when driving another gate? largest (worst case) delay?
+  \1 contamination delay: best case delay (smallest delay)?
+  \1 parasitic delay: independent of load
+  \1 effort delay: proportional to load capacitance (nothing to do with the thing that is doing the driving of the load capacitance)
+  \1 maximum possible logic propagation delay for combinational circuit buffered on either side by flip-flops:
+    clockCycle - Clk$\rightarrow$Q - FlipFlopSetup - WorstSkew
+    \2 minimum circuit delay: HoldTime - Clk$\rightarrow$Q
+
 
 \end{outline}
 \end{flushleft}
