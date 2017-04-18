@@ -323,141 +323,169 @@ $\cos^2(a) = \frac{1}{2}(1 + \cos(2a))$ & $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))
 %       \end{circuitikz}
 
 % move the diode symbol over to the right side and up (ugly hack)
-\zzz{Diodes}
-\\
-\vspace{-20px}
-\hfill\includegraphics[width=0.25\columnwidth]{../ecen325/diode.png}
-\vspace{-40px}
-  \1 ideal:
-    \2 $I_D(V_D <    0) = 0$; $I_D(V_D \geq 0) = \infty$
-  \1 constant drop model: 
-  \\ (ideal model shifted right by 0.7V)
-    \2 $I_D(V_D <    0.7) = 0$; $I_D(V_D \geq 0.7) = \infty$
-  \1 exponential model: $I_D = I_S ( e^{\frac{V_D}{n V_T}} - 1 )$
-    \2 $I_S=10^{-12}$A (saturation current)
-    \2 $V_T=25$mV
-  \1 current goes $\rightarrow$ from cathode (-) to anode (+)
-  \1 small signal resistance: $R_d = \frac{nV_T}{I_D}$
-    \2 $I_D$: average (DC) current through diode (due to forward bias)
-  \1 bridge rectifier shape: square/diamond with all the diodes point toward the + end of the output (away from ground)
-  \1 To solve a circuit with an op-amp and diodes, try individually solving with each possible combination of diodes off/on, and throw out the ones that cause contradictions
-    \2 Prof says try all diodes off first
-    \2 if an op-amp has no feedback, you can't assume that $V_p=V_n$. Instead, use the open-loop behavior
+% \zzz{Diodes}
+% \\
+% \vspace{-20px}
+% \hfill\includegraphics[width=0.25\columnwidth]{../ecen325/diode.png}
+% \vspace{-40px}
+%   \1 ideal:
+%     \2 $I_D(V_D <    0) = 0$; $I_D(V_D \geq 0) = \infty$
+%   \1 constant drop model: 
+%   \\ (ideal model shifted right by 0.7V)
+%     \2 $I_D(V_D <    0.7) = 0$; $I_D(V_D \geq 0.7) = \infty$
+%   \1 exponential model: $I_D = I_S ( e^{\frac{V_D}{n V_T}} - 1 )$
+%     \2 $I_S=10^{-12}$A (saturation current)
+%     \2 $V_T=25$mV
+%   \1 current goes $\rightarrow$ from cathode (-) to anode (+)
+%   \1 small signal resistance: $R_d = \frac{nV_T}{I_D}$
+%     \2 $I_D$: average (DC) current through diode (due to forward bias)
+%   \1 bridge rectifier shape: square/diamond with all the diodes point toward the + end of the output (away from ground)
+%   \1 To solve a circuit with an op-amp and diodes, try individually solving with each possible combination of diodes off/on, and throw out the ones that cause contradictions
+%     \2 Prof says try all diodes off first
+%     \2 if an op-amp has no feedback, you can't assume that $V_p=V_n$. Instead, use the open-loop behavior
 
-\zzz{Diode DC biasing for approximating AC linearity}
-  \1 assumes $v(t) \ll n V_T$ (AC signal is much smaller than $V_T$)
-  \1 $r_D = \frac{nV_T}{I_D}$
-  \1 first find DC solution to find $I_D$ (it's the DC current)
-  \1 find $r_D$, then find AC solution
+% \zzz{Diode DC biasing for approximating AC linearity}
+%   \1 assumes $v(t) \ll n V_T$ (AC signal is much smaller than $V_T$)
+%   \1 $r_D = \frac{nV_T}{I_D}$
+%   \1 first find DC solution to find $I_D$ (it's the DC current)
+%   \1 find $r_D$, then find AC solution
 
-\zzz{Design an (unregulated) AC adapter}
-  \1 $V_S$: AC voltage input
-    \2 standard AC voltage is $110\sqrt{2}V \approx 155.563V$
-  \1 $V_{S2}$: output of transformer (still AC)
-  \1 $V_p$: peak DC output
-  \1 $V_r$: peak-to-peak ripple voltage (maximum variation)
-    \2 often given as a small percentage of $V_p$
-  \1 $V_p=V_{S2}-$ (diode voltage)
-    \2 diode voltage = 0.7V for single wave rectifier or center-tapped transformer
-    \2 diode voltage = 1.4V for full-wave rectifier
-    \2 (corresponds to how many diodes you need)
-  \1 turns ratio = $n=\frac{V_S}{V_{S2}}$
-    \2 if the transformer is center-tapped, each sub-coil only gets half of $V_{S2}$; so use $n=\frac{1}{2}\frac{V_S}{V_{S2}}$
-  \1 apparent load resistance: $R_L = \frac{V_o}{I_L}$
-  \1 ripple voltage: $V_r=V_p\frac{T}{R_L C}$
-    \2 $T$: period of ripple (half of frequency of AC input)
-        \3 $T=\frac{1}{f}$
-    \2 $f$: actual ripple frequency (double for full-wave rectifier)
-    \2 $C$: filter cap size
-  \1 Peak Inverse Voltage: minimum reverse bias breakdown voltage of the diodes
-    \2 center-tapped transformer, two diodes: $PIV = 2V_{S2}-0.7$
-    \2 bridge rectifier topology (two-terminal transformer): $PIV = V_{S2}-0.7V$
-  \1 avg diode current: $I_{Davg}=I_L \left( 1+\pi\sqrt{\frac{2}{V_r}} \right)$
-  \1 max diode current: $I_{Dmax}=I_L \left( 1+2\pi\sqrt{\frac{2}{V_r}} \right)$
-    \2 only difference is $\pi \rightarrow 2\pi$
+% \zzz{Design an (unregulated) AC adapter}
+%   \1 $V_S$: AC voltage input
+%     \2 standard AC voltage is $110\sqrt{2}V \approx 155.563V$
+%   \1 $V_{S2}$: output of transformer (still AC)
+%   \1 $V_p$: peak DC output
+%   \1 $V_r$: peak-to-peak ripple voltage (maximum variation)
+%     \2 often given as a small percentage of $V_p$
+%   \1 $V_p=V_{S2}-$ (diode voltage)
+  %   \2 diode voltage = 0.7V for single wave rectifier or center-tapped transformer
+  %   \2 diode voltage = 1.4V for full-wave rectifier
+  %   \2 (corresponds to how many diodes you need)
+  % \1 turns ratio = $n=\frac{V_S}{V_{S2}}$
+  %   \2 if the transformer is center-tapped, each sub-coil only gets half of $V_{S2}$; so use $n=\frac{1}{2}\frac{V_S}{V_{S2}}$
+  % \1 apparent load resistance: $R_L = \frac{V_o}{I_L}$
+  % \1 ripple voltage: $V_r=V_p\frac{T}{R_L C}$
+  %   \2 $T$: period of ripple (half of frequency of AC input)
+  %       \3 $T=\frac{1}{f}$
+  %   \2 $f$: actual ripple frequency (double for full-wave rectifier)
+  %   \2 $C$: filter cap size
+  % \1 Peak Inverse Voltage: minimum reverse bias breakdown voltage of the diodes
+  %   \2 center-tapped transformer, two diodes: $PIV = 2V_{S2}-0.7$
+  %   \2 bridge rectifier topology (two-terminal transformer): $PIV = V_{S2}-0.7V$
+  % \1 avg diode current: $I_{Davg}=I_L \left( 1+\pi\sqrt{\frac{2}{V_r}} \right)$
+  % \1 max diode current: $I_{Dmax}=I_L \left( 1+2\pi\sqrt{\frac{2}{V_r}} \right)$
+  %   \2 only difference is $\pi \rightarrow 2\pi$
 
-\zzz{Transistors}
-  \1 $V_T = 25$mV at room temperature (according to textbook and prof),
-  \\ $V_T = 26$mV at room temperature (according to lab)
-  \1 $\beta$: a physical constant of the transistor. Usually about 100 or 200
-  \1
-    $I_B + I_C = I_E$,
-    $I_C = \beta I_B$,
-    $I_E = (1+\beta) I_B$
-  \1
-    $\alpha = \frac{\beta}{1+\beta}$,
-    $I_C = \alpha I_E$
-  \1
-    $I_C = I_S ( e^{\frac{V_{BE}}{n V_T}} )$,
-  \1 AC (assumes correct DC bias):
-    $g_m = \frac{1}{r_e} = \frac{I_C}{V_T}$
+% \zzz{Transistors}
+%   \1 $V_T = 25$mV at room temperature (according to textbook and prof),
+%   \\ $V_T = 26$mV at room temperature (according to lab)
+%   \1 $\beta$: a physical constant of the transistor. Usually about 100 or 200
+%   \1
+%     $I_B + I_C = I_E$,
+%     $I_C = \beta I_B$,
+%     $I_E = (1+\beta) I_B$
+%   \1
+%     $\alpha = \frac{\beta}{1+\beta}$,
+%     $I_C = \alpha I_E$
+%   \1
+%     $I_C = I_S ( e^{\frac{V_{BE}}{n V_T}} )$,
+%   \1 AC (assumes correct DC bias):
+%     $g_m = \frac{1}{r_e} = \frac{I_C}{V_T}$
 
-\zzz{Current Mirror}\\
-\includegraphics[width=0.46\columnwidth]{../ecen325/current_mirror_npn.png}
-\includegraphics[width=0.44\columnwidth]{../ecen325/current_mirror_pnp.png}
-  \1 Q1 has the base shorted to collector, Q2 does not
-  \1 $R_{bias}=R_{ref}$: the current that is mirrored
-  \1 $I_{ref}=(V_{CC}-0.7)/R_{ref}$
-  \1 $R_{load}$ has the same current through it as $R_{ref}$ does
-    \2 that is, $I_{ref} = I_{load}$
-  \1 you can chain together multiple transistors (Q3,Q4...) all off of
-    the same Q1 and they will all get the same current
-    \2 In this case, each Q2,Q3... output is considered separate from each other
-      in both DC and AC analysis
-  \1 only applies when transistors are matched! (we assume they are)
+% \zzz{Current Mirror}\\
+% \includegraphics[width=0.46\columnwidth]{../ecen325/current_mirror_npn.png}
+% \includegraphics[width=0.44\columnwidth]{../ecen325/current_mirror_pnp.png}
+%   \1 Q1 has the base shorted to collector, Q2 does not
+%   \1 $R_{bias}=R_{ref}$: the current that is mirrored
+%   \1 $I_{ref}=(V_{CC}-0.7)/R_{ref}$
+%   \1 $R_{load}$ has the same current through it as $R_{ref}$ does
+%     \2 that is, $I_{ref} = I_{load}$
+%   \1 you can chain together multiple transistors (Q3,Q4...) all off of
+%     the same Q1 and they will all get the same current
+%     \2 In this case, each Q2,Q3... output is considered separate from each other
+%       in both DC and AC analysis
+%   \1 only applies when transistors are matched! (we assume they are)
 
-\zzz{Transistor circuits by inspection}
-  \1 this all assumes that the transistor is properly DC biased
-  \1 three types of amplifier circuits: common emitter, common base, common collector
-    \2 CE, CB, CC
-    \2 the ``common'' pin is the one that is neither AC input nor output
-  \1 intrinsic gain: gain directly from the input pin of the transistor to the output, ignoring any source resistance or such things whatever
-    \2 when you chain multiple amplifiers together, this is the one you use
-  \1 when you're driving a finite-impedance load (a load other than open circuit), you have to consider $R_o$ as $R_o||R_L$
-    \2 this will change the gain, which is why it's often helpful to put a CC buffer at the end of an amplifier
-  \1 $R_i$: input impedance: impedance as seen from the input
-    \2 includes the transistor, does not include $R_s$
-  \1
-  \begin{tabular}{l|l}
-  $g_m = \frac{I_C}{V_T}$ & $r_\pi = \frac{beta}{g_m}$ \\
-  $r_e = \frac{V_T}{I_E} = \frac{\alpha}{g_m} \approx \frac{1}{g_m}$
-  & $r_o = \frac{V_A}{I_C} \approx \infty$ \\
-  \end{tabular}
-\0
-\begin{minipage}{0.3\columnwidth}
-  \includegraphics[width=\columnwidth]{../ecen325/bjt_ce.png}
-\begin{center}
-\vspace{-20px}
-{\footnotesize Common Emitter (CE) }
-\end{center}
-\end{minipage}
-\begin{minipage}{0.3\columnwidth}
-\includegraphics[width=\columnwidth]{../ecen325/bjt_cb.png}
-\begin{center}
-{\footnotesize Common Base (CB) }
-\end{center}
-\end{minipage}
-\begin{minipage}{0.3\columnwidth}
-\includegraphics[width=\columnwidth]{../ecen325/bjt_cc.png}
-\begin{center}
-{\footnotesize Common Collector (CC) }
-\end{center}
-\end{minipage}
-  \1 CE: Common Emitter
-    \2 input: base; output: collector
-    \2 intrinsic gain: $\frac{V_o}{V_b}= -\alpha\frac{R_C}{r_e + R_E} \approx -\frac{R_C}{r_e + R_E}$
-    \2 $R_i=(\beta+1)(r_e+R_E)$
-    \2 $R_o = R_C$
-    \2 if you have a $R_L$ then you have to put that in parallel with $R_C$ when calculating $\frac{V_o}{V_b}$
-  \1 CB: Common Base
-    \2 $\frac{V_o}{V_b} = \alpha\frac{R_C}{R_i} \approx \frac{R_C}{R_i}$
-    \2 $R_i = r_e + \frac{R_B}{\beta+1}$
-    \2 $R_o=R_C$
-  \1 CC: Common Collector
-    \2 gain $\approx 1$ because it's a buffer
-    \2 $\frac{V_o}{V_b} = \frac{R_E}{r_e+R_E}$
-    \2 $R_i = (\beta+1)(r_e+R_E)$
-    \2 $R_o = R_E||r_e = \frac{R_E*r_e}{R_E+r_e}$
+% \zzz{Transistor circuits by inspection}
+%   \1 this all assumes that the transistor is properly DC biased
+%   \1 three types of amplifier circuits: common emitter, common base, common collector
+%     \2 CE, CB, CC
+%     \2 the ``common'' pin is the one that is neither AC input nor output
+%   \1 intrinsic gain: gain directly from the input pin of the transistor to the output, ignoring any source resistance or such things whatever
+%     \2 when you chain multiple amplifiers together, this is the one you use
+%   \1 when you're driving a finite-impedance load (a load other than open circuit), you have to consider $R_o$ as $R_o||R_L$
+%     \2 this will change the gain, which is why it's often helpful to put a CC buffer at the end of an amplifier
+%   \1 $R_i$: input impedance: impedance as seen from the input
+%     \2 includes the transistor, does not include $R_s$
+%   \1
+%   \begin{tabular}{l|l}
+%   $g_m = \frac{I_C}{V_T}$ & $r_\pi = \frac{beta}{g_m}$ \\
+%   $r_e = \frac{V_T}{I_E} = \frac{\alpha}{g_m} \approx \frac{1}{g_m}$
+%   & $r_o = \frac{V_A}{I_C} \approx \infty$ \\
+%   \end{tabular}
+% \0
+% \begin{minipage}{0.3\columnwidth}
+%   \includegraphics[width=\columnwidth]{../ecen325/bjt_ce.png}
+% \begin{center}
+% \vspace{-20px}
+% {\footnotesize Common Emitter (CE) }
+% \end{center}
+% \end{minipage}
+% \begin{minipage}{0.3\columnwidth}
+% \includegraphics[width=\columnwidth]{../ecen325/bjt_cb.png}
+% \begin{center}
+% {\footnotesize Common Base (CB) }
+% \end{center}
+% \end{minipage}
+% \begin{minipage}{0.3\columnwidth}
+% \includegraphics[width=\columnwidth]{../ecen325/bjt_cc.png}
+% \begin{center}
+% {\footnotesize Common Collector (CC) }
+% \end{center}
+% \end{minipage}
+%   \1 CE: Common Emitter
+%     \2 input: base; output: collector
+%     \2 intrinsic gain: $\frac{V_o}{V_b}= -\alpha\frac{R_C}{r_e + R_E} \approx -\frac{R_C}{r_e + R_E}$
+%     \2 $R_i=(\beta+1)(r_e+R_E)$
+%     \2 $R_o = R_C$
+%     \2 if you have a $R_L$ then you have to put that in parallel with $R_C$ when calculating $\frac{V_o}{V_b}$
+%   \1 CB: Common Base
+%     \2 $\frac{V_o}{V_b} = \alpha\frac{R_C}{R_i} \approx \frac{R_C}{R_i}$
+%     \2 $R_i = r_e + \frac{R_B}{\beta+1}$
+%     \2 $R_o=R_C$
+%   \1 CC: Common Collector
+%     \2 gain $\approx 1$ because it's a buffer
+%     \2 $\frac{V_o}{V_b} = \frac{R_E}{r_e+R_E}$
+%     \2 $R_i = (\beta+1)(r_e+R_E)$
+%     \2 $R_o = R_E||r_e = \frac{R_E*r_e}{R_E+r_e}$
+
+
+\zzz{MOS DC Biasing}
+  \1 this is all for NMOS. PMOS is backward
+  \1 cutoff: $V_{GS} < V_{th}$
+    \2 $I_D=0$
+  \1 triode (linear): $V_{DS} < V_{GS}-V_{th}$
+    \2 $I_D = k_n' \frac{W}{L}
+    \left( (V_{GS}-V_{th})V_{DS} - \frac{V_{DS}^2}{2} \right)$
+  \1 active (saturation): $V_{DS} > V_{GS}-V_{th}$
+    \2 $I_D = \frac{k_n'}{2}\frac{W}{L}(V_{GS}-V_{th})^2$
+    \2 overdrive voltage $V_{ov}=V_{GS}-V_{th}$
+  \1 to show it's active: show that $V_{DS} > V_{ov}$ or $V_{DS} > V_{GS} - V_{th}$
+
+\zzz{MOS Small Signal}
+  \1 $g_m=k_n' \frac{W}{L}(V_{GS}-V_t) = k_p' \frac{W}{L}(V_{SG}-V_t)$
+  \1 CS: Common Source
+    \2 $R_i=R_G=R_{G1}||R_{G2}$
+    \2 $R_o=R_D$
+    \2 $\frac{V_o}{V_g}=\frac{R_D||R_L}{\frac{1}{g_m}+R_S}$
+  \1 CD: Common Drain (buffer)
+    \2 $R_i=R_G=R_{G1}||R_{G2}$
+    \2 $R_o=\frac{1}{g_m}$
+    \2 $\frac{V_o}{V_g}=\frac{R_L}{\frac{1}{g_m}+R_L}$
+  \1 CG: Common Gate
+    \2 $R_i=\frac{1}{g_m}$
+    \2 $R_o=R_D$
+    \2 $\frac{V_o}{V_s}=\frac{R_D||R_L}{R_i}$
 
 
 
