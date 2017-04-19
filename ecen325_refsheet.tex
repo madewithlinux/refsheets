@@ -330,7 +330,7 @@ $\cos^2(a) = \frac{1}{2}(1 + \cos(2a))$ & $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))
 % \vspace{-40px}
 %   \1 ideal:
 %     \2 $I_D(V_D <    0) = 0$; $I_D(V_D \geq 0) = \infty$
-%   \1 constant drop model: 
+%   \1 constant drop model:
 %   \\ (ideal model shifted right by 0.7V)
 %     \2 $I_D(V_D <    0.7) = 0$; $I_D(V_D \geq 0.7) = \infty$
 %   \1 exponential model: $I_D = I_S ( e^{\frac{V_D}{n V_T}} - 1 )$
@@ -473,7 +473,11 @@ $\cos^2(a) = \frac{1}{2}(1 + \cos(2a))$ & $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))
   \1 to show it's active: show that $V_{DS} > V_{ov}$ or $V_{DS} > V_{GS} - V_{th}$
 
 \zzz{MOS Small Signal}
-  \1 $g_m=k_n' \frac{W}{L}(V_{GS}-V_t) = k_p' \frac{W}{L}(V_{SG}-V_t)$
+  \1 $g_m
+    = k_n' \frac{W}{L}(V_{GS}-V_t)
+    = k_p' \frac{W}{L}(V_{SG}-V_t)
+    = k_n' \frac{W}{L}(V_{ov})
+    $
   \1 CS: Common Source
     \2 $R_i=R_G=R_{G1}||R_{G2}$
     \2 $R_o=R_D$
