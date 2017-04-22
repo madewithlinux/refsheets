@@ -410,6 +410,34 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     clockCycle - Clk$\rightarrow$Q - FlipFlopSetup - WorstSkew
     \2 minimum circuit delay: HoldTime - Clk$\rightarrow$Q
 
+\zzz{Memory}
+  \1 serial access memory (SAM): accessed in a sequence, not randomly
+    \2 ex. shift register, queue, stack, etc...
+    \2 often implemented using random access memory
+  \1 Shift Register
+    \2 serial in, parallel out
+    \2 large number of transistors per cell when implemented using flip flop
+    \2 tapped delay line: shift register with variable number of stages
+      \3 useful for allowing chips at different clock frequencies to communicate (apparently)
+  \1 queue or stack can be built using SRAM block with pointers to first/last and stuff
+  \1 SRAM
+    \2 static ram
+    \2 can be dual ported: means you can write to a cell while reading the old value from it
+    \2 designed in a cell grid, MUXes for input and then decoders for output connected to bit lines that run across the cells
+    \2 TODO note about pre charging bit line
+  \1 DRAM
+    \2 stores bits using capacitors
+  \1 decoders
+    \2 needed to switch to the right bit-line
+    \2 need to be pitch-matched to RAM cell width for efficiency
+    \2 TODO note about twisted bit lines
+  \1 ROM: read only memory
+    \2 used to be custom masked chips for data
+    \2 
+  \1 PROM
+
+
+
 
 \end{outline}
 \end{flushleft}
