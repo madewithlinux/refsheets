@@ -153,23 +153,23 @@ $$\frac{ \frac{1}{Cs} }{ R + \frac{1}{Cs} } = \frac{1}{RCs + 1}$$
   \1 active (saturation): $V_{DS} > V_{GS}-V_{th}$
     \2 $I_D = \frac{k_n'}{2}\frac{W}{L}(V_{GS}-V_{th})^2$
     \2 overdrive voltage $V_{ov}=V_{GS}-V_{th}$
-  \1 to show it's active: show that $V_{DS} > V_{ov}$ or $V_{DS} > V_{GS} - V_{th}$
+  \1 to show it's active: show that $V_{DS} > V_{ov}$ (or $V_{DS} > V_{GS} - V_{th}$)
 
 \zzz{MOS Small Signal}
 \\
 {\def\arraystretch{3}
   \begin{tabular}{|c|c|c|c|} \hline
-  & $R_i$ & $R_o$ & $\frac{V_o}{V_g}$ \\ \hline
-  \vspace{4px} CS & $R_{G1}||R_{G2}$ & $R_D$           & $-\frac{R_D||R_L}{\frac{1}{g_m}+R_S}$ \\ \hline
-  \vspace{4px} CG & $\frac{1}{g_m}$  & $R_D$           & $\frac{R_D||R_L}{R_i}$                \\ \hline
-  \vspace{4px} CD & $R_{G1}||R_{G2}$ & $\frac{1}{g_m}$ & $\frac{R_L}{\frac{1}{g_m}+R_L}$       \\ \hline
+  & $\frac{V_o}{V_g}$ & $R_i$ & $R_o$ \\ \hline
+  \vspace{4px} CS & $-\frac{R_D||R_L}{\frac{1}{g_m}+R_S}$ & $R_{G1}||R_{G2}$ & $R_D$           \\ \hline
+  \vspace{4px} CG & $\frac{R_D||R_L}{R_i}$                & $\frac{1}{g_m}$  & $R_D$           \\ \hline
+  \vspace{4px} CD & $\frac{R_L}{\frac{1}{g_m}+R_L}$       & $R_{G1}||R_{G2}$ & $\frac{1}{g_m}$ \\ \hline
   \end{tabular}
 }
 
   \1 $g_m
-    = k_n' \frac{W}{L}(V_{GS}-V_t)
-    = k_p' \frac{W}{L}(V_{SG}-V_t)
-    = k_n' \frac{W}{L}(V_{ov})
+    = k' \frac{W}{L}(V_{GS}-V_t)
+    = k' \frac{W}{L}(V_{ov})
+    = \sqrt{ 2 k' \frac{W}{L} I_D }
     $
   \1 CS: Common Source
     % \2 $R_i=R_G=R_{G1}||R_{G2}$
@@ -186,42 +186,25 @@ $$\frac{ \frac{1}{Cs} }{ R + \frac{1}{Cs} } = \frac{1}{RCs + 1}$$
   \1 apparently, when calculating the max gain of the frequency response, it is OK to just use the part of he equation that doesn't depend on $s$
 
 \zzz{MOS current mirrors}
-  \1 where M1 is the transistor with base shorted to ground
+\\
+\begin{minipage}{0.49\columnwidth}
+\includegraphics[width=\columnwidth]{../ecen325/current_mirror_nmos.png}
+\begin{center}
+\vspace{-10px}
+\textbf{NMOS}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.49\columnwidth}
+\includegraphics[width=\columnwidth]{../ecen325/current_mirror_pmos.png}
+\begin{center}
+\vspace{-10px}
+\textbf{PMOS}
+\end{center}
+\end{minipage}
+  \1 where M1 is the transistor with base shorted to ground (the reference branch)
   \1 $\frac{I_{D1}}{I_{D2}}=\frac{(W/L)_1}{(W/L)_2}$
-  \1 $I_{D2} = \frac{(W/L)_2}{(W/L)_1} I_{D1}$
+    or $I_{D2} = \frac{(W/L)_2}{(W/L)_1} I_{D1}$
 
-
-% \zzz{RC Filter}
-%   \1 Transmission Function: $T(s) = \frac{V_o(s)}{V_i(s)}$
-%   \1 Corner frequency: frequency $s$ at which $T(s)=\frac{1}{\sqrt{2}}$
-%   \1 for simple circuit:
-%     ground$\rightarrow$source$\rightarrow R \rightarrow C\rightarrow$ground
-%     \2 $T(s)=\frac{1}{1+RCs}$
-%     \\ $|T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
-%     \\ $|\angle T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
-%   \1 low pass
-%     \2\begin{circuitikz}
-%       \draw
-%       (0,3) to [short, o-,l=$V_i$] (0,3)
-%       (0,3) to [R, -*, l=$R$] (3,3)
-%       (3,3) to [C, -, l=$C$] (3,2)
-%       (3,2) to node[ground]{} (3,2)
-%       (3,3) to [short, -o,l=$V_o$] (4,3);
-%       \end{circuitikz}
-%     \2 $T(s)=\frac{V_o}{V_i}=\frac{1}{1 + RCs}$
-%     \2 corner frequency: $s=\frac{1}{RC}$ (also pole)
-%     \2 pole: $\frac{1}{RC}$
-%   \1 high pass
-%     \2\begin{circuitikz}
-%       \draw
-%       (0,3) to [short, o-,l=$V_i$] (0,3)
-%       (0,3) to [C, -*, l=$C$] (3,3)
-%       (3,3) to [R, -, l=$R$] (3,1)
-%       (3,1) to node[ground]{} (3,1.5)
-%       (3,3) to [short, -o,l=$V_o$] (4,3);
-%       \end{circuitikz}
-%     \2 $T(s)=\frac{V_o}{V_i}=\frac{RCs}{1+RCs}$
-%     \2 zero: $s=0$, pole: $s=\frac{1}{RC}$
 
 \zzz{Bode Plots}
   \1 magnitude is plotted in $dB$: $|T(j\omega)|_{dB}=20\log_{10}|T(j\omega)|$
@@ -536,6 +519,37 @@ $$\frac{ \frac{1}{Cs} }{ R + \frac{1}{Cs} } = \frac{1}{RCs + 1}$$
 %     \2 $R_o = R_E||r_e = \frac{R_E*r_e}{R_E+r_e}$
 
 
+\zzz{RC Filter}
+  \1 Transmission Function: $T(s) = \frac{V_o(s)}{V_i(s)}$
+  \1 Corner frequency: frequency $s$ at which $T(s)=\frac{1}{\sqrt{2}}$
+  \1 for simple circuit:
+    ground$\rightarrow$source$\rightarrow R \rightarrow C\rightarrow$ground
+    \2 $T(s)=\frac{1}{1+RCs}$
+    \\ $|T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
+    \\ $|\angle T(j\omega)|=\frac{1}{\sqrt{1+R^2C^2s^2}}$
+  \1 low pass
+    \2\begin{circuitikz}
+      \draw
+      (0,3) to [short, o-,l=$V_i$] (0,3)
+      (0,3) to [R, -*, l=$R$] (3,3)
+      (3,3) to [C, -, l=$C$] (3,2)
+      (3,2) to node[ground]{} (3,2)
+      (3,3) to [short, -o,l=$V_o$] (4,3);
+      \end{circuitikz}
+    \2 $T(s)=\frac{V_o}{V_i}=\frac{1}{1 + RCs}$
+    \2 corner frequency: $s=\frac{1}{RC}$ (also pole)
+    \2 pole: $\frac{1}{RC}$
+  \1 high pass
+    \2\begin{circuitikz}
+      \draw
+      (0,3) to [short, o-,l=$V_i$] (0,3)
+      (0,3) to [C, -*, l=$C$] (3,3)
+      (3,3) to [R, -, l=$R$] (3,1)
+      (3,1) to node[ground]{} (3,1.5)
+      (3,3) to [short, -o,l=$V_o$] (4,3);
+      \end{circuitikz}
+    \2 $T(s)=\frac{V_o}{V_i}=\frac{RCs}{1+RCs}$
+    \2 zero: $s=0$, pole: $s=\frac{1}{RC}$
 
 \end{outline}
 \end{flushleft}
