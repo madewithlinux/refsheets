@@ -437,6 +437,31 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 PROM
 
 
+\zzz{Packaging}
+  \1 flip chip: put connection pads on the surface of the die instead of the edges
+    \2 then flip the chip over and affix it directly to the package
+    \2 means the die must be positioned in the package more precisely
+  \1 Heat
+    \2 Thermal Resistance: $\Delta T = \theta_{jaa} P$
+      \3 $\Delta T$: temperature rise in chip
+      \3 $\theta_{ja}$: thermal resistance of chip junction to ambient; units: $C/W$
+      \3 $P$: power dissipation on chip
+  \1 IO
+    \2 ESD Protection: TODO
+    \2 output pads:
+      \3 must drive large off-chip loads (2-50pF)
+      \\ do that using successively larger buffers
+      \3 surround with guard ring to protect against lockup
+    \2 input pads:
+      \3 may need level converters
+      \3 Schmitt trigger: allow signal to cross high/low edge only after it goes a little over the tipping point
+    \2 bidirectional pads:
+      \3 combine input and output
+      \3 use tristate driver to set pin direction
+    \2 analog:
+      \3 no buffering
+      \3 any protection circuitry must be careful to not distort the signal at all
+      \3 RF pads?
 
 
 \end{outline}
