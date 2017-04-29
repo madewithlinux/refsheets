@@ -476,8 +476,107 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 \end{minted}
 
 
-\begin{minted}{haskell}
+\zzz{{\Huge Java}}
+
+\begin{minted}{java}
+import java.util.concurrent.locks.ReentrantLock;
 \end{minted}
+  \1 \verb|ReentrantLock|: basically a mutex
+  \1 \verb|ReentrantLock.lock()|: acquire the lock (blocking)
+    \2 does \textbf{not} throw \verb|InterruptedException|
+  \1 \verb|ReentrantLock.unlock()|: release the lock
+    \2 does \textbf{not} throw \verb|InterruptedException|
+
+\0
+\begin{minted}{java}
+import java.util.concurrent.locks.Condition;
+\end{minted}
+  \1 created from a lock, allows one thread to send a message to another thread
+  \1 \verb|await()|: release this lock and wait for the condition to be signaled.
+    \\ When the signal happens, \verb|await()| will automatically re-acquire the lock before returning
+    \\ (this means you will still have to unlock manually)
+    \2 you can only \verb|await()| when you are holding the lock
+    \2 \textbf{does} throw \verb|InterruptedException|
+  \1 \verb|signal()|: TODO
+  \1 \verb|signalAll()|: TODO
+\0
+\begin{minted}{java}
+import java.lang.*;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Condition;
+public class Main2 {
+  public static class Counter {
+    public int count = 0;
+    public ReentrantLock lock;
+    public Condition updated;
+    public Counter() {
+      this.lock = new ReentrantLock();
+      this.updated = lock.newCondition();
+    }
+  }
+  public static class CounterThread implements Runnable {
+    private Counter counter;
+    public CounterThread(Counter c) {counter = c;}
+    @Override
+    public void run() {
+      while (true) {
+        try {
+          counter.lock.lock();
+          counter.count += 1;
+          System.out.println(counter.count);
+          counter.updated.signalAll();
+        } 
+        // lock() does not throw InterruptedException
+        // catch (InterruptedException e) {}
+        finally {counter.lock.unlock();}
+        
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {}
+      }
+    }
+  }
+
+  public static class IntervalPrinter implements Runnable {
+    private Counter counter;
+    private int mod;
+    private String message;
+    public IntervalPrinter(Counter c, int mod, String msg) {
+      counter = c;
+      this.mod = mod;
+      message = msg;
+    }
+    @Override
+    public void run() {
+      while (true) {
+        int val = 0;
+        try {
+          counter.lock.lock();
+          counter.updated.await();
+          val = counter.count;
+        } 
+        catch (InterruptedException e) {}
+        finally {counter.lock.unlock();}
+
+        if (val % mod == 0) {
+          System.out.println(message);
+        }
+      }
+    }
+  }
+
+  public static void main(String []args) {
+    Counter c = new Counter();
+    new Thread(new IntervalPrinter(c,3,"fizz")).start();
+    new Thread(new IntervalPrinter(c,5,"buzz")).start();
+    new Thread(new CounterThread(c)).start();
+  }
+
+
+}
+
+\end{minted}
+
 
 \end{outline}
 \end{multicols*}
