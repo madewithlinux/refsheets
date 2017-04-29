@@ -478,6 +478,13 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 
 \zzz{{\Huge Java}}
 
+
+\zzz{Inheritance and Virtual Methods}
+  \1 TODO
+
+
+\zzz{Locks: \texttt{ReentrantLock} and \texttt{Condition}}
+
 \begin{minted}{java}
 import java.util.concurrent.locks.ReentrantLock;
 \end{minted}
@@ -486,19 +493,27 @@ import java.util.concurrent.locks.ReentrantLock;
     \2 does \textbf{not} throw \verb|InterruptedException|
   \1 \verb|ReentrantLock.unlock()|: release the lock
     \2 does \textbf{not} throw \verb|InterruptedException|
+    \2 you should always wrap your locking code in a \verb|try{}| block (including the call to \verb|lock()| itself) and put the call to \verb|unlock()| in a \verb|finally{}| block.
+    \\This way, \verb|unlock()| gets called no matter any exception
 
 \0
 \begin{minted}{java}
 import java.util.concurrent.locks.Condition;
 \end{minted}
   \1 created from a lock, allows one thread to send a message to another thread
+    \2 create form lock instance using \verb|lock.newCondition()|
   \1 \verb|await()|: release this lock and wait for the condition to be signaled.
     \\ When the signal happens, \verb|await()| will automatically re-acquire the lock before returning
     \\ (this means you will still have to unlock manually)
-    \2 you can only \verb|await()| when you are holding the lock
+    \2 you can only \verb|await()| when you are holding the lock, and when it returns, you still have the lock, so it acts like you never unlocked it
     \2 \textbf{does} throw \verb|InterruptedException|
-  \1 \verb|signal()|: TODO
-  \1 \verb|signalAll()|: TODO
+  \1 \verb|signal()|: wake up a single thread that is waiting on the condition
+    \2 must be holding lock to signal it's condition
+    \2 must manually release lock before other thread will return from \verb|await()| (because the other thread must also acquire the lock)
+    \2 does \textbf{not} throw \verb|InterruptedException|
+  \1 \verb|signalAll()|: similar to \verb|signal()| except that every thread is woken up
+    \2 still only one thread will be able to use the lock-protected resource at a time, because locks
+    \2 does \textbf{not} throw \verb|InterruptedException|
 \0
 \begin{minted}{java}
 import java.lang.*;
@@ -571,11 +586,12 @@ public class Main2 {
     new Thread(new IntervalPrinter(c,5,"buzz")).start();
     new Thread(new CounterThread(c)).start();
   }
-
-
 }
-
 \end{minted}
+
+
+\zzz{Reflection}
+  \1 TODO
 
 
 \end{outline}
