@@ -675,21 +675,47 @@ public class Main2 {
 
 \zzz{{\large Reflection}}
 
-\zzz{\java{Class<T>}}
+\zzz{\java{java.lang.Class<T>}}
   \1 allows you to reflect on class \java{T}
+  \1 \java{toString()} returns class declaration (more or less)
+  \1 \java{getSimpleName()} returns just the name part of it
+    \2 \java{Main.class.getSimpleName()} $\rightarrow$ \java{"Main"}
   \1 to get:
     \2 \java{Class<?> c = SomeClassName.class;}
     \2 \java{Class<?> c = someObjectInstance.getClass();}
     \2 \java{Class<?> c = Class.forName("SomeClassName");}
       \3 throws \java{ClassNotFoundException}
-  \1 \java{public Method[] getMethods()}
+  \1 \java{Method[] getMethods()}
     \2 all public member methods, including those inherited from super-classes and implemented in interfaces
-  \1 \java{public Method[] getDeclaredMethods()}
+  \1 \java{Method[] getDeclaredMethods()}
     \2 excludes inherited methods, includes any that are declared in class regardless of public, private, static, etc...
+  \1 \java{Constructor<T> getConstructor(Class<?>... pt)}
+    \2 get a constructor for \java{T} that matches parameter types \java{Class<?>... pt}
+    \2 throws \java{NoSuchMethodException} if there is no constructor matching those parameter types
+  \1 \java{T newInstance()}
+    \2 create a new instance of \java{T} using the default constructor
+  \1 TODO use \java{Constructor} class to create class using non-default constructor
   \1 TODO fields
 
-\zzz{\java{Method}}
-  \1 TODO
+\zzz{\java{java.lang.reflect.Method}}
+  \1 \java{String toString()} $\rightarrow$ method prototype as string
+    \2 includes modifiers, method name, parameters, etc...
+  \1 \java{String getName()} $\rightarrow$ name of method as string
+  \1 \java{int getModifiers()} $\rightarrow$ \java{int} representing modifiers
+    \2 use \java{java.lang.reflect.Modifier} static methods to check:
+    \\ \java{Modifier.isStatic(m.getModifiers())}
+  \1 \java{Class<?>[] getParameterTypes()} $\rightarrow$ types of parameters of method
+    \2 if no parameters, returns empty array
+    \2 does not include implicit \java{this} parameter for instance methods
+  \1 \java{Type[] getGenericParameterTypes()}: same, but returns a \java{Type} instance that accurately represents the generic info from the actual source
+  \1 \java{Class<?> getReturnType()}: get the return type
+    \2 if it's void, it returns a void type
+  \1 \java{Object invoke(Object obj, Object... args)}
+    \2 invoke a method on an object. Subject to virtual method lookup
+    \2 if the method is static, \java{obj} may be null
+    \2 if the method returns a primitive type, it is wrapped; if void, returns null
+    \2 throws \java{IllegalAccessException} if you can't run that method because it's private or something
+    \2 if target method throws, it throws \java{InvocationTargetException} wrapping whatever was thrown
 
 
 \end{outline}
