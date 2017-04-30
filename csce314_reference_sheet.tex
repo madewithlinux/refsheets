@@ -37,7 +37,7 @@
 % \geometry{letterpaper, landscape, margin=0.25in}
 % good for printing
 \def \columncount {2}
-\geometry{letterpaper, portrait, margin=0.375in}
+\geometry{letterpaper, portrait, margin=0.125in}
 
 
 % makes second-level itemize bullets instead of dashes
@@ -45,6 +45,8 @@
 \renewcommand\labelitemi{\hspace{-1in}\tiny$\bullet$}
 \renewcommand\labelitemii{\labelitemi}
 
+\newcommand{\java}{\mintinline{java}}
+\newcommand{\haskell}{\mintinline{haskell}}
 
 \newcommand{\p}{\partial}
 \newcommand{\ang}[1]{\left\langle #1 \right\rangle}
@@ -67,40 +69,6 @@
 % \setdefaultleftmargin{0em}{0em}{}{}
 
 
-\begin{document}
-\allowdisplaybreaks
-% \large
-% \Large
-% asterisk makes multicols finish one column before going onto the next
-\begin{multicols*}{\columncount}
-\setlength{\columnseprule}{0.2pt}
-\newlist{longenum}{itemize}{5}
-\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
-\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
-\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
-\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
-\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
-\begin{outline}[longenum]
-
-\AtBeginEnvironment{minted}{
-  \fontsize{9}{9}\selectfont
-}
-
-%%%%%%%%%%%%%%%%%%%%
-%% spacing config %%
-%%%%%%%%%%%%%%%%%%%%
-% just in case I need even more space
-\newcommand{\upspace}{\vspace{-0.8px}\linespread{0}}
-% section titles
-% makes second-level itemize bullets instead of dashes
-\renewcommand\labelitemii{\labelitemi}
-% redefine the sub-headings to inject our space-saver
-\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
-\newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}} \upspace}
-\renewcommand{\1}{\upspace \oldOne   \hspace{-6px}}
-\renewcommand{\2}{\upspace \oldTwo   \hspace{-6px}}
-\renewcommand{\3}{\upspace \oldThree \hspace{-6px}}
-\renewcommand{\4}{\upspace \oldFour  \hspace{-6px}}
 % super-dense mode:
 % \renewcommand{\1}{\upspace $\bullet$\hspace{-0.5em} }
 % \renewcommand{\2}{\upspace $\bullet\bullet$\hspace{-0.5em} }
@@ -112,6 +80,33 @@
 % \renewcommand{\2}{$\bullet$}
 % \renewcommand{\3}{$\bullet$}
 % \renewcommand{\4}{$\bullet$}
+
+
+\begin{document}
+\allowdisplaybreaks
+% asterisk makes multicols finish one column before going onto the next
+\begin{multicols}{\columncount}
+\setlength{\columnseprule}{0.2pt}
+\newlist{longenum}{itemize}{5}
+\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+\begin{outline}[longenum]
+
+\AtBeginEnvironment{minted}{ \fontsize{9}{9}\selectfont }
+\newcommand{\upspace}{\vspace{-0.8px}\linespread{0}}
+% section titles
+% makes second-level itemize bullets instead of dashes
+\renewcommand\labelitemii{\labelitemi}
+% redefine the sub-headings to inject our space-saver
+\let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+\newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}} \upspace}
+\renewcommand{\1}{\upspace \oldOne   \hspace{-6px}}
+\renewcommand{\2}{\upspace \oldTwo   \hspace{-6px}}
+\renewcommand{\3}{\upspace \oldThree \hspace{-6px}}
+\renewcommand{\4}{\upspace \oldFour  \hspace{-6px}}
 
 \noindent
 \textbf{CSCE 314 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright 2017
@@ -127,13 +122,13 @@
   \1 Predicate: a function that takes one argument and returns a boolean
     \2 if \texttt{pred x == True} then \texttt{x} satisfies predicate \texttt{pred}
   \1 function composition:
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 -- the . operator composes functions:
 (f . g) x == f (g x)
 \end{minted}
 
 \0 useful library functions:
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 -- Data.List
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 nubBy pred xs = -- unique elements only from xs as 
@@ -155,8 +150,7 @@ concat xs = foldl (++) [] xs
 concatMap :: (a -> [b]) -> [a] -> [b]
 concatMap f xs =  foldr ((++) . f) [] xs
 -- 
--- get the longest prefix of xs for which pred is true
--- and also return the rest of the list
+-- get the longest prefix of xs for which pred is true and also return the rest of the list
 span :: (a -> Bool) -> [a] -> ([a], [a])
 span pred xs = (takeWhile pred xs, dropWhile pred xs)
 -- 
@@ -174,20 +168,17 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr f z [a,b,c] = a `f` (b `f`  (c `f` z))
 foldr f z [a,b,c] = f a $ f b $ f c z
 -- combines into z from right to left
--- can potentially work on an empty list if one of the
--- folds does not evaluate it's second argument
+-- can potentially work on an empty list if one of the folds does not evaluate it's second argument
 foldl :: (b -> a -> b) -> b -> [a] -> b
 foldl f z [a,b,c] = ((z `f` a) `f` b) `f` c
 foldl f z [a,b,c] = f (f (f z a) b) c
 -- evaluates from right to left
--- will not work on infinite list because it must start at 
--- the end of the list
+-- will not work on infinite list because it must start at the end of the list
 -- 
--- these are the same as above, except they take the first 
--- two elements for the first application of f
+-- these are the same as above, except they take the first two elements for the first application of f
 foldr1 :: (a -> a -> a) -> [a] -> a
-foldl1 :: (a -> a -> a) -> [a] -> a                                                                                                                                                                                                                                                                                                                                                                       =
-\end{minted}
+foldl1 :: (a -> a -> a) -> [a] -> a
+= \end{minted}
 
 
 \zzz{Parsing.hs}
@@ -215,7 +206,7 @@ foldl1 :: (a -> a -> a) -> [a] -> a                                             
   \1 \texttt{(+++)} choice: 
     \2 parse first argument if possible, else parse second argument
     \2 first successfully parsed argument is returned
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 (+++) :: Parser a -> Parser a -> Parser a
 p +++ q =  P (\inp -> case parse p inp of
                   []        -> parse q inp
@@ -223,18 +214,19 @@ p +++ q =  P (\inp -> case parse p inp of
 \end{minted}
   \1 \texttt{((>>=))} sequential composition
     \2 \texttt{a >>= b} unboxes monad \texttt{a} into an output \texttt{a0} and then unboxes monad \texttt{b} with input \texttt{a0}
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 type Parser a = String -> [(a, String)]
--- implementation for in-class mostly-complete
--- parser `monads'
+-- implementation for in-class mostly-complete parser `monads'
 (>>=) :: Parser a -> (a -> Parser b) -> Parser b
 (>>=) p1 p2 = \inp -> case parse p1 inp of
       []  ->  []
       [(v, out)] -> parse (p2 v) out
-                                                                                                                                                                                                                                                                                                                                                                       =
-\end{minted}
+= \end{minted} 
+% for some reason, that equals sign needs to be there for my editor's syntax 
+% hilightint to work
+
   \2 usage:
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 doubleDigit :: Parser [Char]
 doubleDigit =
   digit >>= \a ->
@@ -253,7 +245,7 @@ doubleDigit' = do
   \1 bind and lambda method of parsing:
     \2 parse a number:
   \1 parse arithmetic expressions using do syntax:
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 expr :: Parser Int
 expr  = do t <- term
            do {char '+'
@@ -284,14 +276,14 @@ eval xs = fst (head (parse expr xs))
 \zzz{Trees}
   \1 represent either a leaf node or some kind of internal node
   \1 arithmetic tree declaration:
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 data Expr = Val Int
           | Neg Expr 
           | Add Expr Expr 
           | Mul Expr Expr
 \end{minted}
   \1 how to fold over a tree:
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 -- exprFold  valF        negF      addF     
 exprFold :: (Int->b) -> (b->b) -> (b->b->b) ->
 -- mulF        input   output
@@ -308,7 +300,7 @@ exprFold valF negF addF mulF (Mul s1 s2)
 \end{minted}
     \2 basically, just collect values into some type \texttt{b} and use supplied functions at each node to fold into single value
     \2 useful for evaluating simple things like:
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 -- evaluate an expression
 evalExpr'    = exprFold id (\x -> 0 - x) (+) (*)
 id --  integers map to integers
@@ -319,13 +311,12 @@ id --  integers map to integers
 countLeaves' = exprFold (\_ -> 1) id (+) (+)
 (\_ -> 1) -- leaf integer node is one node
 id -- negation node has only one child, pass on count
-(+) (+) -- nodes with two children: add number 
-        -- of leaf grandchildren
+(+) (+) -- nodes with two children: add number of leaf grandchildren
 \end{minted}
 
 
 \zzz{HW2: Water Gates}
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 
 
 waterGate :: Int -> Int
@@ -341,8 +332,7 @@ waterGate n =
   waterGate' 1 state = map not state 
     -- base case: flip every state
   waterGate' n state = flip n $ waterGate' (n-1) state
-  -- otherwise, first get the state for (n-1) and then 
-  -- flip every nth state
+  -- otherwise, first get the state for (n-1) and then flip every nth state
   --
   -- flip every nth gate
   flip :: Int -> [Bool] -> [Bool]
@@ -355,7 +345,7 @@ waterGate n =
 \end{minted}
 
 \zzz{HW2: Goldbach's Other Conjecture}
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 -- check if a number is prime
 primeTest :: Integer -> Bool
 primeTest 1 = False
@@ -372,8 +362,7 @@ allOddComp = [ o | o <- (drop 1 oddList)
                  , not (primeTest o)     ]
 
 -- if a number satisfies conditions for conjecture
--- method: for enough square nubmers, check if
--- n-(that number) is prime
+-- method: for enough square nubmers, check if n-(that number) is prime
 satsConds n = or [ primeTest k | 
                   k <- map (\x->(n-x)) (twiceSquares n) ]
 
@@ -384,7 +373,7 @@ goldbachNum = head [ x | x <- allOddComp
 
 
 \zzz{HW4: Sets}
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 type Set a = [a]
 
 a = mkSet [1,2,3,4,5]
@@ -422,7 +411,7 @@ setProd a b = [ (ai,bj) | ai <- a
 
 
 \zzz{Prev Exam: Run Length Encoding}
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 import Parsing
 import Data.Char
 
@@ -444,7 +433,7 @@ myhelper ((n,c):(m,d):rest)
 \end{minted}
 
 \zzz{Rock Paper Scissors}
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 data RPS = Rock | Paper | Scissors
   deriving (Eq, Show)
 
@@ -466,7 +455,7 @@ rps2 a b =
 \end{minted}
 
 \zzz{99 problems}
-\begin{minted}{haskell}
+\begin{minted}[breaklines]{haskell}
 -- 9. pack consecutive duplicates into sublists
 pack (x:xs) = let (first,rest) = span (==x) xs
                in (x:first) : pack rest
@@ -476,11 +465,105 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 \end{minted}
 
 
+
+% \end{outline}
+% \end{multicols}
+
+% \setlength{\columnseprule}{0.2pt}
+% \newlist{longenum}{itemize}{5}
+% \setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
+% \setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
+% \setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
+% \setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
+% \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+% \begin{outline}[longenum]
+
+% \AtBeginEnvironment{minted}{ \fontsize{9}{9}\selectfont }
+% \newcommand{\upspace}{\vspace{-0.8px}\linespread{0}}
+% % section titles
+% % makes second-level itemize bullets instead of dashes
+% \renewcommand\labelitemii{\labelitemi}
+% % redefine the sub-headings to inject our space-saver
+% \let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
+% \newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}} \upspace}
+% \renewcommand{\1}{\upspace \oldOne   \hspace{-6px}}
+% \renewcommand{\2}{\upspace \oldTwo   \hspace{-6px}}
+% \renewcommand{\3}{\upspace \oldThree \hspace{-6px}}
+% \renewcommand{\4}{\upspace \oldFour  \hspace{-6px}}
+
 \zzz{{\Huge Java}}
 
 
 \zzz{Inheritance and Virtual Methods}
   \1 TODO
+
+\zzz{Generics}
+  \1 TODO
+\0\begin{minted}[breaklines]{java}
+import java.lang.*;
+
+class GenericWildcards {
+  
+  // T is the binding of the generic parameter
+  private static class GenericBox<T> {
+    // it is optional, but we need it if we want to do things with that type
+    public T t;
+    public GenericBox(T t) { this.t = t; }
+  }
+
+  private static class NumberBox<T extends Number> {
+    public T t;
+    public NumberBox(T t) { this.t = t; } 
+  }
+
+  public static void printBox(GenericBox<?> b) {
+    // here we use the ? wildcard with no type binding because we don't need to do things with that type specifically
+    System.out.println(b.t);
+  }
+
+  // method generic goes before return type
+  public static <T> void printWithParameter(GenericBox<T> b) {
+    System.out.println(b.t);
+  }
+
+  public static void main(String[] args) {
+    // this is using raw types, generally considered bad
+    GenericBox rawBox = new GenericBox("asdf1"); // compiler warnings
+    // this cast is ok because raw types hold java.lang.Object
+    Object o1 = rawBox.t;
+    // this causes no warnings for same reason as assignment above doesn't
+    printBox(rawBox);
+    
+
+    // this is just using an unknown type, java says it's fine
+    GenericBox<?> unknownBox = new GenericBox<>("asdf2");
+    // this is also OK because <?> explicitly makes the generic parameter as java.lang.Object
+    Object o2 = unknownBox.t;
+    printBox(unknownBox);
+
+    GenericBox<String> stringBox = new GenericBox<>("asdf3");
+    // the type parameter above allows Java to infer that this cast is safe
+    String s = stringBox.t;
+    System.out.println(s);
+    // must specify type between class access and method name (works the same for instance methods too)
+    GenericWildcards.<String>printWithParameter(stringBox);
+
+    ////////////////////
+
+    // correct stuff works like expected
+    NumberBox<Integer> nb1 = new NumberBox<>(5);
+    System.out.println(nb1.t + 1);
+    //
+    // this will fail to even allow NumberBox<String> because that type doesn't work
+    // NumberBox<String> sb1 = new NumberBox<>("asdf");
+    // 
+    // this will fail because the inferred type of NumberBox<>("asdf") is NumberBox<String>, which isn't allowed
+    // NumberBox<?> sb1 = new NumberBox<>("asdf");
+
+  }
+
+}
+\end{minted}
 
 
 \zzz{Locks: \texttt{ReentrantLock} and \texttt{Condition}}
@@ -488,32 +571,32 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 \begin{minted}{java}
 import java.util.concurrent.locks.ReentrantLock;
 \end{minted}
-  \1 \verb|ReentrantLock|: basically a mutex
-  \1 \verb|ReentrantLock.lock()|: acquire the lock (blocking)
-    \2 does \textbf{not} throw \verb|InterruptedException|
-  \1 \verb|ReentrantLock.unlock()|: release the lock
-    \2 does \textbf{not} throw \verb|InterruptedException|
-    \2 you should always wrap your locking code in a \verb|try{}| block (including the call to \verb|lock()| itself) and put the call to \verb|unlock()| in a \verb|finally{}| block.
-    \\This way, \verb|unlock()| gets called no matter any exception
+  \1 \java{ReentrantLock}: basically a mutex
+  \1 \java{ReentrantLock.lock()}: acquire the lock (blocking)
+    \2 does \textbf{not} throw \java{InterruptedException}
+  \1 \java{ReentrantLock.unlock()}: release the lock
+    \2 does \textbf{not} throw \java{InterruptedException}
+    \2 you should always wrap your locking code in a \java{try{}} block (including the call to \java{lock()} itself) and put the call to \java{unlock()} in a \java{finally{}} block.
+    \\This way, \java{unlock()} gets called no matter any exception
 
 \0
 \begin{minted}{java}
 import java.util.concurrent.locks.Condition;
 \end{minted}
   \1 created from a lock, allows one thread to send a message to another thread
-    \2 create form lock instance using \verb|lock.newCondition()|
-  \1 \verb|await()|: release this lock and wait for the condition to be signaled.
-    \\ When the signal happens, \verb|await()| will automatically re-acquire the lock before returning
+    \2 create form lock instance using \java{lock.newCondition()}
+  \1 \java{await()}: release this lock and wait for the condition to be signaled.
+    \\ When the signal happens, \java{await()} will automatically re-acquire the lock before returning
     \\ (this means you will still have to unlock manually)
-    \2 you can only \verb|await()| when you are holding the lock, and when it returns, you still have the lock, so it acts like you never unlocked it
-    \2 \textbf{does} throw \verb|InterruptedException|
-  \1 \verb|signal()|: wake up a single thread that is waiting on the condition
+    \2 you can only \java{await()} when you are holding the lock, and when it returns, you still have the lock, so it acts like you never unlocked it
+    \2 \textbf{does} throw \java{InterruptedException}
+  \1 \java{signal()}: wake up a single thread that is waiting on the condition
     \2 must be holding lock to signal it's condition
-    \2 must manually release lock before other thread will return from \verb|await()| (because the other thread must also acquire the lock)
-    \2 does \textbf{not} throw \verb|InterruptedException|
-  \1 \verb|signalAll()|: similar to \verb|signal()| except that every thread is woken up
+    \2 must manually release lock before other thread will return from \java{await()} (because the other thread must also acquire the lock)
+    \2 does \textbf{not} throw \java{InterruptedException}
+  \1 \java{signalAll()}: similar to \java{signal()} except that every thread is woken up
     \2 still only one thread will be able to use the lock-protected resource at a time, because locks
-    \2 does \textbf{not} throw \verb|InterruptedException|
+    \2 does \textbf{not} throw \java{InterruptedException}
 \0
 \begin{minted}{java}
 import java.lang.*;
@@ -590,10 +673,25 @@ public class Main2 {
 \end{minted}
 
 
-\zzz{Reflection}
+\zzz{{\large Reflection}}
+
+\zzz{\java{Class<T>}}
+  \1 allows you to reflect on class \java{T}
+  \1 to get:
+    \2 \java{Class<?> c = SomeClassName.class;}
+    \2 \java{Class<?> c = someObjectInstance.getClass();}
+    \2 \java{Class<?> c = Class.forName("SomeClassName");}
+      \3 throws \java{ClassNotFoundException}
+  \1 \java{public Method[] getMethods()}
+    \2 all public member methods, including those inherited from super-classes and implemented in interfaces
+  \1 \java{public Method[] getDeclaredMethods()}
+    \2 excludes inherited methods, includes any that are declared in class regardless of public, private, static, etc...
+  \1 TODO fields
+
+\zzz{\java{Method}}
   \1 TODO
 
 
 \end{outline}
-\end{multicols*}
+\end{multicols}
 \end{document}
