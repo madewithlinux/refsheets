@@ -1,4 +1,5 @@
-TEX     := pdflatex
+TEX     := xelatex
+# TEX     := luatex
 # shell escape is needed for minted latex package
 TEXOPTS := --halt-on-error -shell-escape
 SOURCES := $(wildcard *.tex)

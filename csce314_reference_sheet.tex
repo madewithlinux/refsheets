@@ -11,6 +11,7 @@
 \usepackage{paralist}  % for compactitem, compactenum
 \usepackage{graphicx}
 \usepackage{enumitem}
+\usepackage{fontspec}
 \usepackage{multicol}
 \usepackage{minted}
 \usepackage{hyperref}
@@ -38,6 +39,7 @@
 % good for printing
 \def \columncount {2}
 \geometry{letterpaper, portrait, margin=0.125in}
+\setmonofont{Source Code Pro}
 
 
 % makes second-level itemize bullets instead of dashes
@@ -45,8 +47,15 @@
 \renewcommand\labelitemi{\hspace{-1in}\tiny$\bullet$}
 \renewcommand\labelitemii{\labelitemi}
 
-\newcommand{\java}{\mintinline{java}}
-\newcommand{\haskell}{\mintinline{haskell}}
+\newcommand{\codesize}{8.5}
+\AtBeginEnvironment{minted}{\fontsize{\codesize}{\codesize}\selectfont}
+\newcommand{\java}[1]{{\fontsize{\codesize}{\codesize}\selectfont\mintinline{java}{#1}}}
+\newcommand{\haskell}[1]{{\fontsize{\codesize}{\codesize}\selectfont\mintinline{haskell}{#1}}}
+% \newenvironment{java}{\ begin{minted}{java}}{\end{minted}{java}}
+% \newenvironment{haskell}{\ begin{minted}{haskell}}{\end{minted}{haskell}}
+
+% \newminted{java}{breaklines}
+\setminted{breaklines}
 
 \newcommand{\p}{\partial}
 \newcommand{\ang}[1]{\left\langle #1 \right\rangle}
@@ -88,28 +97,27 @@
 \begin{multicols}{\columncount}
 \setlength{\columnseprule}{0.2pt}
 \newlist{longenum}{itemize}{5}
-\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
-\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
-\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
-\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
-\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+\setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=$\bullet$}
+\setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=$\ast$}
+\setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=-}
+\setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=>}
+\setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=@}
 \begin{outline}[longenum]
 
-\AtBeginEnvironment{minted}{ \fontsize{9}{9}\selectfont }
-\newcommand{\upspace}{\vspace{-0.8px}\linespread{0}}
+\newcommand{\upspace}{\vspace{-0.6pt}\linespread{1}}
 % section titles
 % makes second-level itemize bullets instead of dashes
 \renewcommand\labelitemii{\labelitemi}
 % redefine the sub-headings to inject our space-saver
 \let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
 \newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}} \upspace}
-\renewcommand{\1}{\upspace \oldOne   \hspace{-6px}}
-\renewcommand{\2}{\upspace \oldTwo   \hspace{-6px}}
-\renewcommand{\3}{\upspace \oldThree \hspace{-6px}}
-\renewcommand{\4}{\upspace \oldFour  \hspace{-6px}}
+\renewcommand{\1}{\upspace \oldOne   \hspace{-6pt}}
+\renewcommand{\2}{\upspace \oldTwo   \hspace{-6pt}}
+\renewcommand{\3}{\upspace \oldThree \hspace{-6pt}}
+\renewcommand{\4}{\upspace \oldFour  \hspace{-6pt}}
 
 \noindent
-\textbf{CSCE 314 Reference Sheet} \hfill Last Updated: \today \hfill \textcopyright \space Josh Wright 2017
+\textbf{CSCE 314 Reference Sheet} \hfill \textcopyright\space\today \hfill Josh Wright
 % \vspace{-0.4cm}
 
 
@@ -118,17 +126,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \zzz{General}
-  \1 \texttt{newtype Parser a = P (String -> [(a,String)])}
+  \1 \haskell{newtype Parser a = P (String -> [(a,String)])}
   \1 Predicate: a function that takes one argument and returns a boolean
-    \2 if \texttt{pred x == True} then \texttt{x} satisfies predicate \texttt{pred}
+    \2 if \haskell{pred x == True} then \haskell{x} satisfies predicate \haskell{pred}
   \1 function composition:
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 -- the . operator composes functions:
 (f . g) x == f (g x)
 \end{minted}
 
 \0 useful library functions:
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 -- Data.List
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
 nubBy pred xs = -- unique elements only from xs as 
@@ -182,13 +190,13 @@ foldl1 :: (a -> a -> a) -> [a] -> a
 
 
 \zzz{Parsing.hs}
-  \1 \texttt{sat :: (Char -> Bool) -> Parser Char}
+  \1 \haskell{sat :: (Char -> Bool) -> Parser Char}
     \2 returns a character if that character satisfies the predicate
-  \1 \texttt{digit, letter, alphanum :: Parser Char}
+  \1 \haskell{digit, letter, alphanum :: Parser Char}
     \2 parses a digit, letter, or alpha-numeric letter respectively
-  \1 \texttt{char :: Char -> Parser Char}
-    \2 \texttt{char `a'} parses exactly the character \texttt{`a'}
-  \1 \texttt{item :: Parser Char}
+  \1 \haskell{char :: Char -> Parser Char}
+    \2 \haskell{char `a'} parses exactly the character \haskell{`a'}
+  \1 \haskell{item :: Parser Char}
     \2 parses any character
   \1 similar to above:
     \texttt{
@@ -199,22 +207,22 @@ foldl1 :: (a -> a -> a) -> [a] -> a
       upper
       string
     }
-  \1 \texttt{many :: Parser a -> Parser [a]}
-    \2 parses 0 or more instances of \texttt{a} and collects them into a list
-  \1 \texttt{many1 :: Parser a -> Parser [a]}
-    \2 same as \texttt{many}, but 
-  \1 \texttt{(+++)} choice: 
+  \1 \haskell{many :: Parser a -> Parser [a]}
+    \2 parses 0 or more instances of \haskell{a} and collects them into a list
+  \1 \haskell{many1 :: Parser a -> Parser [a]}
+    \2 same as \haskell{many}, but 
+  \1 \haskell{(+++)} choice: 
     \2 parse first argument if possible, else parse second argument
     \2 first successfully parsed argument is returned
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 (+++) :: Parser a -> Parser a -> Parser a
 p +++ q =  P (\inp -> case parse p inp of
                   []        -> parse q inp
                   [(v,out)] -> [(v,out)])
 \end{minted}
-  \1 \texttt{((>>=))} sequential composition
-    \2 \texttt{a >>= b} unboxes monad \texttt{a} into an output \texttt{a0} and then unboxes monad \texttt{b} with input \texttt{a0}
-\begin{minted}[breaklines]{haskell}
+  \1 \haskell{((>>=))} sequential composition
+    \2 \haskell{a >>= b} unboxes monad \haskell{a} into an output \haskell{a0} and then unboxes monad \haskell{b} with input \haskell{a0}
+\begin{minted}{haskell}
 type Parser a = String -> [(a, String)]
 -- implementation for in-class mostly-complete parser `monads'
 (>>=) :: Parser a -> (a -> Parser b) -> Parser b
@@ -226,7 +234,7 @@ type Parser a = String -> [(a, String)]
 % hilightint to work
 
   \2 usage:
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 doubleDigit :: Parser [Char]
 doubleDigit =
   digit >>= \a ->
@@ -239,13 +247,13 @@ doubleDigit' = do
   b <- digit
   return [a,b]
 \end{minted}
-  \2 \texttt{(>>)} is the same except that it discards the result of the first monad (thus it has signature \texttt{(>>) :: Parser a -> Parser b -> Parser b})
+  \2 \haskell{(>>)} is the same except that it discards the result of the first monad (thus it has signature \haskell{(>>) :: Parser a -> Parser b -> Parser b})
 
 \zzz{Parsing Examples}
   \1 bind and lambda method of parsing:
     \2 parse a number:
   \1 parse arithmetic expressions using do syntax:
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 expr :: Parser Int
 expr  = do t <- term
            do {char '+'
@@ -276,14 +284,14 @@ eval xs = fst (head (parse expr xs))
 \zzz{Trees}
   \1 represent either a leaf node or some kind of internal node
   \1 arithmetic tree declaration:
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 data Expr = Val Int
           | Neg Expr 
           | Add Expr Expr 
           | Mul Expr Expr
 \end{minted}
   \1 how to fold over a tree:
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 -- exprFold  valF        negF      addF     
 exprFold :: (Int->b) -> (b->b) -> (b->b->b) ->
 -- mulF        input   output
@@ -298,9 +306,9 @@ exprFold valF negF addF mulF (Mul s1 s2)
   = mulF  (exprFold valF negF addF mulF s1) 
           (exprFold valF negF addF mulF s2)
 \end{minted}
-    \2 basically, just collect values into some type \texttt{b} and use supplied functions at each node to fold into single value
+    \2 basically, just collect values into some type \haskell{b} and use supplied functions at each node to fold into single value
     \2 useful for evaluating simple things like:
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 -- evaluate an expression
 evalExpr'    = exprFold id (\x -> 0 - x) (+) (*)
 id --  integers map to integers
@@ -316,7 +324,7 @@ id -- negation node has only one child, pass on count
 
 
 \zzz{HW2: Water Gates}
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 
 
 waterGate :: Int -> Int
@@ -345,7 +353,7 @@ waterGate n =
 \end{minted}
 
 \zzz{HW2: Goldbach's Other Conjecture}
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 -- check if a number is prime
 primeTest :: Integer -> Bool
 primeTest 1 = False
@@ -373,7 +381,7 @@ goldbachNum = head [ x | x <- allOddComp
 
 
 \zzz{HW4: Sets}
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 type Set a = [a]
 
 a = mkSet [1,2,3,4,5]
@@ -411,7 +419,7 @@ setProd a b = [ (ai,bj) | ai <- a
 
 
 \zzz{Prev Exam: Run Length Encoding}
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 import Parsing
 import Data.Char
 
@@ -433,7 +441,7 @@ myhelper ((n,c):(m,d):rest)
 \end{minted}
 
 \zzz{Rock Paper Scissors}
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 data RPS = Rock | Paper | Scissors
   deriving (Eq, Show)
 
@@ -455,7 +463,7 @@ rps2 a b =
 \end{minted}
 
 \zzz{99 problems}
-\begin{minted}[breaklines]{haskell}
+\begin{minted}{haskell}
 -- 9. pack consecutive duplicates into sublists
 pack (x:xs) = let (first,rest) = span (==x) xs
                in (x:first) : pack rest
@@ -466,32 +474,35 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 
 
 
+%%% This is here to allow switching the java section to single column, if desired
+
 % \end{outline}
 % \end{multicols}
 
 % \setlength{\columnseprule}{0.2pt}
 % \newlist{longenum}{itemize}{5}
-% \setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\bullet$}
-% \setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=$\ast$}
-% \setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=-}
-% \setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=>}
-% \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0px,align=left,label=@}
+% \setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=$\bullet$}
+% \setlist[longenum,2]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=$\ast$}
+% \setlist[longenum,3]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=-}
+% \setlist[longenum,4]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=>}
+% \setlist[longenum,5]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=@}
 % \begin{outline}[longenum]
 
 % \AtBeginEnvironment{minted}{ \fontsize{9}{9}\selectfont }
-% \newcommand{\upspace}{\vspace{-0.8px}\linespread{0}}
+% \newcommand{\upspace}{\vspace{-0.8pt}\linespread{0}}
 % % section titles
 % % makes second-level itemize bullets instead of dashes
 % \renewcommand\labelitemii{\labelitemi}
 % % redefine the sub-headings to inject our space-saver
 % \let\oldOne\1\let\oldTwo\2\let\oldThree\3\let\oldFour\4
 % \newcommand{\zzz}[1]{\noindent\0\noindent {\textbf{#1:}} \upspace}
-% \renewcommand{\1}{\upspace \oldOne   \hspace{-6px}}
-% \renewcommand{\2}{\upspace \oldTwo   \hspace{-6px}}
-% \renewcommand{\3}{\upspace \oldThree \hspace{-6px}}
-% \renewcommand{\4}{\upspace \oldFour  \hspace{-6px}}
+% \renewcommand{\1}{\upspace \oldOne   \hspace{-6pt}}
+% \renewcommand{\2}{\upspace \oldTwo   \hspace{-6pt}}
+% \renewcommand{\3}{\upspace \oldThree \hspace{-6pt}}
+% \renewcommand{\4}{\upspace \oldFour  \hspace{-6pt}}
 
-\zzz{{\Huge Java}}
+
+\zzz{{\huge Java}}
 
 
 \zzz{Inheritance and Virtual Methods}
@@ -499,7 +510,7 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 
 \zzz{Generics}
   \1 TODO
-\0\begin{minted}[breaklines]{java}
+\0\begin{minted}{java}
 import java.lang.*;
 
 class GenericWildcards {
@@ -566,7 +577,7 @@ class GenericWildcards {
 \end{minted}
 
 
-\zzz{Locks: \texttt{ReentrantLock} and \texttt{Condition}}
+\zzz{Locks: \java{ReentrantLock} and \java{Condition}}
 
 \begin{minted}{java}
 import java.util.concurrent.locks.ReentrantLock;
