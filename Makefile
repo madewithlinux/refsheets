@@ -13,8 +13,11 @@ clean:
 
 %.pdf: %.tex
 	mkdir -p .latex
-	# cd into folder so all the latex garbage goes there
-	cd .latex && $(TEX) $(TEXOPTS) ../$<
+	# cp into folder so all the latex garbage goes there
+	# on some systems, we must build in the same folder as the
+	# .tex document for minted to work
+	cp $< .latex/
+	cd .latex/ && $(TEX) $(TEXOPTS) $<
 	# this compresses the output pdf file
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ .latex/$@
 	# cp .latex/$@ $@
