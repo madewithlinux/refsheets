@@ -503,40 +503,59 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 
 
 \zzz{{\huge Java}}
-
+  \1 \textbf{Class Invariant}: A logical condition that ensures that an object of a class is in a well-defined state.
+    \2 public methods assume that invariant holds before it's called, and makes sure to preserve the invariant property
+  \1 garbage collection deals only with memory. You must manage other resources manually, such as concurrent locks, OS file handles, etc...
+  \1 anonymous classes are a thing
+  \1 inner class:
+    class declared inside another class implicitly holds a reference to it's outer class. 
+    \\ This means instances of the inner class can use non-static fields/methods of the outer class.
+    \\ This is especially handy for callbacks e.g. on android
 
 \zzz{Inheritance and Virtual Methods}
-  \1 TODO
+  \1 Java classes can inherit from one class only
+    \2 inheritance: \java{class ChildClass extends ParentClass}
+    \2 child class gets access to public fields/methods (of course) and protected fields/methods
+    \2 child class does not get access to private fields/methods
+    \2 TODO abstract classes/methods
+  \1 interfaces: \java{class MultiPurpose implements Interface1, IFace2...}
+    \2 basically an end around lack of multiple inheritance
+    \2 interfaces cannot be instantiated, but you can have a reference of interface type. In that case, the object it points to is a real concrete class, but all that you know about it is that it implements the specified interface
+  \1 virtual dispatch:
+    \2 all public non-static class methods are virtual.
+      This means that if a subclass overrides a parent class method, the decision of which method implementation to use is made at runtime, depending on which type of object the reference actually refers to.
+    \2 all interface methods are by definition virtual
+    \2 private methods are not virtual, static methods are not virtual
+  \1 notable interfaces:
+    \2 \java{Iterable<T>}: contains \java{Iterator<T> iterator()} method, to iterate over container
+    \2 \java{Iterator<E>}: encapsulates an iteration over a container. Unlike C++ iterators, this iterator knows when it's reached the end, instead of relying on comparison to a one-past-end iterator
+      \3 \java{boolean hasNext()}: ask if we're at the end
+      \3 \java{E next()}: retrieve next element, and advance iterator
+    \2 \java{Runnable}: single \java{void run()} method. This is the interface that threads use
 
 \zzz{Generics}
   \1 TODO
 \0\begin{minted}{java}
 import java.lang.*;
-
 class GenericWildcards {
-  
   // T is the binding of the generic parameter
   private static class GenericBox<T> {
     // it is optional, but we need it if we want to do things with that type
     public T t;
     public GenericBox(T t) { this.t = t; }
   }
-
   private static class NumberBox<T extends Number> {
     public T t;
     public NumberBox(T t) { this.t = t; } 
   }
-
   public static void printBox(GenericBox<?> b) {
     // here we use the ? wildcard with no type binding because we don't need to do things with that type specifically
     System.out.println(b.t);
   }
-
   // method generic goes before return type
   public static <T> void printWithParameter(GenericBox<T> b) {
     System.out.println(b.t);
   }
-
   public static void main(String[] args) {
     // this is using raw types, generally considered bad
     GenericBox rawBox = new GenericBox("asdf1"); // compiler warnings
@@ -545,7 +564,6 @@ class GenericWildcards {
     // this causes no warnings for same reason as assignment above doesn't
     printBox(rawBox);
     
-
     // this is just using an unknown type, java says it's fine
     GenericBox<?> unknownBox = new GenericBox<>("asdf2");
     // this is also OK because <?> explicitly makes the generic parameter as java.lang.Object
@@ -559,8 +577,6 @@ class GenericWildcards {
     // must specify type between class access and method name (works the same for instance methods too)
     GenericWildcards.<String>printWithParameter(stringBox);
 
-    ////////////////////
-
     // correct stuff works like expected
     NumberBox<Integer> nb1 = new NumberBox<>(5);
     System.out.println(nb1.t + 1);
@@ -570,18 +586,15 @@ class GenericWildcards {
     // 
     // this will fail because the inferred type of NumberBox<>("asdf") is NumberBox<String>, which isn't allowed
     // NumberBox<?> sb1 = new NumberBox<>("asdf");
-
   }
-
 }
 \end{minted}
 
 
 \zzz{Locks: \java{ReentrantLock} and \java{Condition}}
-
-\begin{minted}{java}
-import java.util.concurrent.locks.ReentrantLock;
-\end{minted}
+\\\java{import java.util.concurrent.locks.ReentrantLock;}
+\\\java{import java.util.concurrent.locks.Condition;}
+\\\zzz{\java{ReentrantLock}}
   \1 \java{ReentrantLock}: basically a mutex
   \1 \java{ReentrantLock.lock()}: acquire the lock (blocking)
     \2 does \textbf{not} throw \java{InterruptedException}
@@ -589,11 +602,7 @@ import java.util.concurrent.locks.ReentrantLock;
     \2 does \textbf{not} throw \java{InterruptedException}
     \2 you should always wrap your locking code in a \java{try{}} block (including the call to \java{lock()} itself) and put the call to \java{unlock()} in a \java{finally{}} block.
     \\This way, \java{unlock()} gets called no matter any exception
-
-\0
-\begin{minted}{java}
-import java.util.concurrent.locks.Condition;
-\end{minted}
+\zzz{\java{Condition}}
   \1 created from a lock, allows one thread to send a message to another thread
     \2 create form lock instance using \java{lock.newCondition()}
   \1 \java{await()}: release this lock and wait for the condition to be signaled.
