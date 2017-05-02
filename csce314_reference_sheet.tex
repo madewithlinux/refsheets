@@ -512,6 +512,16 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
     \\ This means instances of the inner class can use non-static fields/methods of the outer class.
     \\ This is especially handy for callbacks e.g. on android
 
+\zzz{\java{abstract class} vs \java{interface}}
+  \1 Interface: all fields are \java{public static final}, all methods are \java{public}
+  \1 \java{abstract class} can extend exactly one parent class and implement any number of interfaces
+  \1 interface can extend (not implement) any number of interfaces
+  \1 abstract class can have constructor that initializes values and whatnot, but interface cannot
+    \2 you can't instantiate an abstract class directly, you can only call it's constructor from inside the constructor of a child class. Could still be useful though.
+  \1 interfaces and abstract classes can never be instantiated
+    \2 references of interface type refer to an instance of a class that implements that interface
+    \2 references of abstract class type refer to an instance of a subclass of that type
+
 \zzz{Inheritance and Virtual Methods}
   \1 Java classes can inherit from one class only
     \2 inheritance: \java{class ChildClass extends ParentClass}
