@@ -685,6 +685,14 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
     \2 \java{Runnable}: single \java{void run()} method. This is the interface that threads use
 
 \zzz{Generics}
+  \1 \textbf{Subtype Operator}: \texttt{<:}
+    \2 if \java{S implements T} then \texttt{S <: T}
+    \2 if \texttt{S <: T} then you can freely use an object of type \texttt{S} where type \texttt{T} was required, and it will be type-safe (\texttt{S} can be safely used in that context instead of \texttt{T})
+    \2\begin{tabular}{l l l}
+    \java{<T extends Number>} & $\rightarrow$ & \texttt{T <: Number} \\
+    \java{<T super Number>}   & $\rightarrow$ & \texttt{T :> Number} \\
+    \java{T t = new S();}     & $\rightarrow$ & \texttt{S <: T} \\
+    \end{tabular}
   \1 type bound: \java{class SortedList<T extends Comparable & Serializable>}
     \2 you use \java{extends} for constraints that are classes or interfaces
     \2 you can bound with \java{extends} or \java{super}
@@ -887,35 +895,43 @@ public class Main2 {
 
 \zzz{\java{java.lang.Class<T>}}
   \1 allows you to reflect on class \java{T}
-  \1 \java{toString()} returns class declaration (more or less)
-  \1 \java{getSimpleName()} returns just the name part of it
-    \2 \java{Main.class.getSimpleName()} $\rightarrow$ \java{"Main"}
   \1 to get:
     \2 \java{Class<?> c = SomeClassName.class;}
     \2 \java{Class<?> c = someObjectInstance.getClass();}
     \2 \java{Class<?> c = Class.forName("SomeClassName");}
       \3 throws \java{ClassNotFoundException}
+  \1 \java{toString()} returns class declaration (more or less)
+  \1 \java{getSimpleName()} returns just the name part of it
+    \2 \java{Main.class.getSimpleName()} $\rightarrow$ \java{"Main"}
+  \1 \java{Class<? super T> getSuperclass()}
+  \1 \java{Class<?>[] getInterfaces()}
+    \2 on class object: get interfaces implemented by this class
+    \2 on interface object: get interfaces extended by this interface
+  \1 methods matching \java{getDeclaredXXX()}
+    \2 can see just things declared in the class itself, not from super classes
+    \2 can see anything whether public/private/protected/etc...
+  \1 methods matching \java{getXXX()}
+    \2 operate on whatever the class looks like from an outside observer: only public fields/methods, and from class or super-class/interface
   \1 \java{Method[] getMethods()}
-    \2 all public member methods, including those inherited from super-classes and implemented in interfaces
-  \1 \java{Method[] getDeclaredMethods()}
-    \2 excludes inherited methods, includes any that are declared in class regardless of public, private, static, etc...
-  \1 \java{Constructor<T> getConstructor(Class<?>... pt)}
-    \2 get a constructor for \java{T} that matches parameter types \java{Class<?>... pt}
-    \2 throws \java{NoSuchMethodException} if there is no constructor matching those parameter types
+    \2 all public methods, including those inherited from super-classes and implemented in interfaces
   \1 \java{Method getMethod(String name, Class<?>... pt)}
     \2 looks for fields in superclasses, then superinterfaces too
     \2 throws \java{NoSuchMethodException} if method not found
-  \1 \java{T newInstance()}
-    \2 create a new instance of \java{T} using the default constructor
-  \1 TODO use \java{Constructor} class to create class using non-default constructor
-  \1 \java{Class<? super T> getSuperclass()}
-  \1 \java{Class<?>[] getInterfaces()} 
-    \2 on class object: get interfaces implemented by this class
-    \2 on interface object: get interfaces extended by this interface
+    \2 public methods only
+  \1 \java{Method[] getDeclaredMethods()}
+    \2 excludes inherited methods; includes any that are declared in class regardless of public, private, static, etc...
   \1 \java{Field[] getFields()}
+    \2 returns public fields only!
   \1 \java{Field getField(String name)}
     \2 looks for fields in superinetrfaces, then superclasses too
     \2 throws \java{NoSuchFieldException} if field not found
+    \2 only finds public fields
+  \1 \java{Constructor<T> getConstructor(Class<?>... pt)}
+    \2 get a constructor for \java{T} that matches parameter types \java{Class<?>... pt}
+    \2 throws \java{NoSuchMethodException} if there is no constructor matching those parameter types
+  \1 \java{T newInstance()}
+    \2 create a new instance of \java{T} using the default constructor
+  \1 TODO use \java{Constructor} class to create class using non-default constructor
 
 \zzz{\java{java.lang.reflect.Method}}
   \1 \java{String toString()} $\rightarrow$ method prototype as string
