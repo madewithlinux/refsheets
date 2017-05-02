@@ -1,5 +1,5 @@
-TEX     := xelatex
-# TEX     := luatex
+TEX     := pdflatex
+# TEX     := xelatex
 # shell escape is needed for minted latex package
 TEXOPTS := --halt-on-error -shell-escape
 SOURCES := $(wildcard *.tex)
@@ -20,5 +20,22 @@ clean:
 	cp $< .latex/
 	cd .latex/ && $(TEX) $(TEXOPTS) $<
 	# this compresses the output pdf file
-	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ .latex/$@
+	gs -sDEVICE=pdfwrite \
+		-dCompatibilityLevel=1.4 \
+		-dNOPAUSE \
+		-dQUIET \
+		-dBATCH \
+		-sOutputFile=$@ .latex/$@
 	# cp .latex/$@ $@
+
+csce314_reference_sheet.pdf: csce314_reference_sheet.tex
+	# special case to use xelatex for custom fonts
+	mkdir -p .latex
+	cp $< .latex/
+	cd .latex/ && xelatex $(TEXOPTS) $<
+	gs -sDEVICE=pdfwrite \
+		-dCompatibilityLevel=1.4 \
+		-dNOPAUSE \
+		-dQUIET \
+		-dBATCH \
+		-sOutputFile=$@ .latex/$@

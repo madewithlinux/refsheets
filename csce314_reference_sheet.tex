@@ -94,7 +94,7 @@
 \begin{document}
 \allowdisplaybreaks
 % asterisk makes multicols finish one column before going onto the next
-\begin{multicols}{\columncount}
+\begin{multicols*}{\columncount}
 \setlength{\columnseprule}{0.2pt}
 \newlist{longenum}{itemize}{5}
 \setlist[longenum,1]{nosep,leftmargin=0.2cm,labelwidth=0pt,align=left,label=$\bullet$}
@@ -190,6 +190,143 @@ foldl1 :: (a -> a -> a) -> [a] -> a
 
 
 \zzz{Parsing.hs}
+\begin{minted}{haskell}
+module Parsing where
+import Data.Char
+import Control.Applicative (Applicative(..))
+import Control.Monad       (liftM, ap)
+
+infixr 5 +++
+
+-- Parser is the name of the type, P is the constructor.
+newtype Parser a = P (String -> [(a,String)])
+
+instance Monad Parser where
+   return v = P (\inp -> [(v,inp)])
+   p >>= f  = P (\inp -> case parse p inp of
+                            []        -> []
+                            [(v,out)] -> parse (f v) out)
+
+instance Functor Parser where
+   fmap = liftM
+
+instance Applicative Parser where
+   pure = return 
+   (<*>) = ap
+
+failure :: Parser a
+failure =  P (\inp -> [])
+
+-- parse any single character
+item    :: Parser Char
+item    =  P (\inp -> case inp of
+                        []     -> []
+                        (x:xs) -> [(x,xs)])
+
+parse                         :: Parser a -> String -> [(a,String)]
+parse (P p) inp               =  p inp
+
+--Choice
+(+++)   :: Parser a -> Parser a -> Parser a
+p +++ q =  P (\inp -> case parse p inp of
+                         []        -> parse q inp
+                         [(v,out)] -> [(v,out)])
+
+--Derived primitives
+--------------------
+sat      :: (Char -> Bool) -> Parser Char
+sat p         =  do x <- item
+                    if p x then return x else failure
+
+digit    :: Parser Char
+digit         =  sat isDigit
+
+letter   :: Parser Char
+letter        =  sat isAlpha
+
+alphanum :: Parser Char
+alphanum      =  sat isAlphaNum
+
+lower    :: Parser Char
+lower         =  sat isLower
+
+upper    :: Parser Char
+upper         =  sat isUpper
+
+char     :: Char -> Parser Char
+char x        =  sat (== x)
+
+string   :: String -> Parser String
+string []     =  return []
+string (x:xs) =  do char x
+                    string xs
+                    return (x:xs)
+many     :: Parser a -> Parser [a]
+many p        =  many1 p +++ return []
+many1    :: Parser a -> Parser [a]
+many1 p       =  do v  <- p
+                    vs <- many p
+                    return (v:vs)
+ident    :: Parser String
+ident         =  do x  <- lower
+                    xs <- many alphanum
+                    return (x:xs)
+nat      :: Parser Int
+nat           =  do xs <- many1 digit
+                    return (read xs)
+int      :: Parser Int
+int           =  do char '-'
+                    n <- nat
+                    return (-n)
+                  +++ nat
+space    :: Parser ()
+space         =  do many (sat isSpace)
+                    return ()
+
+--Ignoring spacing
+------------------
+token       :: Parser a -> Parser a
+token p     =  do space
+            v <- p
+            space
+            return v
+
+identifier  :: Parser String
+identifier  =  token ident
+
+natural     :: Parser Int
+natural     =  token nat
+
+integer     :: Parser Int
+integer     =  token int
+
+symbol      :: String -> Parser String
+symbol xs   =  token (string xs)
+
+--Example: Arithmetic Expressions
+expr :: Parser Int
+expr  = do t <- term
+           do {char '+'
+              ;e <- expr
+              ;return (t + e)
+              }
+            +++ return t
+term :: Parser Int
+term  = do f <- factor
+           do char '*'
+              t <- term
+              return (f * t)
+            +++ return f
+factor :: Parser Int
+factor  = do d <- digit
+             return (digitToInt d)
+           +++ do char '('
+                  e <- expr
+                  char ')'
+                  return e
+eval   :: String -> Int
+eval xs = fst (head (parse expr xs))
+\end{minted}
   \1 \haskell{sat :: (Char -> Bool) -> Parser Char}
     \2 returns a character if that character satisfies the predicate
   \1 \haskell{digit, letter, alphanum :: Parser Char}
@@ -214,6 +351,10 @@ foldl1 :: (a -> a -> a) -> [a] -> a
   \1 \haskell{(+++)} choice: 
     \2 parse first argument if possible, else parse second argument
     \2 first successfully parsed argument is returned
+  \1 \haskell{nat :: Parser Int}
+    \2 parse natural number (positive integer)
+  \1 \haskell{int :: Parser Int}
+    \2 
 \begin{minted}{haskell}
 (+++) :: Parser a -> Parser a -> Parser a
 p +++ q =  P (\inp -> case parse p inp of
@@ -477,7 +618,7 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 %%% This is here to allow switching the java section to single column, if desired
 
 % \end{outline}
-% \end{multicols}
+% \end{multicols*}
 
 % \setlength{\columnseprule}{0.2pt}
 % \newlist{longenum}{itemize}{5}
@@ -636,6 +777,22 @@ class GenericWildcards {
     \2 throws \java{InterruptedException} if the thread was interrupted before time elapsed
   \1 make new thread with \java{new Thread(Runnable r)}
     \2 start that thread with \java{thread.start()}
+\zzz{\java{synchronized}}
+\begin{minted}{java}
+// inside a method
+synchronized(some_object /*may be this*/) {
+  // synchronized code here
+}
+// synchronized getInstance method for singleton
+public foo synchronized getInstance() {
+  if (inst == null) { inst = new Foo(); }
+  return foo;
+}
+\end{minted}
+  \1 methods marked \java{synchronized} are implicitly locked to ensure that only one synchronized method is ever running on a given object at a time
+  \1 synchronized statement: synchronize on a specific object manually
+  \1 works as a good synchronization mechanism as long as the resource doesn't need to be used directly by multiple objects
+  \1 does not allow for conditions
 \0
 \begin{minted}{java}
 import java.lang.*;
@@ -731,10 +888,20 @@ public class Main2 {
   \1 \java{Constructor<T> getConstructor(Class<?>... pt)}
     \2 get a constructor for \java{T} that matches parameter types \java{Class<?>... pt}
     \2 throws \java{NoSuchMethodException} if there is no constructor matching those parameter types
+  \1 \java{Method getMethod(String name, Class<?>... pt)}
+    \2 looks for fields in superclasses, then superinterfaces too
+    \2 throws \java{NoSuchMethodException} if method not found
   \1 \java{T newInstance()}
     \2 create a new instance of \java{T} using the default constructor
   \1 TODO use \java{Constructor} class to create class using non-default constructor
-  \1 TODO fields
+  \1 \java{Class<? super T> getSuperclass()}
+  \1 \java{Class<?>[] getInterfaces()} 
+    \2 on class object: get interfaces implemented by this class
+    \2 on interface object: get interfaces extended by this interface
+  \1 \java{Field[] getFields()}
+  \1 \java{Field getField(String name)}
+    \2 looks for fields in superinetrfaces, then superclasses too
+    \2 throws \java{NoSuchFieldException} if field not found
 
 \zzz{\java{java.lang.reflect.Method}}
   \1 \java{String toString()} $\rightarrow$ method prototype as string
@@ -756,7 +923,16 @@ public class Main2 {
     \2 throws \java{IllegalAccessException} if you can't run that method because it's private or something
     \2 if target method throws, it throws \java{InvocationTargetException} wrapping whatever was thrown
 
+\zzz{\java{java.lang.reflect.Field}}
+  \1 \java{TYPE getTYPE(Object obj)}: bunch of methods for getting fields of primitive types
+    \2 throws \java{IllegalArgumentException} if type can't be converted (widening conversions only are allowed)
+    \2 throws \java{IllegalArgumentException} also if \java{obj} isn't of the right type
+  \1 \java{Object get(Object obj)}: get an object field
+    \2 if the field is a primitive type, it is wrapped and then returned
+    \2 only throws \java{IllegalArgumentException} if \java{obj} isn't of the right type
+  \1 \java{String getName()}
+  \1 also various \java{setTYPE(Object obj, TYPE value)} and \java{set(Object obj, Object value)} equivalent to get methods
 
 \end{outline}
-\end{multicols}
+\end{multicols*}
 \end{document}
