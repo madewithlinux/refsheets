@@ -544,7 +544,11 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
     \2 \java{Runnable}: single \java{void run()} method. This is the interface that threads use
 
 \zzz{Generics}
-  \1 TODO
+  \1 type bound: \java{class SortedList<T extends Comparable & Serializable>}
+    \2 you use \java{extends} for constraints that are classes or interfaces
+  \1 wildcards: \java{static void printAll(List<?> lst)} use \java{?} for when you want to accept an object of any type
+    \2 you can also specify \java{<? extends ClassOrInterface...>}
+    \2 
 \0\begin{minted}{java}
 import java.lang.*;
 class GenericWildcards {
@@ -601,7 +605,7 @@ class GenericWildcards {
 \end{minted}
 
 
-\zzz{Locks: \java{ReentrantLock} and \java{Condition}}
+\zzz{Threading}
 \\\java{import java.util.concurrent.locks.ReentrantLock;}
 \\\java{import java.util.concurrent.locks.Condition;}
 \\\zzz{\java{ReentrantLock}}
@@ -627,6 +631,11 @@ class GenericWildcards {
   \1 \java{signalAll()}: similar to \java{signal()} except that every thread is woken up
     \2 still only one thread will be able to use the lock-protected resource at a time, because locks
     \2 does \textbf{not} throw \java{InterruptedException}
+\zzz{Threads}
+  \1 \java{static void Thread.sleep(long ms)}: sleep for ms
+    \2 throws \java{InterruptedException} if the thread was interrupted before time elapsed
+  \1 make new thread with \java{new Thread(Runnable r)}
+    \2 start that thread with \java{thread.start()}
 \0
 \begin{minted}{java}
 import java.lang.*;
