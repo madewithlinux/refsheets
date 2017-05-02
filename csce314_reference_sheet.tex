@@ -11,10 +11,10 @@
 \usepackage{paralist}  % for compactitem, compactenum
 \usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{fontspec}
 \usepackage{multicol}
 \usepackage{minted}
 \usepackage{hyperref}
+\usepackage{fontspec}
 \hypersetup{
   pdftitle={CSCE 314 Reference Sheet},
   pdfauthor={Josh Wright},
@@ -687,9 +687,23 @@ pack [1,2,3,2,2,3] == [[1,1],[2],[3],[2,2],[3]]
 \zzz{Generics}
   \1 type bound: \java{class SortedList<T extends Comparable & Serializable>}
     \2 you use \java{extends} for constraints that are classes or interfaces
+    \2 you can bound with \java{extends} or \java{super}
+    \2 \java{<T extends Type>}: \java{Type} is an inclusive upper bound on \java{T}
+    \2 \java{<T super Type>}: \java{Type} is an inclusive lower bound on \java{T}
   \1 wildcards: \java{static void printAll(List<?> lst)} use \java{?} for when you want to accept an object of any type
     \2 you can also specify \java{<? extends ClassOrInterface...>}
-    \2 
+  \1 PECS: Producer Extends, Consumer Super
+    \2 to generically assign a \java{T} to something, use \java{<? super T>}
+    \2 to generically read a \java{T} from something, use \java{<? extends T>}
+\0\begin{minted}{java}
+public class CollectionsPECS { 
+  public static <T> void copy(List<? super T> dest, 
+                              List<? extends T> src) {
+    for (int i=0; i<src.size(); i++) 
+      dest.set(i,src.get(i)); 
+  } 
+}
+\end{minted}
 \0\begin{minted}{java}
 import java.lang.*;
 class GenericWildcards {

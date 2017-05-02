@@ -33,6 +33,7 @@ csce314_reference_sheet.pdf: csce314_reference_sheet.tex
 	mkdir -p .latex
 	cp $< .latex/
 	cd .latex/ && xelatex $(TEXOPTS) $<
+	# cd .latex/ && pdflatex $(TEXOPTS) $<
 	gs -sDEVICE=pdfwrite \
 		-dCompatibilityLevel=1.4 \
 		-dNOPAUSE \
