@@ -38,7 +38,8 @@
 % \geometry{letterpaper, landscape, margin=0.25in}
 % good for printing
 \def \columncount {2}
-\geometry{letterpaper, portrait, margin=0.125in}
+\geometry{letterpaper, portrait, margin=0.25in, bottom=0.5in}
+\setlength{\footskip}{10pt}
 \setmonofont{Source Code Pro}
 
 
@@ -139,14 +140,12 @@
 \begin{minted}{haskell}
 -- Data.List
 nubBy :: (a -> a -> Bool) -> [a] -> [a]
-nubBy pred xs = -- unique elements only from xs as 
-                -- determined by pred
+nubBy pred xs = -- unique elements only from xs as determined by pred
 nub :: Eq a => [a] -> [a]
 nub xs = nubBy (==) a -- unique elements from xs
 -- 
 words :: String -> [String]
-words xs =  -- list of whitespace-separated 
-            -- words from xs
+words xs = -- list of whitespace-separated words from xs
 --
 -- concatenate container of lists
 concat :: Foldable t => t [a] -> [a]
@@ -892,6 +891,13 @@ public class Main2 {
 
 
 \zzz{{\large Reflection}}
+  \1 \java{instanceof} operator: check if an object is an instance of a class or a subclass
+\begin{minted}{java}
+if (obj instanceof String) {
+  // cast is safe because we checked and obj
+  String s = (String) obj;
+}
+\end{minted}
 
 \zzz{\java{java.lang.Class<T>}}
   \1 allows you to reflect on class \java{T}
@@ -962,6 +968,10 @@ public class Main2 {
     \2 only throws \java{IllegalArgumentException} if \java{obj} isn't of the right type
   \1 \java{String getName()}
   \1 also various \java{setTYPE(Object obj, TYPE value)} and \java{set(Object obj, Object value)} equivalent to get methods
+
+
+% \begin{minted}{java}
+% \end{minted}
 
 \end{outline}
 \end{multicols*}
