@@ -381,6 +381,49 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     $$ I_{ds} = I_{ds0} e^{\frac{\Vgs-\Vt}{nv_T}} \left( 1 - e^{\frac{-\Vds}{v_T}} \right) $$
     $$ V_t = V_{t0} - \eta\Vds + \gamma \left( \sqrt{\phi_s + V_{sb}} - \sqrt{\phi_s} \right) $$
 
+
+\zzz{After exam 1}
+  \1 exam 1 was on March 8 (2017.03.08)
+  \1 nothing specifically from previous exam
+
+\zzz{Latch vs Flip Flop}
+  \1 Latch is level-sensitive, flip-flop is edge-sensitive
+  \1 register is flip-flop
+\zzz{Latch/flip flop designs}
+  \1 pass transistor latch
+    \2 pros: tiny, low clock load
+    \2 con: voltage drop across is $V_t$, it's non-restoring
+    \2 con: not really a latch because doesn't hold signal
+  \1 transmission gate
+    \2 pro: no $V_t$ drop
+    \2 con: requires inverted clock
+  \1 inverting buffer
+    \2 TODO
+  \1 tristate feedback
+    \2 first complete latch here
+    \2 risk of backdriving: downstream could change state if it is very strong
+  \1 buffered output
+    \2 no backdrifing problem
+    \2 widely used
+    \2 rather large and slow thoug
+  \1 a flip-flop is just two latches back-to-back
+
+% 2017.03.21
+\zzz{Sequential Circuits}
+  \1 sequential means that the circuit holds state: the output depends on both current and past input
+  \1 to model a state machine, you can unroll it to [regieter] $\rightarrow$ [combinational] $\rightarrow$ ...
+    \2 this way you can use regular timing stuff for it: arrival time, slack, etc...
+  \1 Mealy FSM: output of circuit is from combinational logic
+  \1 Moore FSM: output is from registers
+  \1 pipelined circuit: uses registers to hold state between clock cycles, because not all of the combinational logic can happen fast enough to work in a single clock cycle
+    \2 pipelined circuits can use flip-flops or latches?
+  \1 the clock consumes 20-30\% of the power on a chip
+  \1 the whole reason that registers are needed is because data (signals) moves through components at non-constant speed
+  \1 
+
+
+
+
 % lecture 8? (HW7)
 
 \zzz{Wire Delay}
@@ -469,3 +512,4 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 \end{multicols*}
 \end{spacing}
 \end{document}
+
