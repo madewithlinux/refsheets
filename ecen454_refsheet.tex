@@ -451,11 +451,19 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     $t_{pcq}$ & Clk$\rightarrow$Q propagation delay \\
     $t_{ccq}$ & Clk$\rightarrow$Q contamination delay \\
     $t_{pdq}$ & D$\rightarrow$Q propagation delay \\
-    $t_{setup}$ & setup time \\
-    $t_{hold}$ & hold time \\
+    $t_{setup}$ & setup time of flip-flop/latch \\
+    $t_{hold}$ & hold time of flip-flop/latch\\
   \end{tabular}
     \2 D$\rightarrow$Q delay only makes sense for latches, since for flip-flops it is simply one clock cycle
-  \1 sequencing overhead: TODO
+  \1 sequencing overhead and max delay:
+    \2 $T_c$: cycle time
+    \2 need for combinational logic to be fast enough
+    \2 for single phase flip flop: $t_{pd} < T_c - (T_{setup} + T_{pcq})$
+    \2 for two-phase latch: $t_{pd} = t_{pd1} + t_{pd2} < T_c - 2t_{pdq}$
+    \2 max delay is dictated by cycle time and sequencing overhead; sequencing overhead does not effect minimum delay
+  \1 minimum delay:
+    \2 for single phase flip flop: TODO
+    \2 for two-phase latch: TODO
   \1 time borrowing: TODO
 
 
