@@ -467,9 +467,22 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 for two-phase latch: $t_{cd1},t_{cd2} > t_{hold} - t_{ccq} - t_{non-overlap}$
       \3 hold time applies twice each cycle, once per each combinational circuit
       \3 $t_{non-overlap}$: phase between clock signals?
-  \1 time borrowing: TODO
+  \1 time borrowing: for two-phase latch-based system, you can borrow time from one segment to the other while the latch is transparent
+    \2 works (is possible) as long as the total circuit still completes within one clock cycle
+  \1 clock skew:
+    \2 when uncertain: causes tighter required CL propagation delay and minimum CL contamination delay, and reduces opportunity for time borrowing.
+    \2 when know constant skew: can help with same effect as time borrowing, except can also have effect for flip-flop based systems
+  \1 if setup times are violated, you can reduce clock speed to fix it
+  \1 if hold times are violated, it won't work at any clock speed
 
 
+% 2017.03.29
+\zzz{Clocking}
+  \1 H-Tree (clock distribution network)
+    \2 laid out in such a way that the delay from the center to any leaf node is equal
+  \1 Grid clock distribution
+    \2 grid on two or more levels
+    \2 ensures low local skew, but there could still be larger chip-wide skew
 
 
 
