@@ -382,9 +382,24 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     $$ V_t = V_{t0} - \eta\Vds + \gamma \left( \sqrt{\phi_s + V_{sb}} - \sqrt{\phi_s} \right) $$
 
 
+    
+
+
+
+
+
+
+
 \zzz{After exam 1}
   \1 exam 1 was on March 8 (2017.03.08)
   \1 nothing specifically from previous exam
+
+\zzz{Propagation vs Contamination delay}
+  \1 contamination delay ($t_{cd}$): time from input change to \textbf{any} output changing value
+    \2 kind of a best-case delay or smallest possible delay
+    \2 time counted when input crosses 50\% of logical high voltage level
+  \1 propagation delay: time from when all inputs are stable to when all outputs are stable
+    \2 kind of like a worst-case delay
 
 \zzz{Latch vs Flip Flop}
   \1 Latch is level-sensitive, flip-flop is edge-sensitive
@@ -405,10 +420,14 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 buffered output
     \2 no backdrifing problem
     \2 widely used
-    \2 rather large and slow thoug
+    \2 rather large and slow though, and large load on clock
   \1 a flip-flop is just two latches back-to-back
 
-% 2017.03.21
+\zzz{Metastability}
+  \1 stable works if it's not at a strong high or low but will settle somewhere
+  \1 metastable is where it might sit there, but if it must settle, you don't know which one it will settle to when perturbed
+
+% 2017.03.27
 \zzz{Sequential Circuits}
   \1 sequential means that the circuit holds state: the output depends on both current and past input
   \1 to model a state machine, you can unroll it to [regieter] $\rightarrow$ [combinational] $\rightarrow$ ...
@@ -419,7 +438,30 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 pipelined circuits can use flip-flops or latches?
   \1 the clock consumes 20-30\% of the power on a chip
   \1 the whole reason that registers are needed is because data (signals) moves through components at non-constant speed
-  \1 
+  \1 reset
+    \2 can be sync or async
+    \2 force low output when reset is high
+  \1 sequencing: it is (generally) equivalent to split the sequential logic in two, and then use two latches (one halfway through) instead of one large section of sequential logic with flip-flops at either end
+    \2 this is called two phase clocking
+    \2 you have to make sure the middle latch operates on clock-bar instead of clock
+  \1 timing: \\
+  \begin{tabular}{l l}
+    $t_{pd}$ & logic propagation delay \\
+    $t_{cd}$ & logic contamination delay \\
+    $t_{pcq}$ & Clk$\rightarrow$Q propagation delay \\
+    $t_{ccq}$ & Clk$\rightarrow$Q contamination delay \\
+    $t_{pdq}$ & D$\rightarrow$Q propagation delay \\
+    $t_{setup}$ & setup time \\
+    $t_{hold}$ & hold time \\
+  \end{tabular}
+    \2 D$\rightarrow$Q delay only makes sense for latches, since for flip-flops it is simply one clock cycle
+  \1 sequencing overhead: TODO
+  \1 time borrowing: TODO
+
+
+
+
+
 
 
 
