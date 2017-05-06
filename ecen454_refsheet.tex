@@ -462,8 +462,11 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 for two-phase latch: $t_{pd} = t_{pd1} + t_{pd2} < T_c - 2t_{pdq}$
     \2 max delay is dictated by cycle time and sequencing overhead; sequencing overhead does not effect minimum delay
   \1 minimum delay:
-    \2 for single phase flip flop: TODO
-    \2 for two-phase latch: TODO
+    \2 for single phase flip flop: $t_{cd} > t_{hold} - t_{ccq}$
+      \3 combinational stuff must be slow enough that it doesn't violate hold time of second flip flop
+    \2 for two-phase latch: $t_{cd1},t_{cd2} > t_{hold} - t_{ccq} - t_{non-overlap}$
+      \3 hold time applies twice each cycle, once per each combinational circuit
+      \3 $t_{non-overlap}$: phase between clock signals?
   \1 time borrowing: TODO
 
 
