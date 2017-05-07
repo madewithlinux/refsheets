@@ -1,13 +1,16 @@
 TEX     := pdflatex
-# TEX     := xelatex
 # shell escape is needed for minted latex package
-TEXOPTS := --halt-on-error -shell-escape
+TEX_OPTS    := --halt-on-error -shell-escape
+PANDOC_OPTS := -s -f markdown+grid_tables+pipe_tables \
+	--self-contained --css pandoc.css \
+	-H header.html
 TEX_SOURCES := $(wildcard *.tex)
 MD_SOURCES  := $(filter-out README.md, $(wildcard *.md))
-OUTPUTS := \
-	$(TEX_SOURCES:%.tex=%.pdf) \
-	$(MD_SOURCES:%.md=%.md.pdf)\
-	$(MD_SOURCES:%.md=%.md.html)
+OUTPUTS     := \
+	$(TEX_SOURCES:%.tex=%.pdf)   \
+	$(MD_SOURCES:%.md=%.md.pdf)  \
+	$(MD_SOURCES:%.md=%.md.html) \
+	index.html
 .SHELL=bash
 
 all: $(OUTPUTS) 
@@ -23,7 +26,7 @@ clean:
 	# on some systems, we must build in the same folder as the
 	# .tex document for minted to work
 	cp $< .latex/
-	cd .latex/ && $(TEX) $(TEXOPTS) $<
+	cd .latex/ && $(TEX) $(TEX_OPTS) $<
 	# this compresses the output pdf file
 	gs -sDEVICE=pdfwrite \
 		-dCompatibilityLevel=1.4 \
@@ -34,18 +37,17 @@ clean:
 	# cp .latex/$@ $@
 
 %.md.pdf: %.md
-	pandoc $< -o $@
+	pandoc $(PANDOC_OPTS) $< -o $@
 
 %.md.html: %.md pandoc.css
-	pandoc -s -f markdown+grid_tables+pipe_tables --self-contained $< --css pandoc.css -o $@
+	pandoc $(PANDOC_OPTS) $< -o $@
 
 
 csce314_reference_sheet.pdf: csce314_reference_sheet.tex
 	# special case to use xelatex for custom fonts
 	mkdir -p .latex
 	cp $< .latex/
-	cd .latex/ && xelatex $(TEXOPTS) $<
-	# cd .latex/ && pdflatex $(TEXOPTS) $<
+	cd .latex/ && xelatex $(TEX_OPTS) $<
 	gs -sDEVICE=pdfwrite \
 		-dCompatibilityLevel=1.4 \
 		-dNOPAUSE \
@@ -53,10 +55,10 @@ csce314_reference_sheet.pdf: csce314_reference_sheet.tex
 		-dBATCH \
 		-sOutputFile=$@ .latex/$@
 
-index.html: $(wildcard *.pdf) $(wildcard *.html)
+index.html: $(wildcard *.pdf) $(wildcard *.md)
 	cat README.md > index.md
 	echo >> index.md
 	echo '# Links' >> index.md
-	for f in $(wildcard *.pdf *.html); do echo "* [$$f]($$f)" >> index.md; done
-	pandoc index.md -s --self-contained --css pandoc.css -o $@
+	for f in $(filter-out index.html header.html, $(wildcard *.pdf *.html)); do echo "* [$$f]($$f)" >> index.md; done
+	pandoc $(PANDOC_OPTS) index.md -o $@
 	rm index.md
