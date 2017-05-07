@@ -389,6 +389,8 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \zzz{{\Huge After exam 1}}
   \1 exam 1 was on March 8 (2017.03.08)
@@ -446,13 +448,13 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
     \2 you have to make sure the middle latch operates on clock-bar instead of clock
   \1 timing: \\
   \begin{tabular}{l l}
-    $t_{pd}$ & logic propagation delay \\
-    $t_{cd}$ & logic contamination delay \\
-    $t_{pcq}$ & Clk$\rightarrow$Q propagation delay \\
-    $t_{ccq}$ & Clk$\rightarrow$Q contamination delay \\
-    $t_{pdq}$ & D$\rightarrow$Q propagation delay \\
+    $t_{pd}$    & logic propagation delay \\
+    $t_{cd}$    & logic contamination delay \\
+    $t_{pcq}$   & Clk$\rightarrow$Q propagation delay \\
+    $t_{ccq}$   & Clk$\rightarrow$Q contamination delay \\
+    $t_{pdq}$   & D$\rightarrow$Q propagation delay \\
     $t_{setup}$ & setup time of flip-flop/latch \\
-    $t_{hold}$ & hold time of flip-flop/latch\\
+    $t_{hold}$  & hold time of flip-flop/latch\\
   \end{tabular}
     \2 D$\rightarrow$Q delay only makes sense for latches, since for flip-flops it is simply one clock cycle
   \1 sequencing overhead and max delay:
@@ -489,25 +491,76 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 generally, the longer the delay between two point, the larger the worst-case clock skew
   \1 Domino circuit: TODO
     \2 a kind of dynamic logic
+    \2 when the clock pulse cascades through the circuit, activating the pMOS at each stage?
 
 
-% 2017.04.03
+% 2017.04.03 (+more)
 \zzz{Memory}
   \1 random access or sequential access, or content addressable
   \1 CAM: content-addressable memory
     \2 basically like an associative array, or database
     \2 designed to search all memory at once in a single operation (wikipedia)
-  \1 DRAM: TODO
+    \2 used in caches
   \1 SRAM: TODO
     \2 12T and 6T cell designs
     \2 12T design: just a latch connected to a bitline
+      \3 boring and impractical because it's too large
     \2 6T design: cross-coupled inverters (3T each) +2T for bit and bit-bar lines
-      \3 read: pre-charge bit and bit-bar, raise wordline, read result
-        \4 (need to pre-charge or else read is destructive?)
-      \3 write: drive data onto bit and bit-bar and raise wordline to write
+      \3 we focus on 6T design
+    \2 read: pre-charge bit and bit-bar, raise wordline, read result
+      \3 (need to pre-charge or else read is destructive?)
+      \3 need sense amplifiers at the end of the bitlines because the signal will be weak, and the parasitic capacitance of the bitline depends on how many cells are 0 or 1
+    \2 write: drive data onto bit and bit-bar and raise wordline to write
+    \2 cross coupled inverters must be much larger than the bitline transistors so that it doesn't flip while reading
+    \2 per each column, you need:
+      \3 piece of decoder
+      \3 bitline sense amplifier
+      \3 column multiplexer
+    \2 multi-port: means you can read from and write to the same cell in the same clock cycle and it works
+      \3 implement by having multiple sequential read/write per cycle?
+  \1 decoders:
+    \2 must be pitch-matched to SRAM cell width for layout efficiency/simplicity
+      (requires very skinny gates)
+    \2 large ($n>4$) decoders are inefficient, thus it is often helpful to use predecoding: factor out common gates into a second stage of decoders.
+      \3 smaller area as alternative, but same logical effort (since same number of gates traversed)
+  \1 twisted bitlines: bitlines are long and right next to each other, so there will be significant crosstalk and parasitic cap
+    \2 solution: swap adjacent bit and bit-bar lines occasionally
+    \2 reduces Miller factor (MCF)
+  \1 DRAM: TODO
+    \2 one transistor and one capacitor
+      \3 transistor gates capacitor
+    \2 no charge is 0, charge is 1
+    \2 open transistor to read/write
+    \2 read is destructive
+    \2 must be refreshed periodically due to leakage
+      \3 thus, it's always consuming power
+  \1 shift register:
+    \2 can be implemented with cascade of flip-flops
+      \3 can lead to hold time violations because no delay from clock to next data line? (TODO what? how?)
+      \3 not very dense
+    \2 store data in SRAM and store begin/end pointers
+      \3 more dense than individual flip-flops
+  \1 Tapped Delay Line
+    \2 shift register with programmable number of stages
+    \2 implement using sequence of flip-flops, each with a bypass MUX from data in to out
+  \1 Queues: are a thing (TODO)
+  \1 ROM: Read Only Memory:
+    \2 mask-programmed ROMs are one transistor per bit
+  \1 PROMs, EPROMS, etc
+    \2 generally burn out specific fuses to program ROM
+    \2 E for erasable
 
 
 
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % lecture 8? (HW7)
 

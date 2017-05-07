@@ -2,8 +2,9 @@ TEX     := pdflatex
 # TEX     := xelatex
 # shell escape is needed for minted latex package
 TEXOPTS := --halt-on-error -shell-escape
-SOURCES := $(wildcard *.tex)
-OUTPUTS := $(SOURCES:%.tex=%.pdf)
+TEX_SOURCES := $(wildcard *.tex)
+MD_SOURCES := $(wildcard *.md)
+OUTPUTS := $(TEX_SOURCES:%.tex=%.pdf) $(MD_SOURCES:%.md=%.md.pdf)
 
 all: $(OUTPUTS) 
 
@@ -27,6 +28,10 @@ clean:
 		-dBATCH \
 		-sOutputFile=$@ .latex/$@
 	# cp .latex/$@ $@
+
+%.md.pdf: %.md
+	pandoc $< -o $@
+
 
 csce314_reference_sheet.pdf: csce314_reference_sheet.tex
 	# special case to use xelatex for custom fonts
