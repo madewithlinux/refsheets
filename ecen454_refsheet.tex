@@ -390,7 +390,7 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
 
 
 
-\zzz{After exam 1}
+\zzz{{\Huge After exam 1}}
   \1 exam 1 was on March 8 (2017.03.08)
   \1 nothing specifically from previous exam
 
@@ -472,6 +472,9 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 clock skew:
     \2 when uncertain: causes tighter required CL propagation delay and minimum CL contamination delay, and reduces opportunity for time borrowing.
     \2 when know constant skew: can help with same effect as time borrowing, except can also have effect for flip-flop based systems
+  \1 skew tolerance:
+    \2 flip-flop circuits are not very skew tolerant because the setup and hold times define a specific window of time in which the data must arrive
+    \2 latch circuits are more hold-time-tolerant because the data can arrive any time that the latch is transparent
   \1 if setup times are violated, you can reduce clock speed to fix it
   \1 if hold times are violated, it won't work at any clock speed
 
@@ -483,9 +486,25 @@ femto & f     & $10^{-15}$ & 0.000 000 000 000 001        \\ \hline
   \1 Grid clock distribution
     \2 grid on two or more levels
     \2 ensures low local skew, but there could still be larger chip-wide skew
+  \1 generally, the longer the delay between two point, the larger the worst-case clock skew
+  \1 Domino circuit: TODO
+    \2 a kind of dynamic logic
 
 
-
+% 2017.04.03
+\zzz{Memory}
+  \1 random access or sequential access, or content addressable
+  \1 CAM: content-addressable memory
+    \2 basically like an associative array, or database
+    \2 designed to search all memory at once in a single operation (wikipedia)
+  \1 DRAM: TODO
+  \1 SRAM: TODO
+    \2 12T and 6T cell designs
+    \2 12T design: just a latch connected to a bitline
+    \2 6T design: cross-coupled inverters (3T each) +2T for bit and bit-bar lines
+      \3 read: pre-charge bit and bit-bar, raise wordline, read result
+        \4 (need to pre-charge or else read is destructive?)
+      \3 write: drive data onto bit and bit-bar and raise wordline to write
 
 
 
