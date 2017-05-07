@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="https://github.com/joshua-wright" />
+  <title>ECEN454 refsheet</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="pandoc.css" type="text/css" />
+</head>
+<body>
+<div id="header">
+<h1 class="title">ECEN454 refsheet</h1>
+<h2 class="author">https://github.com/joshua-wright</h2>
+</div>
+<h1 id="specifically-for-final">specifically for final</h1>
+<ul>
+<li>exam 1 was on March 8 (2017.03.08)</li>
+<li>nothing specifically from previous exam</li>
+</ul>
+<h1 id="propagation-vs-contamination-delay">Propagation vs Contamination delay</h1>
+<ul>
+<li>contamination delay (<span class="math inline"><em>t</em><sub><em>c</em><em>d</em></sub></span>): time from input change to <strong>any</strong> output changing value</li>
+<li>kind of a best-case delay or smallest possible delay</li>
+<li>time counted when input crosses 50% of logical high voltage level</li>
+<li>propagation delay: time from when all inputs are stable to when all outputs are stable</li>
+<li>kind of like a worst-case delay</li>
+</ul>
+<h1 id="latch-vs-flip-flop">Latch vs Flip Flop</h1>
+<ul>
+<li>Latch is level-sensitive, flip-flop is edge-sensitive</li>
+<li>register is flip-flop # Latch/flip flop designs</li>
+<li>pass transistor latch
+<ul>
+<li>pros: tiny, low clock load</li>
+<li>con: voltage drop across is <span class="math inline"><em>V</em><sub><em>t</em></sub></span>, it's non-restoring</li>
+<li>con: not really a latch because doesn't hold signal</li>
+</ul></li>
+<li>transmission gate
+<ul>
+<li>pro: no <span class="math inline"><em>V</em><sub><em>t</em></sub></span> drop</li>
+<li>con: requires inverted clock</li>
+</ul></li>
+<li>inverting buffer
+<ul>
+<li>TODO</li>
+</ul></li>
+<li>tristate feedback
+<ul>
+<li>first complete latch here</li>
+<li>risk of backdriving: downstream could change state if it is very strong</li>
+</ul></li>
+<li>buffered output
+<ul>
+<li>no backdrifing problem</li>
+<li>widely used</li>
+<li>rather large and slow though, and large load on clock</li>
+</ul></li>
+<li>a flip-flop is just two latches back-to-back</li>
+</ul>
+<h1 id="metastability">Metastability</h1>
+<ul>
+<li>stable works if it's not at a strong high or low but will settle somewhere</li>
+<li>metastable is where it might sit there, but if it must settle, you don't know which one it will settle to when perturbed</li>
+</ul>
+<h2 id="section">2017.03.27</h2>
+<h1 id="sequential-circuits">Sequential Circuits</h1>
+<ul>
+<li>sequential means that the circuit holds state: the output depends on both current and past input</li>
+<li>to model a state machine, you can unroll it to [register] <span class="math inline">→</span> [combinational] <span class="math inline">→</span> ...
+<ul>
+<li>this way you can use regular timing stuff for it: arrival time, slack, etc...</li>
+</ul></li>
+<li>Mealy FSM: output of circuit is from combinational logic</li>
+<li>Moore FSM: output is from registers</li>
+<li>pipelined circuit: uses registers to hold state between clock cycles, because not all of the combinational logic can happen fast enough to work in a single clock cycle
+<ul>
+<li>pipelined circuits can use flip-flops or latches?</li>
+</ul></li>
+<li>the clock consumes 20-30% of the power on a chip</li>
+<li>the whole reason that registers are needed is because data (signals) moves through components at non-constant speed</li>
+<li>reset
+<ul>
+<li>can be sync or async</li>
+<li>force low output when reset is high</li>
+</ul></li>
+<li>sequencing: it is (generally) equivalent to split the sequential logic in two, and then use two latches (one halfway through) instead of one large section of sequential logic with flip-flops at either end
+<ul>
+<li>this is called two phase clocking</li>
+<li>you have to make sure the middle latch operates on clock-bar instead of clock</li>
+</ul></li>
+<li>timing:
+
+<ul>
+<li>D<span class="math inline">→</span>Q delay only makes sense for latches, since for flip-flops it is simply one clock cycle</li>
+</ul></li>
+<li>sequencing overhead and max delay:
+<ul>
+<li><span class="math inline"><em>T</em><sub><em>c</em></sub></span>: cycle time</li>
+<li>need for combinational logic to be fast enough</li>
+<li>for single phase flip flop: <span class="math inline"><em>t</em><sub><em>p</em><em>d</em></sub> &lt; <em>T</em><sub><em>c</em></sub> − (<em>T</em><sub><em>s</em><em>e</em><em>t</em><em>u</em><em>p</em></sub> + <em>T</em><sub><em>p</em><em>c</em><em>q</em></sub>)</span></li>
+<li>for two-phase latch: <span class="math inline"><em>t</em><sub><em>p</em><em>d</em></sub> = <em>t</em><sub><em>p</em><em>d</em>1</sub> + <em>t</em><sub><em>p</em><em>d</em>2</sub> &lt; <em>T</em><sub><em>c</em></sub> − 2<em>t</em><sub><em>p</em><em>d</em><em>q</em></sub></span></li>
+<li>max delay is dictated by cycle time and sequencing overhead; sequencing overhead does not effect minimum delay</li>
+</ul></li>
+<li>minimum delay:
+<ul>
+<li>for single phase flip flop: <span class="math inline"><em>t</em><sub><em>c</em><em>d</em></sub> &gt; <em>t</em><sub><em>h</em><em>o</em><em>l</em><em>d</em></sub> − <em>t</em><sub><em>c</em><em>c</em><em>q</em></sub></span>
+<ul>
+<li>combinational stuff must be slow enough that it doesn't violate hold time of second flip flop</li>
+</ul></li>
+<li>for two-phase latch: <span class="math inline"><em>t</em><sub><em>c</em><em>d</em>1</sub>, <em>t</em><sub><em>c</em><em>d</em>2</sub> &gt; <em>t</em><sub><em>h</em><em>o</em><em>l</em><em>d</em></sub> − <em>t</em><sub><em>c</em><em>c</em><em>q</em></sub> − <em>t</em><sub><em>n</em><em>o</em><em>n</em> − <em>o</em><em>v</em><em>e</em><em>r</em><em>l</em><em>a</em><em>p</em></sub></span>
+<ul>
+<li>hold time applies twice each cycle, once per each combinational circuit</li>
+<li><span class="math inline"><em>t</em><sub><em>n</em><em>o</em><em>n</em> − <em>o</em><em>v</em><em>e</em><em>r</em><em>l</em><em>a</em><em>p</em></sub></span>: phase between clock signals?</li>
+</ul></li>
+</ul></li>
+<li>time borrowing: for two-phase latch-based system, you can borrow time from one segment to the other while the latch is transparent
+<ul>
+<li>works (is possible) as long as the total circuit still completes within one clock cycle</li>
+</ul></li>
+<li>clock skew:
+<ul>
+<li>when uncertain: causes tighter required CL propagation delay and minimum CL contamination delay, and reduces opportunity for time borrowing.</li>
+<li>when know constant skew: can help with same effect as time borrowing, except can also have effect for flip-flop based systems</li>
+</ul></li>
+<li>skew tolerance:
+<ul>
+<li>flip-flop circuits are not very skew tolerant because the setup and hold times define a specific window of time in which the data must arrive</li>
+<li>latch circuits are more hold-time-tolerant because the data can arrive any time that the latch is transparent</li>
+</ul></li>
+<li>if setup times are violated, you can reduce clock speed to fix it</li>
+<li>if hold times are violated, it won't work at any clock speed</li>
+</ul>
+<h2 id="section-1">2017.03.29</h2>
+<h1 id="clocking">Clocking</h1>
+<ul>
+<li>H-Tree (clock distribution network)
+<ul>
+<li>laid out in such a way that the delay from the center to any leaf node is equal</li>
+</ul></li>
+<li>Grid clock distribution
+<ul>
+<li>grid on two or more levels</li>
+<li>ensures low local skew, but there could still be larger chip-wide skew</li>
+</ul></li>
+<li>generally, the longer the delay between two point, the larger the worst-case clock skew</li>
+<li>Domino circuit: TODO
+<ul>
+<li>a kind of dynamic logic</li>
+<li>when the clock pulse cascades through the circuit, activating the pMOS at each stage?</li>
+</ul></li>
+</ul>
+<h2 id="more">2017.04.03 (+more)</h2>
+<h1 id="memory">Memory</h1>
+<ul>
+<li>random access or sequential access, or content addressable</li>
+<li>CAM: content-addressable memory
+<ul>
+<li>basically like an associative array, or database</li>
+<li>designed to search all memory at once in a single operation (wikipedia)</li>
+<li>used in caches</li>
+</ul></li>
+<li>SRAM: TODO
+<ul>
+<li>12T and 6T cell designs</li>
+<li>12T design: just a latch connected to a bitline
+<ul>
+<li>boring and impractical because it's too large</li>
+</ul></li>
+<li>6T design: cross-coupled inverters (3T each) +2T for bit and bit-bar lines
+<ul>
+<li>we focus on 6T design</li>
+</ul></li>
+<li>read: pre-charge bit and bit-bar, raise wordline, read result
+<ul>
+<li>(need to pre-charge or else read is destructive?)</li>
+<li>need sense amplifiers at the end of the bitlines because the signal will be weak, and the parasitic capacitance of the bitline depends on how many cells are 0 or 1</li>
+</ul></li>
+<li>write: drive data onto bit and bit-bar and raise wordline to write</li>
+<li>cross coupled inverters must be much larger than the bitline transistors so that it doesn't flip while reading</li>
+<li>per each column, you need:
+<ul>
+<li>piece of decoder</li>
+<li>bitline sense amplifier</li>
+<li>column multiplexer</li>
+</ul></li>
+<li>multi-port: means you can read from and write to the same cell in the same clock cycle and it works
+<ul>
+<li>implement by having multiple sequential read/write per cycle?</li>
+</ul></li>
+</ul></li>
+<li>decoders:
+<ul>
+<li>must be pitch-matched to SRAM cell width for layout efficiency/simplicity (requires very skinny gates)</li>
+<li>large (<span class="math inline"><em>n</em> &gt; 4</span>) decoders are inefficient, thus it is often helpful to use predecoding: factor out common gates into a second stage of decoders.
+<ul>
+<li>smaller area as alternative, but same logical effort (since same number of gates traversed)</li>
+</ul></li>
+</ul></li>
+<li>twisted bitlines: bitlines are long and right next to each other, so there will be significant crosstalk and parasitic cap
+<ul>
+<li>solution: swap adjacent bit and bit-bar lines occasionally</li>
+<li>reduces Miller factor (MCF)</li>
+</ul></li>
+<li>DRAM: TODO
+<ul>
+<li>one transistor and one capacitor
+<ul>
+<li>transistor gates capacitor</li>
+</ul></li>
+<li>no charge is 0, charge is 1</li>
+<li>open transistor to read/write</li>
+<li>read is destructive</li>
+<li>must be refreshed periodically due to leakage
+<ul>
+<li>thus, it's always consuming power</li>
+</ul></li>
+</ul></li>
+<li>shift register:
+<ul>
+<li>can be implemented with cascade of flip-flops
+<ul>
+<li>can lead to hold time violations because no delay from clock to next data line? (TODO what? how?)</li>
+<li>not very dense</li>
+</ul></li>
+<li>store data in SRAM and store begin/end pointers
+<ul>
+<li>more dense than individual flip-flops</li>
+</ul></li>
+</ul></li>
+<li>Tapped Delay Line
+<ul>
+<li>shift register with programmable number of stages</li>
+<li>implement using sequence of flip-flops, each with a bypass MUX from data in to out</li>
+</ul></li>
+<li>Queues: are a thing (TODO)</li>
+<li>ROM: Read Only Memory:
+<ul>
+<li>mask-programmed ROMs are one transistor per bit</li>
+</ul></li>
+<li>PROMs, EPROMS, etc
+<ul>
+<li>generally burn out specific fuses to program ROM</li>
+<li>E for erasable</li>
+</ul></li>
+</ul>
+<h2 id="section-2">2017.04.10</h2>
+<h1 id="low-power-design">Low Power Design</h1>
+<ul>
+<li>not so important when running from a battery since batteries store energy, not power</li>
+<li>peak power
+<ul>
+<li>determines power/ground wiring and packaging limits</li>
+<li>impacts signal/noise ratio</li>
+</ul></li>
+</ul>
+</body>
+</html>

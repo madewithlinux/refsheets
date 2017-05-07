@@ -4,7 +4,10 @@ TEX     := pdflatex
 TEXOPTS := --halt-on-error -shell-escape
 TEX_SOURCES := $(wildcard *.tex)
 MD_SOURCES := $(wildcard *.md)
-OUTPUTS := $(TEX_SOURCES:%.tex=%.pdf) $(MD_SOURCES:%.md=%.md.pdf)
+OUTPUTS := \
+	$(TEX_SOURCES:%.tex=%.pdf) \
+	$(MD_SOURCES:%.md=%.md.pdf)\
+	$(MD_SOURCES:%.md=%.md.html)
 
 all: $(OUTPUTS) 
 
@@ -31,6 +34,9 @@ clean:
 
 %.md.pdf: %.md
 	pandoc $< -o $@
+
+%.md.html: %.md
+	pandoc $< --css pandoc.css -o $@
 
 
 csce314_reference_sheet.pdf: csce314_reference_sheet.tex
