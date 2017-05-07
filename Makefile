@@ -3,11 +3,12 @@ TEX     := pdflatex
 # shell escape is needed for minted latex package
 TEXOPTS := --halt-on-error -shell-escape
 TEX_SOURCES := $(wildcard *.tex)
-MD_SOURCES := $(wildcard *.md)
+MD_SOURCES  := $(filter-out README.md, $(wildcard *.md))
 OUTPUTS := \
 	$(TEX_SOURCES:%.tex=%.pdf) \
 	$(MD_SOURCES:%.md=%.md.pdf)\
 	$(MD_SOURCES:%.md=%.md.html)
+.SHELL=bash
 
 all: $(OUTPUTS) 
 
@@ -51,3 +52,11 @@ csce314_reference_sheet.pdf: csce314_reference_sheet.tex
 		-dQUIET \
 		-dBATCH \
 		-sOutputFile=$@ .latex/$@
+
+index.html: $(wildcard *.pdf) $(wildcard *.html)
+	cat README.md > index.md
+	echo >> index.md
+	echo '# Links' >> index.md
+	for f in $(wildcard *.pdf *.html); do echo "* [$$f]($$f)" >> index.md; done
+	pandoc index.md -s --self-contained --css pandoc.css -o $@
+	rm index.md
