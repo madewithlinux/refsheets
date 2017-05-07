@@ -12,7 +12,7 @@ geometry: margin=0.75in
 # Propagation vs Contamination delay
 * contamination delay ($t_{cd}$): time from input change to **any** output changing value
 * kind of a best-case delay or smallest possible delay
-* time counted when input crosses 50\% of logical high voltage level
+* time counted when input crosses 50% of logical high voltage level
 * propagation delay: time from when all inputs are stable to when all outputs are stable
 * kind of like a worst-case delay
 
@@ -60,7 +60,7 @@ geometry: margin=0.75in
 * Moore FSM: output is from registers
 * pipelined circuit: uses registers to hold state between clock cycles, because not all of the combinational logic can happen fast enough to work in a single clock cycle
 	* pipelined circuits can use flip-flops or latches?
-* the clock consumes 20-30\% of the power on a chip
+* the clock consumes 20-30% of the power on a chip
 * the whole reason that registers are needed is because data (signals) moves through components at non-constant speed
 * reset
 	* can be sync or async
@@ -68,16 +68,18 @@ geometry: margin=0.75in
 * sequencing: it is (generally) equivalent to split the sequential logic in two, and then use two latches (one halfway through) instead of one large section of sequential logic with flip-flops at either end
 	* this is called two phase clocking
 	* you have to make sure the middle latch operates on clock-bar instead of clock
+
+| symbol      | definition                            |
+|-------------|---------------------------------------|
+| $t_{pd}$    | logic propagation delay               |
+| $t_{cd}$    | logic contamination delay             |
+| $t_{pcq}$   | Clk$\rightarrow$Q propagation delay   |
+| $t_{ccq}$   | Clk$\rightarrow$Q contamination delay |
+| $t_{pdq}$   | D$\rightarrow$Q propagation delay     |
+| $t_{setup}$ | setup time of flip-flop/latch         |
+| $t_{hold}$  | hold time of flip-flop/latch          |
+
 * timing:
-	\begin{tabular}{l l}
-		$t_{pd}$    & logic propagation delay \\
-		$t_{cd}$    & logic contamination delay \\
-		$t_{pcq}$   & Clk$\rightarrow$Q propagation delay \\
-		$t_{ccq}$   & Clk$\rightarrow$Q contamination delay \\
-		$t_{pdq}$   & D$\rightarrow$Q propagation delay \\
-		$t_{setup}$ & setup time of flip-flop/latch \\
-		$t_{hold}$  & hold time of flip-flop/latch\\
-	\end{tabular}
 	* D$\rightarrow$Q delay only makes sense for latches, since for flip-flops it is simply one clock cycle
 * sequencing overhead and max delay:
 	* $T_c$: cycle time
@@ -172,7 +174,7 @@ geometry: margin=0.75in
 	* generally burn out specific fuses to program ROM
 	* E for erasable
 
-## 2017.04.10
+## 2017.04.10, 2017.04.12
 # Low Power Design
 * not so important when running from a battery since batteries store energy, not power
 * peak power
@@ -209,6 +211,23 @@ geometry: margin=0.75in
 		* instead, rapidly charge/discharge capacitor
 * stacked devices:
 	* stacking devices reduces leakage
-	* because leakage proportional to square of $V_{ds}$
-* power gating: TODO
-* body bias: TODO
+	* because leakage is exponentially proportional to $V_{ds}$
+* body bias AKA dual $V_t$
+	* changing $V_t$ at runtime is called Adaptive Body-Biasing (ABB) or Dynamic Threshold Scaling (DTS)
+		* requires triple well fabrication process, because what would have been lowest level substrate must itself sit inside a well that will be biased
+	* design with low and high $V_t$
+	* low $V_t$ is faster than high $V_t$ but consumes 10x more power
+		* because reducing $V_t$ increases sub-threshold leakage exponentially
+		* but reducing $V_t$ decreases gate delay (increasing performance)
+	* to increase $V_t$, put a negative bias on $V_{SB}$ of nMOS
+		* use DC charge pump to get desired voltage
+* power gating: use sleep transistors
+	* basically cut off $V_{DD}$ from power-hungry circuits when not in use
+	* in sleep mode, the sleeping transistors are stacked with the transistors that are causing them to sleep, thus reducing leakage even more
+* MTCMOS sleep transistors
+	* combines power gating and dual $V_t$
+	* TODO what is this?
+
+
+## 2017.04.26
+# Testing

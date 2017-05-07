@@ -104,8 +104,47 @@
 <li>this is called two phase clocking</li>
 <li>you have to make sure the middle latch operates on clock-bar instead of clock</li>
 </ul></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th align="left">symbol</th>
+<th align="left">definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline"><em>t</em><sub><em>p</em><em>d</em></sub></span></td>
+<td align="left">logic propagation delay</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline"><em>t</em><sub><em>c</em><em>d</em></sub></span></td>
+<td align="left">logic contamination delay</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline"><em>t</em><sub><em>p</em><em>c</em><em>q</em></sub></span></td>
+<td align="left">Clk<span class="math inline">→</span>Q propagation delay</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline"><em>t</em><sub><em>c</em><em>c</em><em>q</em></sub></span></td>
+<td align="left">Clk<span class="math inline">→</span>Q contamination delay</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline"><em>t</em><sub><em>p</em><em>d</em><em>q</em></sub></span></td>
+<td align="left">D<span class="math inline">→</span>Q propagation delay</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline"><em>t</em><sub><em>s</em><em>e</em><em>t</em><em>u</em><em>p</em></sub></span></td>
+<td align="left">setup time of flip-flop/latch</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline"><em>t</em><sub><em>h</em><em>o</em><em>l</em><em>d</em></sub></span></td>
+<td align="left">hold time of flip-flop/latch</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li>timing:
-
 <ul>
 <li>D<span class="math inline">→</span>Q delay only makes sense for latches, since for flip-flops it is simply one clock cycle</li>
 </ul></li>
@@ -259,7 +298,7 @@
 <li>E for erasable</li>
 </ul></li>
 </ul>
-<h2 id="section-2">2017.04.10</h2>
+<h2 id="section-2">2017.04.10, 2017.04.12</h2>
 <h1 id="low-power-design">Low Power Design</h1>
 <ul>
 <li>not so important when running from a battery since batteries store energy, not power</li>
@@ -317,10 +356,37 @@
 <li>stacked devices:
 <ul>
 <li>stacking devices reduces leakage</li>
-<li>because leakage proportional to square of <span class="math inline"><em>V</em><sub><em>d</em><em>s</em></sub></span></li>
+<li>because leakage is exponentially proportional to <span class="math inline"><em>V</em><sub><em>d</em><em>s</em></sub></span></li>
 </ul></li>
-<li>power gating: TODO</li>
-<li>body bias: TODO</li>
+<li>body bias AKA dual <span class="math inline"><em>V</em><sub><em>t</em></sub></span>
+<ul>
+<li>changing <span class="math inline"><em>V</em><sub><em>t</em></sub></span> at runtime is called Adaptive Body-Biasing (ABB) or Dynamic Threshold Scaling (DTS)
+<ul>
+<li>requires triple well fabrication process, because what would have been lowest level substrate must itself sit inside a well that will be biased</li>
+</ul></li>
+<li>design with low and high <span class="math inline"><em>V</em><sub><em>t</em></sub></span></li>
+<li>low <span class="math inline"><em>V</em><sub><em>t</em></sub></span> is faster than high <span class="math inline"><em>V</em><sub><em>t</em></sub></span> but consumes 10x more power
+<ul>
+<li>because reducing <span class="math inline"><em>V</em><sub><em>t</em></sub></span> increases sub-threshold leakage exponentially</li>
+<li>but reducing <span class="math inline"><em>V</em><sub><em>t</em></sub></span> decreases gate delay (increasing performance)</li>
+</ul></li>
+<li>to increase <span class="math inline"><em>V</em><sub><em>t</em></sub></span>, put a negative bias on <span class="math inline"><em>V</em><sub><em>S</em><em>B</em></sub></span> of nMOS
+<ul>
+<li>use DC charge pump to get desired voltage</li>
+</ul></li>
+</ul></li>
+<li>power gating: use sleep transistors
+<ul>
+<li>basically cut off <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> from power-hungry circuits when not in use</li>
+<li>in sleep mode, the sleeping transistors are stacked with the transistors that are causing them to sleep, thus reducing leakage even more</li>
+</ul></li>
+<li>MTCMOS sleep transistors
+<ul>
+<li>combines power gating and dual <span class="math inline"><em>V</em><sub><em>t</em></sub></span></li>
+<li>TODO what is this?</li>
+</ul></li>
 </ul>
+<h2 id="section-3">2017.04.26</h2>
+<h1 id="testing">Testing</h1>
 </body>
 </html>

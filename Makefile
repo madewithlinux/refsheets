@@ -36,7 +36,7 @@ clean:
 	pandoc $< -o $@
 
 %.md.html: %.md pandoc.css
-	pandoc -s --self-contained $< --css pandoc.css -o $@
+	pandoc -s -f markdown+grid_tables+pipe_tables --self-contained $< --css pandoc.css -o $@
 
 
 csce314_reference_sheet.pdf: csce314_reference_sheet.tex
