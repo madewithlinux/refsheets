@@ -16,6 +16,15 @@ geometry: margin=0.75in
 * propagation delay: time from when all inputs are stable to when all outputs are stable
 * kind of like a worst-case delay
 
+# static vs dynamic power
+* static power
+	* consumed when circuit is not active
+	* e.g. leakage current
+	* static because no inputs are changing
+* dynamic power
+	* power consumed due to gates switching and stuff
+	* e.g. charging/discharging parasitic caps, etc...
+
 # Latch vs Flip Flop
 * Latch is level-sensitive, flip-flop is edge-sensitive
 * register is flip-flop
@@ -114,7 +123,7 @@ geometry: margin=0.75in
 	* basically like an associative array, or database
 	* designed to search all memory at once in a single operation (wikipedia)
 	* used in caches
-* SRAM: TODO
+* SRAM:
 	* 12T and 6T cell designs
 	* 12T design: just a latch connected to a bitline
 		* boring and impractical because it's too large
@@ -139,7 +148,7 @@ geometry: margin=0.75in
 * twisted bitlines: bitlines are long and right next to each other, so there will be significant crosstalk and parasitic cap
 	* solution: swap adjacent bit and bit-bar lines occasionally
 	* reduces Miller factor (MCF)
-* DRAM: TODO
+* DRAM:
 	* one transistor and one capacitor
 		* transistor gates capacitor
 	* no charge is 0, charge is 1
@@ -169,3 +178,37 @@ geometry: margin=0.75in
 * peak power
 	* determines power/ground wiring and packaging limits
 	* impacts signal/noise ratio
+* reduce dynamic power: (AKA active power)
+	* use smaller transistors
+	* clock gating
+	* reduce $V_{DD}$
+	* reduce frequency
+		* but be careful because that will make the computations take longer
+* reduce static power
+	* power gating
+	* selectively use lower $V_t$ devices
+	* stacked devices
+	* body bias
+* clock gating: disable the clock signal to an expensive component
+	* eliminates that component's dynamic power (but of course you can't use it)
+	* doesn't change static power
+* voltage islands: different $V_t$ for different devices
+	* allow low $V_t$ devices to run slower because they don't need to be fast
+		(maybe they're not in the critical path)
+	* often different voltage levels are alternated row by row in standard-cell layouts
+	* you must convert from one logic level to another, because high/low will be different
+		* sometimes it's possible to avoid conversion, e.g. by using a buffer that you would have anyway, with inverters built from half high-$V_t$ transistors and half low-$V_t$ transistors
+	* there are all kinds of tricks for determining which components should be high/low voltage and where to put voltage islands and level converters
+* DFVS: Dynamic Frequency and Voltage Scaling
+	* requires:
+		* programmable clock generator (PLL)
+		* supply regulation loop to for setting minimum $V_{DD}$
+		* software support for deciding best stable frequency and voltage for given load and performance goals
+	* voltage regulation loop
+		* voltage divider would be horribly inefficient
+		* instead, rapidly charge/discharge capacitor
+* stacked devices:
+	* stacking devices reduces leakage
+	* because leakage proportional to square of $V_{ds}$
+* power gating: TODO
+* body bias: TODO

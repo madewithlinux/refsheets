@@ -35,8 +35,8 @@ clean:
 %.md.pdf: %.md
 	pandoc $< -o $@
 
-%.md.html: %.md
-	pandoc $< --css pandoc.css -o $@
+%.md.html: %.md pandoc.css
+	pandoc -s --self-contained $< --css pandoc.css -o $@
 
 
 csce314_reference_sheet.pdf: csce314_reference_sheet.tex
