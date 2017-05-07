@@ -37,7 +37,7 @@ clean:
 	# cp .latex/$@ $@
 
 %.md.pdf: %.md
-	pandoc $(PANDOC_OPTS) $< -o $@
+	pandoc $< -o $@
 
 %.md.html: %.md pandoc.css
 	pandoc $(PANDOC_OPTS) $< -o $@

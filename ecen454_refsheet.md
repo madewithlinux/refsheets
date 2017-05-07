@@ -229,5 +229,102 @@ geometry: margin=0.75in
 	* TODO what is this?
 
 
+## 2017.04.17
+# Packaging
+* provides:
+	* heat dispersion
+	* mechanical stability
+	* prevent thermal expansion
+	* IO
+* SMD: Surface Mount Device
+* package types
+	* DIP: Dual In-line Package
+	* QFP: Quad Flat Package
+	* PLCC: Plastic leaded chip Carrier
+	* BGA: Ball Grid Array
+	* PGA: Pin Grid Array
+	* MCM: Multi Chip Module
+* DIP: Dual In-line Package
+	* basic chip with two sides and pins pointing either down (through hole) or out to the sides (surface mount)
+* QFP: Quad Flat Package
+	* looks about the same as DIP with SMD pins but has pins pointing out of all 4 sides
+* PLCC: Plastic leaded chip Carrier
+	* like QFP but instead of pins has tiny pads (J-leads) on perimeter of chip.
+	* can sit in a socket with spring connectors that contact those pads
+* BGA: Ball Grid Array
+	* can have lots of pins
+	* can attach to substrate with flip chip or wires
+	* underside has pads for where solder balls go to connect to board
+* PGA: Pin Grid Array
+	* like BGA but with pins
+* MCM: Multi Chip Module
+	* when you put multiple dies on a single chip
+	* advantage over very large single die: you can then select just the working ones of each die component
+	* disadvantage: means you'll probably want to test chips before you package them
+* flip-chip
+	* also called C4: Controlled Collapse Chip Connection
+	* just flip the chip over, thus placing the connecting pads on the highest metal layer
+	* affix chip to package using a BGA-style connection
+	* advantages
+		* higher pin density
+		* can put pins anywhere without worrying about routing
+* package parasitics
+	* parasitics inductance isn't really a problem inside the chip, but is for connecting wires in packaging
+* heat dissipation
+	* formula: $\delta T = \theta_{ja} P$
+		* $\delta T$: change in temperature on chip
+		* $\theta_{ja}$: thermal resistance of chip junction to ambient
+		* $P$: power dissipation on chip
+		* $\theta$ adds in series for chip$\rightarrow$package and package$\rightarrow$headsink
+	* must cool chip to avoid things like thermal resistance and electro-migration
+	* thermal resistance can cause the chip to fail, but that's only temporary
+		* should work again after cooling
+	* electro-migration: electrons moving where they shouldn't inside the chip
+		* permanent build-up of problem
+* power distribution
+	* want to minimize power noise
+	* voltage will drop due to
+		* $IR$ drop
+		* $L*(di/dt)$ noise (from parasitics inductance)
+	* decoupling capacitors
+		* aka bypass caps
+		* cap between $V_{DD}$ and ground to smooth out voltage supply
+		* use multiple caps in series to avoid problems with the resonant frequency of any single cap
+* I/O
+	* must protect against ESD
+	* pad types:
+		* $V_{DD}$/GND
+		* output
+		* input
+		* bidirectional
+		* analog
+	* latch-up
+		* when noise or density or something causes transistors to do weird things or something
+		* TODO
+	* output
+		* need to drive relatively large off-chip loads, so usually require chain of successively larger buffers
+		* protect against latch-up using guard ring: p+ inner ring and n+ outer ring (in n-well)
+	* input
+		* must do level conversion
+		* must filter noise
+			* use Schmitt trigger: basically doesn't cross threshold unless extra oomph provided (it's sticky)
+	* bidirectional
+		* combined input/output pad
+		* chip has enable signal to decide direction
+	* analog
+		* must avoid distorting or delaying the signal at all (no buffering)
+		* ESD protection circuit must not distort the signal
+* ESD protection: TODO
+	* ESD: Electro-Static Discharge
+	* can damage circuits with too much current and voltage
+	* limit current using resistor in series
+	* limit voltage using two diodes:
+		* one from ground to signal line (pointing toward signal line),
+		* one from signal line to $V_{DD}$ (pointing toward $V_{DD}$)
+
+
+
 ## 2017.04.26
 # Testing
+* logic verification is very important
+	* consumes 50% of total IC development time

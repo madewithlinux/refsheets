@@ -387,7 +387,163 @@
 <li>TODO what is this?</li>
 </ul></li>
 </ul>
-<h2 id="section-3">2017.04.26</h2>
+<h2 id="section-3">2017.04.17</h2>
+<h1 id="packaging">Packaging</h1>
+<ul>
+<li>provides:
+<ul>
+<li>heat dispersion</li>
+<li>mechanical stability</li>
+<li>prevent thermal expansion</li>
+<li>IO</li>
+</ul></li>
+<li>SMD: Surface Mount Device</li>
+<li>package types
+<ul>
+<li>DIP: Dual In-line Package</li>
+<li>QFP: Quad Flat Package</li>
+<li>PLCC: Plastic leaded chip Carrier</li>
+<li>BGA: Ball Grid Array</li>
+<li>PGA: Pin Grid Array</li>
+<li>MCM: Multi Chip Module</li>
+</ul></li>
+<li>DIP: Dual In-line Package
+<ul>
+<li>basic chip with two sides and pins pointing either down (through hole) or out to the sides (surface mount)</li>
+</ul></li>
+<li>QFP: Quad Flat Package
+<ul>
+<li>looks about the same as DIP with SMD pins but has pins pointing out of all 4 sides</li>
+</ul></li>
+<li>PLCC: Plastic leaded chip Carrier
+<ul>
+<li>like QFP but instead of pins has tiny pads (J-leads) on perimeter of chip.</li>
+<li>can sit in a socket with spring connectors that contact those pads</li>
+</ul></li>
+<li>BGA: Ball Grid Array
+<ul>
+<li>can have lots of pins</li>
+<li>can attach to substrate with flip chip or wires</li>
+<li>underside has pads for where solder balls go to connect to board</li>
+</ul></li>
+<li>PGA: Pin Grid Array
+<ul>
+<li>like BGA but with pins</li>
+</ul></li>
+<li>MCM: Multi Chip Module
+<ul>
+<li>when you put multiple dies on a single chip</li>
+<li>advantage over very large single die: you can then select just the working ones of each die component</li>
+<li>disadvantage: means you'll probably want to test chips before you package them</li>
+</ul></li>
+<li>flip-chip
+<ul>
+<li>also called C4: Controlled Collapse Chip Connection</li>
+<li>just flip the chip over, thus placing the connecting pads on the highest metal layer</li>
+<li>affix chip to package using a BGA-style connection</li>
+<li>advantages
+<ul>
+<li>higher pin density</li>
+<li>can put pins anywhere without worrying about routing</li>
+</ul></li>
+</ul></li>
+<li>package parasitics
+<ul>
+<li>parasitics inductance isn't really a problem inside the chip, but is for connecting wires in packaging</li>
+</ul></li>
+<li>heat dissipation
+<ul>
+<li>formula: <span class="math inline"><em>δ</em><em>T</em> = <em>θ</em><sub><em>j</em><em>a</em></sub><em>P</em></span>
+<ul>
+<li><span class="math inline"><em>δ</em><em>T</em></span>: change in temperature on chip</li>
+<li><span class="math inline"><em>θ</em><sub><em>j</em><em>a</em></sub></span>: thermal resistance of chip junction to ambient</li>
+<li><span class="math inline"><em>P</em></span>: power dissipation on chip</li>
+<li><span class="math inline"><em>θ</em></span> adds in series for chip<span class="math inline">→</span>package and package<span class="math inline">→</span>headsink</li>
+</ul></li>
+<li>must cool chip to avoid things like thermal resistance and electro-migration</li>
+<li>thermal resistance can cause the chip to fail, but that's only temporary
+<ul>
+<li>should work again after cooling</li>
+</ul></li>
+<li>electro-migration: electrons moving where they shouldn't inside the chip
+<ul>
+<li>permanent build-up of problem</li>
+</ul></li>
+</ul></li>
+<li>power distribution
+<ul>
+<li>want to minimize power noise</li>
+<li>voltage will drop due to
+<ul>
+<li><span class="math inline"><em>I</em><em>R</em></span> drop</li>
+<li><span class="math inline"><em>L</em> * (<em>d</em><em>i</em>/<em>d</em><em>t</em>)</span> noise (from parasitics inductance)</li>
+</ul></li>
+<li>decoupling capacitors
+<ul>
+<li>aka bypass caps</li>
+<li>cap between <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> and ground to smooth out voltage supply</li>
+<li>use multiple caps in series to avoid problems with the resonant frequency of any single cap</li>
+</ul></li>
+</ul></li>
+<li>I/O
+<ul>
+<li>must protect against ESD</li>
+<li>pad types:
+<ul>
+<li><span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span>/GND</li>
+<li>output</li>
+<li>input</li>
+<li>bidirectional</li>
+<li>analog</li>
+</ul></li>
+<li>latch-up
+<ul>
+<li>when noise or density or something causes transistors to do weird things or something</li>
+<li>TODO</li>
+</ul></li>
+<li>output
+<ul>
+<li>need to drive relatively large off-chip loads, so usually require chain of successively larger buffers</li>
+<li>protect against latch-up using guard ring: p+ inner ring and n+ outer ring (in n-well)</li>
+</ul></li>
+<li>input
+<ul>
+<li>must do level conversion</li>
+<li>must filter noise
+<ul>
+<li>use Schmitt trigger: basically doesn't cross threshold unless extra oomph provided (it's sticky)</li>
+</ul></li>
+</ul></li>
+<li>bidirectional
+<ul>
+<li>combined input/output pad</li>
+<li>chip has enable signal to decide direction</li>
+</ul></li>
+<li>analog
+<ul>
+<li>must avoid distorting or delaying the signal at all (no buffering)</li>
+<li>ESD protection circuit must not distort the signal</li>
+</ul></li>
+</ul></li>
+<li>ESD protection: TODO
+<ul>
+<li>ESD: Electro-Static Discharge</li>
+<li>can damage circuits with too much current and voltage</li>
+<li>limit current using resistor in series</li>
+<li>limit voltage using two diodes:
+<ul>
+<li>one from ground to signal line (pointing toward signal line),</li>
+<li>one from signal line to <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> (pointing toward <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span>)</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="section-4">2017.04.26</h2>
 <h1 id="testing">Testing</h1>
+<ul>
+<li>logic verification is very important
+<ul>
+<li>consumes 50% of total IC development time</li>
+</ul></li>
+</ul>
 </body>
 </html>
