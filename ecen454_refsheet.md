@@ -321,10 +321,14 @@ geometry: margin=0.75in
 	* limit voltage using two diodes:
 		* one from ground to signal line (pointing toward signal line),
 		* one from signal line to $V_{DD}$ (pointing toward $V_{DD}$)
-
+* MOSIS IO pads
+	* library of IO pad designs
+	* provides IO protection and stuff
 
 
 ## 2017.04.26
 # Testing
 * logic verification is very important
 	* consumes 50% of total IC development time
+
+
