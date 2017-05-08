@@ -398,6 +398,7 @@
 <li>IO</li>
 </ul></li>
 <li>SMD: Surface Mount Device</li>
+<li>SMT: Surface Mount Technology</li>
 <li>package types
 <ul>
 <li>DIP: Dual In-line Package</li>
@@ -548,6 +549,87 @@
 <li>logic verification is very important
 <ul>
 <li>consumes 50% of total IC development time</li>
+</ul></li>
+<li>3 types:
+<ul>
+<li>LV: Logic Verification</li>
+<li>SD: Silicon Debug</li>
+<li>MT: Manufacturing Test</li>
+</ul></li>
+<li>LV: Logic Verification
+<ul>
+<li>simulate chip and see if implementation is correct (does what expected)</li>
+<li>when you can't test every possible combination (because too many bits and/or too much state), test edge cases</li>
+</ul></li>
+<li>SD: Silicon Debug
+<ul>
+<li>test fabricated chips</li>
+<li>check for logic failures and electrical failures</li>
+<li>logic: bad implementation</li>
+<li>electrical: crosstalk, leakage, charge sharing, etc...</li>
+<li>fixing bugs requires redesigning and re-fabricating the chip</li>
+</ul></li>
+<li>MT: Manufacturing Test
+<ul>
+<li>check that the chip was fabricated without error
+<ul>
+<li>e.g. no speck of dust came in and killed the chip</li>
+</ul></li>
+<li>yield is always &lt;100% because fabrication is never perfect</li>
+<li>testing machines are super expensive so you gotta balance number of test cases (test coverage) vs cost</li>
+</ul></li>
+<li>Smoo Plot
+<ul>
+<li>used to diagnose chip failures</li>
+<li>2D plot of frequency vs <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span></li>
+<li>X or not depending if chip passed test at that frequency and supply voltage</li>
+<li>can help to tell what is causing failures</li>
+</ul></li>
+<li>stuck-at fault
+<ul>
+<li>model a failure as stuck at 0 or 1
+<ul>
+<li>there's a whole bunch of ways that silicon could be manufactured incorrectly, but stuck-at fault models most of these approximately right</li>
+</ul></li>
+</ul></li>
+<li>observability: how easy it it is to observe a node at the output
+<ul>
+<li>to observe a node at the output, the output must be determined by that node</li>
+</ul></li>
+<li>controllability: how easy it is to force a node to a specific value</li>
+<li>combinational logic has good observability and controllability, finite state machines (FSMs) do not</li>
+<li>test pattern generation:
+<ul>
+<li>apply smallest possible sequence of test vectors necessary to show that each node is not stuck</li>
+<li>circuits with better controllability and observability are more testable (can be fully tested with fewer test patterns)</li>
+</ul></li>
+<li>scan register, scan chain
+<ul>
+<li>add a mux to the input of all registers, linking them together in a big optional shift register</li>
+<li>then you can shift pre-defined values into all registers for testing, and shift out the test results</li>
+<li>makes the circuit more testable</li>
+</ul></li>
+<li>ATPG: Automatic Test Pattern Generation
+<ul>
+<li>given blocks of combinational logic, generates test patterns for use with scan chains</li>
+</ul></li>
+<li>built in self test
+<ul>
+<li>circuits that test themselves using built-in test pattern generators and verifiers</li>
+</ul></li>
+<li>PRSG: Pseudo-Random Sequence Generator
+<ul>
+<li>just a linear feedback shift register with input as XOR of state</li>
+<li>used for random testing</li>
+</ul></li>
+<li>BILBO: Built-in Logic Block Observer
+<ul>
+<li>automatic tester</li>
+</ul></li>
+<li>boundary scan
+<ul>
+<li>basically a scan chain for all the pins (boundaries)</li>
+<li>because some packaging types (e.g. BGA) are hard to make temporary sockets for</li>
 </ul></li>
 </ul>
 </body>

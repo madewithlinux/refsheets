@@ -237,6 +237,7 @@ geometry: margin=0.75in
 	* prevent thermal expansion
 	* IO
 * SMD: Surface Mount Device
+* SMT: Surface Mount Technology
 * package types
 	* DIP: Dual In-line Package
 	* QFP: Quad Flat Package
@@ -330,5 +331,52 @@ geometry: margin=0.75in
 # Testing
 * logic verification is very important
 	* consumes 50% of total IC development time
-
-
+* 3 types: 
+	* LV: Logic Verification
+	* SD: Silicon Debug
+	* MT: Manufacturing Test
+* LV: Logic Verification
+	* simulate chip and see if implementation is correct (does what expected)
+	* when you can't test every possible combination (because too many bits and/or too much state), test edge cases
+* SD: Silicon Debug
+	* test fabricated chips
+	* check for logic failures and electrical failures
+	* logic: bad implementation
+	* electrical: crosstalk, leakage, charge sharing, etc...
+	* fixing bugs requires redesigning and re-fabricating the chip
+* MT: Manufacturing Test
+	* check that the chip was fabricated without error
+		* e.g. no speck of dust came in and killed the chip
+	* yield is always <100% because fabrication is never perfect
+	* testing machines are super expensive so you gotta balance number of test cases (test coverage) vs cost
+* Smoo Plot
+	* used to diagnose chip failures
+	* 2D plot of frequency vs $V_{DD}$
+	* X or not depending if chip passed test at that frequency and supply voltage
+	* can help to tell what is causing failures
+* stuck-at fault
+	* model a failure as stuck at 0 or 1
+		* there's a whole bunch of ways that silicon could be manufactured incorrectly, but stuck-at fault models most of these approximately right
+* observability: how easy it it is to observe a node at the output
+	* to observe a node at the output, the output must be determined by that node
+* controllability: how easy it is to force a node to a specific value
+* combinational logic has good observability and controllability, finite state machines (FSMs) do not
+* test pattern generation:
+	* apply smallest possible sequence of test vectors necessary to show that each node is not stuck
+	* circuits with better controllability and observability are more testable (can be fully tested with fewer test patterns)
+* scan register, scan chain
+	* add a mux to the input of all registers, linking them together in a big optional shift register
+	* then you can shift pre-defined values into all registers for testing, and shift out the test results
+	* makes the circuit more testable
+* ATPG: Automatic Test Pattern Generation
+	* given blocks of combinational logic, generates test patterns for use with scan chains
+* built in self test
+	* circuits that test themselves using built-in test pattern generators and verifiers
+* PRSG: Pseudo-Random Sequence Generator
+	* just a linear feedback shift register with input as XOR of state
+	* used for random testing
+* BILBO: Built-in Logic Block Observer
+	* automatic tester
+* boundary scan
+	* basically a scan chain for all the pins (boundaries)
+	* because some packaging types (e.g. BGA) are hard to make temporary sockets for
