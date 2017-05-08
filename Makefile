@@ -39,7 +39,7 @@ clean:
 %.md.pdf: %.md
 	pandoc $< -o $@
 
-%.md.html: %.md pandoc.css
+%.md.html: %.md pandoc.css header.html
 	pandoc $(PANDOC_OPTS) $< -o $@
 
 
@@ -55,7 +55,7 @@ csce314_reference_sheet.pdf: csce314_reference_sheet.tex
 		-dBATCH \
 		-sOutputFile=$@ .latex/$@
 
-index.html: $(wildcard *.pdf) $(wildcard *.md)
+index.html: $(wildcard *.pdf) $(wildcard *.md) pandoc.css header.html
 	cat README.md > index.md
 	echo >> index.md
 	echo '# Links' >> index.md

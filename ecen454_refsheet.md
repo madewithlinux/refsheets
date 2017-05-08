@@ -51,6 +51,49 @@ geometry: margin=0.75in
 * stable works if it's not at a strong high or low but will settle somewhere
 * metastable is where it might sit there, but if it must settle, you don't know which one it will settle to when perturbed
 
+
+
+
+## 2017.03.22
+# Interconnect
+* contacts
+	* have resistance $2-20\Omega$
+	* so use a bunch of them to reduce resistance between layers
+* lumped RC model
+	* when you lump together RC sections for speed
+	* $\pi$-model (pi-model) is most commonly used
+* distributed RC model: opposite of lumped model
+* crosstalk
+	* caused by parasitic cap between wires
+	* one wire changing voltage can induce noise on adjacent wires and/or increase delay
+
+| B          | $\Delta V$ | $C_{eff}(A)$         | MCF |
+|------------|------------|----------------------|-----|
+| Constant   |  $V_{DD}$  | $C_{gnd} +  C_{adj}$ |   1 |
+| With A     |         0  | $C_{gnd}$            |   0 |
+| Opposite A | $2V_{DD}$  | $C_{gnd} + 2C_{adj}$ |   2 |
+
+* **MCF: Miller Effect**: effect of crosstalk
+	* quantifies crosstalk delay
+	* use MCF factor to determine effective parasitic capacitance between two signal wires
+* Elmore delay: split into segments and use pi-model (or some other model)
+	* wire delay is quadratically proportional to length of wire
+* repeaters:
+	* worth it only if wire is sufficiently long
+	* $t_{unbuf} = R(cx + C) + rx(cx/2 + C) =$
+	* $t_{buf} = 2R(cx/2 + C) + rx(cx/4 + C) + t_b$
+		* $x$: wire length
+		* $R$: buffer output resistance
+		* $C$: buffer input capacitance
+		* $r$: wire unit length resistance
+		* $c$: wire unit length capacitance
+		* $t_b$: buffer delay time
+	* time difference: $\Delta t = t_{buf} - t_{unbuf} = RC + t_b - rcx^2/4$
+
+
+
+
+
 ## 2017.03.27
 # Sequential Circuits
 * sequential means that the circuit holds state: the output depends on both current and past input
