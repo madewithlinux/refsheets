@@ -5,7 +5,7 @@ PANDOC_OPTS := -s -f markdown+grid_tables+pipe_tables \
 	--self-contained --css pandoc.css \
 	-H header.html
 TEX_SOURCES := $(wildcard *.tex)
-MD_SOURCES  := $(filter-out README.md, $(wildcard *.md))
+MD_SOURCES  := $(filter-out index.md README.md, $(wildcard *.md))
 OUTPUTS     := \
 	$(TEX_SOURCES:%.tex=%.pdf)   \
 	$(MD_SOURCES:%.md=%.md.pdf)  \
