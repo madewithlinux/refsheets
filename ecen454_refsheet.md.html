@@ -19,6 +19,7 @@
 <ul>
 <li>exam 1 was on March 8 (2017.03.08)</li>
 <li>nothing specifically from previous exam</li>
+<li>HW6 was due on March 8, so exam is HW7-HW11</li>
 </ul>
 <h1 id="propagation-vs-contamination-delay">Propagation vs Contamination delay</h1>
 <ul>
@@ -138,8 +139,13 @@
 <li>Elmore delay: split into segments and use pi-model (or some other model)
 <ul>
 <li>wire delay is quadratically proportional to length of wire</li>
+<li>by each C: <span class="math inline"><em>t</em><sub><em>p</em><em>d</em></sub> = ∑<sub><em>i</em> := <em>c</em><em>a</em><em>p</em><em>s</em></sub></span> <span class="math inline"><em>R</em><sub><em>i</em> − <em>t</em><em>o</em> − <em>s</em><em>o</em><em>u</em><em>r</em><em>c</em><em>e</em></sub><em>C</em><sub><em>i</em></sub></span></li>
+<li>by each R: <span class="math inline"><em>t</em><sub><em>p</em><em>d</em></sub> = ∑<sub><em>i</em> := <em>r</em><em>e</em><em>s</em><em>i</em><em>s</em><em>t</em><em>o</em><em>r</em><em>s</em></sub></span> <span class="math inline"><em>R</em><sub><em>i</em></sub><em>C</em><sub><em>d</em><em>o</em><em>w</em><em>n</em><em>s</em><em>t</em><em>r</em><em>e</em><em>a</em><em>m</em></sub></span>
+<ul>
+<li>downstream capacitors: if the cap is not along the direct path between the source and the point you're interested in, you just ignore that R for some reason (based on HW)</li>
 </ul></li>
-<li>repeaters:
+</ul></li>
+<li>repeaters/buffers:
 <ul>
 <li>worth it only if wire is sufficiently long</li>
 <li><span class="math inline"><em>t</em><sub><em>u</em><em>n</em><em>b</em><em>u</em><em>f</em></sub> = <em>R</em>(<em>c</em><em>x</em> + <em>C</em>)+<em>r</em><em>x</em>(<em>c</em><em>x</em>/2 + <em>C</em>)=</span></li>
@@ -153,6 +159,7 @@
 <li><span class="math inline"><em>t</em><sub><em>b</em></sub></span>: buffer delay time</li>
 </ul></li>
 <li>time difference: <span class="math inline"><em>Δ</em><em>t</em> = <em>t</em><sub><em>b</em><em>u</em><em>f</em></sub> − <em>t</em><sub><em>u</em><em>n</em><em>b</em><em>u</em><em>f</em></sub> = <em>R</em><em>C</em> + <em>t</em><sub><em>b</em></sub> − <em>r</em><em>c</em><em>x</em><sup>2</sup>/4</span></li>
+<li>buffers help slack because they decouple parasitic capacitance</li>
 </ul></li>
 </ul>
 <h2 id="section-1">2017.03.27</h2>
@@ -304,7 +311,7 @@
 </ul></li>
 <li>read: pre-charge bit and bit-bar, raise wordline, read result
 <ul>
-<li>(need to pre-charge or else read is destructive?)</li>
+<li>need to pre-charge both bit and bit-bar to 1 or else read is destructive</li>
 <li>need sense amplifiers at the end of the bitlines because the signal will be weak, and the parasitic capacitance of the bitline depends on how many cells are 0 or 1</li>
 </ul></li>
 <li>write: drive data onto bit and bit-bar and raise wordline to write</li>

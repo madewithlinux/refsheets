@@ -59,6 +59,6 @@ index.html: $(wildcard *.pdf) $(wildcard *.md) pandoc.css header.html
 	cat README.md > index.md
 	echo >> index.md
 	echo '# Links' >> index.md
-	for f in $(filter-out index.html header.html, $(wildcard *.pdf *.html)); do echo "* [$$f]($$f)" >> index.md; done
+	for f in $(filter-out index.md.html index.html header.html, $(wildcard *.pdf *.html)); do echo "* [$$f]($$f)" >> index.md; done
 	pandoc $(PANDOC_OPTS) index.md -o $@
 	rm index.md

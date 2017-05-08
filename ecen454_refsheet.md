@@ -8,6 +8,7 @@ geometry: margin=0.75in
 # specifically for final
 * exam 1 was on March 8 (2017.03.08)
 * nothing specifically from previous exam
+* HW6 was due on March 8, so exam is HW7-HW11
 
 # Propagation vs Contamination delay
 * contamination delay ($t_{cd}$): time from input change to **any** output changing value
@@ -78,7 +79,10 @@ geometry: margin=0.75in
 	* use MCF factor to determine effective parasitic capacitance between two signal wires
 * Elmore delay: split into segments and use pi-model (or some other model)
 	* wire delay is quadratically proportional to length of wire
-* repeaters:
+	* by each C: $t_{pd} = \sum_{i:=caps}$ $R_{i-to-source} C_i$
+	* by each R: $t_{pd} = \sum_{i:=resistors}$ $R_i C_{downstream}$
+		* downstream capacitors: if the cap is not along the direct path between the source and the point you're interested in, you just ignore that R for some reason (based on HW)
+* repeaters/buffers:
 	* worth it only if wire is sufficiently long
 	* $t_{unbuf} = R(cx + C) + rx(cx/2 + C) =$
 	* $t_{buf} = 2R(cx/2 + C) + rx(cx/4 + C) + t_b$
@@ -89,6 +93,7 @@ geometry: margin=0.75in
 		* $c$: wire unit length capacitance
 		* $t_b$: buffer delay time
 	* time difference: $\Delta t = t_{buf} - t_{unbuf} = RC + t_b - rcx^2/4$
+	* buffers help slack because they decouple parasitic capacitance
 
 
 
@@ -175,7 +180,7 @@ geometry: margin=0.75in
 	* 6T design: cross-coupled inverters (3T each) +2T for bit and bit-bar lines
 		* we focus on 6T design
 	* read: pre-charge bit and bit-bar, raise wordline, read result
-		* (need to pre-charge or else read is destructive?)
+		* need to pre-charge both bit and bit-bar to 1 or else read is destructive
 		* need sense amplifiers at the end of the bitlines because the signal will be weak, and the parasitic capacitance of the bitline depends on how many cells are 0 or 1
 	* write: drive data onto bit and bit-bar and raise wordline to write
 	* cross coupled inverters must be much larger than the bitline transistors so that it doesn't flip while reading
