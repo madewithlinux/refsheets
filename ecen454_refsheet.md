@@ -12,10 +12,10 @@ geometry: margin=0.75in
 
 # Propagation vs Contamination delay
 * contamination delay ($t_{cd}$): time from input change to **any** output changing value
-* kind of a best-case delay or smallest possible delay
-* time counted when input crosses 50% of logical high voltage level
+	* kind of a best-case delay or smallest possible delay
+	* time counted when input crosses 50% of logical high voltage level
 * propagation delay: time from when all inputs are stable to when all outputs are stable
-* kind of like a worst-case delay
+	* kind of like a worst-case delay
 
 # static vs dynamic power
 * static power
@@ -29,6 +29,7 @@ geometry: margin=0.75in
 # Latch vs Flip Flop
 * Latch is level-sensitive, flip-flop is edge-sensitive
 * register is flip-flop
+
 # Latch/flip flop designs
 * pass transistor latch
 	* pros: tiny, low clock load
@@ -84,7 +85,7 @@ geometry: margin=0.75in
 		* downstream capacitors: if the cap is not along the direct path between the source and the point you're interested in, you just ignore that R for some reason (based on HW)
 * repeaters/buffers:
 	* worth it only if wire is sufficiently long
-	* $t_{unbuf} = R(cx + C) + rx(cx/2 + C) =$
+	* $t_{unbuf} = R(cx + C) + rx(cx/2 + C)$
 	* $t_{buf} = 2R(cx/2 + C) + rx(cx/4 + C) + t_b$
 		* $x$: wire length
 		* $R$: buffer output resistance
@@ -140,12 +141,13 @@ geometry: margin=0.75in
 		* combinational stuff must be slow enough that it doesn't violate hold time of second flip flop
 	* for two-phase latch: $t_{cd1},t_{cd2} > t_{hold} - t_{ccq} - t_{non-overlap}$
 		* hold time applies twice each cycle, once per each combinational circuit
-		* $t_{non-overlap}$: phase between clock signals?
+		* $t_{non-overlap}$: phase between clock signals
 * time borrowing: for two-phase latch-based system, you can borrow time from one segment to the other while the latch is transparent
 	* works (is possible) as long as the total circuit still completes within one clock cycle
+	* will need to change the phase the phase of the second clock
 * clock skew:
 	* when uncertain: causes tighter required CL propagation delay and minimum CL contamination delay, and reduces opportunity for time borrowing.
-	* when know constant skew: can help with same effect as time borrowing, except can also have effect for flip-flop based systems
+	* when know constant skew: can help with same effect as time borrowing, except it can also work for flip-flop based systems
 * skew tolerance:
 	* flip-flop circuits are not very skew tolerant because the setup and hold times define a specific window of time in which the data must arrive
 	* latch circuits are more hold-time-tolerant because the data can arrive any time that the latch is transparent
@@ -157,6 +159,7 @@ geometry: margin=0.75in
 # Clocking
 * H-Tree (clock distribution network)
 	* laid out in such a way that the delay from the center to any leaf node is equal
+	* if you're missing one of the nodes, just don't draw that part. Make sure the rest of the H-tree is the exact same shape though, so that the distances are the same
 * Grid clock distribution
 	* grid on two or more levels
 	* ensures low local skew, but there could still be larger chip-wide skew
@@ -181,7 +184,8 @@ geometry: margin=0.75in
 		* we focus on 6T design
 	* read: pre-charge bit and bit-bar, raise wordline, read result
 		* need to pre-charge both bit and bit-bar to 1 or else read is destructive
-		* need sense amplifiers at the end of the bitlines because the signal will be weak, and the parasitic capacitance of the bitline depends on how many cells are 0 or 1
+		* need sense amplifiers at the end of the bitlines because the signal will be weak
+		*  the parasitic capacitance of the bitline depends on how many cells are 0 or 1
 	* write: drive data onto bit and bit-bar and raise wordline to write
 	* cross coupled inverters must be much larger than the bitline transistors so that it doesn't flip while reading
 	* per each column, you need:
@@ -208,7 +212,8 @@ geometry: margin=0.75in
 		* thus, it's always consuming power
 * shift register:
 	* can be implemented with cascade of flip-flops
-		* can lead to hold time violations because no delay from clock to next data line? (TODO what? how?)
+		* can lead to hold time violations because no delay from clock to next data line
+			* problems when the Clk$\rightarrow$Q time is less than the hold time of the flip-flop
 		* not very dense
 	* store data in SRAM and store begin/end pointers
 		* more dense than individual flip-flops
@@ -224,7 +229,8 @@ geometry: margin=0.75in
 
 ## 2017.04.10, 2017.04.12
 # Low Power Design
-* not so important when running from a battery since batteries store energy, not power
+* not so useful when running from a battery since batteries store energy, not power
+	* doing the same computation slower will use the same energy from the battery (generally)
 * peak power
 	* determines power/ground wiring and packaging limits
 	* impacts signal/noise ratio
@@ -236,25 +242,25 @@ geometry: margin=0.75in
 		* but be careful because that will make the computations take longer
 * reduce static power
 	* power gating
-	* selectively use lower $V_t$ devices
+	* selectively use lower $V_{DD}$ devices
 	* stacked devices
 	* body bias
 * clock gating: disable the clock signal to an expensive component
 	* eliminates that component's dynamic power (but of course you can't use it)
 	* doesn't change static power
-* voltage islands: different $V_t$ for different devices
-	* allow low $V_t$ devices to run slower because they don't need to be fast
+* voltage islands: different $V_{DD}$ for different devices
+	* allow low $V_{DD}$ devices to run slower because they don't need to be fast
 		(maybe they're not in the critical path)
 	* often different voltage levels are alternated row by row in standard-cell layouts
 	* you must convert from one logic level to another, because high/low will be different
-		* sometimes it's possible to avoid conversion, e.g. by using a buffer that you would have anyway, with inverters built from half high-$V_t$ transistors and half low-$V_t$ transistors
+		* sometimes it's possible to avoid conversion, e.g. by using a buffer that you would have anyway, with inverters built from half high-$V_{DD}$ transistors and half low-$V_{DD}$ transistors
 	* there are all kinds of tricks for determining which components should be high/low voltage and where to put voltage islands and level converters
 * DFVS: Dynamic Frequency and Voltage Scaling
 	* requires:
 		* programmable clock generator (PLL)
 		* supply regulation loop to for setting minimum $V_{DD}$
 		* software support for deciding best stable frequency and voltage for given load and performance goals
-	* voltage regulation loop
+	* voltage regulation loop (charge pump)
 		* voltage divider would be horribly inefficient
 		* instead, rapidly charge/discharge capacitor
 * stacked devices:
@@ -320,8 +326,8 @@ geometry: margin=0.75in
 * package parasitics
 	* parasitics inductance isn't really a problem inside the chip, but is for connecting wires in packaging
 * heat dissipation
-	* formula: $\delta T = \theta_{ja} P$
-		* $\delta T$: change in temperature on chip
+	* formula: $\Delta T = \theta_{ja} P$
+		* $\Delta T$: change in temperature on chip
 		* $\theta_{ja}$: thermal resistance of chip junction to ambient
 		* $P$: power dissipation on chip
 		* $\theta$ adds in series for chip$\rightarrow$package and package$\rightarrow$headsink

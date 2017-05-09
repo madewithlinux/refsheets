@@ -23,11 +23,15 @@
 </ul>
 <h1 id="propagation-vs-contamination-delay">Propagation vs Contamination delay</h1>
 <ul>
-<li>contamination delay (<span class="math inline"><em>t</em><sub><em>c</em><em>d</em></sub></span>): time from input change to <strong>any</strong> output changing value</li>
+<li>contamination delay (<span class="math inline"><em>t</em><sub><em>c</em><em>d</em></sub></span>): time from input change to <strong>any</strong> output changing value
+<ul>
 <li>kind of a best-case delay or smallest possible delay</li>
 <li>time counted when input crosses 50% of logical high voltage level</li>
-<li>propagation delay: time from when all inputs are stable to when all outputs are stable</li>
+</ul></li>
+<li>propagation delay: time from when all inputs are stable to when all outputs are stable
+<ul>
 <li>kind of like a worst-case delay</li>
+</ul></li>
 </ul>
 <h1 id="static-vs-dynamic-power">static vs dynamic power</h1>
 <ul>
@@ -46,7 +50,10 @@
 <h1 id="latch-vs-flip-flop">Latch vs Flip Flop</h1>
 <ul>
 <li>Latch is level-sensitive, flip-flop is edge-sensitive</li>
-<li>register is flip-flop # Latch/flip flop designs</li>
+<li>register is flip-flop</li>
+</ul>
+<h1 id="latchflip-flop-designs">Latch/flip flop designs</h1>
+<ul>
 <li>pass transistor latch
 <ul>
 <li>pros: tiny, low clock load</li>
@@ -148,7 +155,7 @@
 <li>repeaters/buffers:
 <ul>
 <li>worth it only if wire is sufficiently long</li>
-<li><span class="math inline"><em>t</em><sub><em>u</em><em>n</em><em>b</em><em>u</em><em>f</em></sub> = <em>R</em>(<em>c</em><em>x</em> + <em>C</em>)+<em>r</em><em>x</em>(<em>c</em><em>x</em>/2 + <em>C</em>)=</span></li>
+<li><span class="math inline"><em>t</em><sub><em>u</em><em>n</em><em>b</em><em>u</em><em>f</em></sub> = <em>R</em>(<em>c</em><em>x</em> + <em>C</em>)+<em>r</em><em>x</em>(<em>c</em><em>x</em>/2 + <em>C</em>)</span></li>
 <li><span class="math inline"><em>t</em><sub><em>b</em><em>u</em><em>f</em></sub> = 2<em>R</em>(<em>c</em><em>x</em>/2 + <em>C</em>)+<em>r</em><em>x</em>(<em>c</em><em>x</em>/4 + <em>C</em>)+<em>t</em><sub><em>b</em></sub></span>
 <ul>
 <li><span class="math inline"><em>x</em></span>: wire length</li>
@@ -249,17 +256,18 @@
 <li>for two-phase latch: <span class="math inline"><em>t</em><sub><em>c</em><em>d</em>1</sub>, <em>t</em><sub><em>c</em><em>d</em>2</sub> &gt; <em>t</em><sub><em>h</em><em>o</em><em>l</em><em>d</em></sub> − <em>t</em><sub><em>c</em><em>c</em><em>q</em></sub> − <em>t</em><sub><em>n</em><em>o</em><em>n</em> − <em>o</em><em>v</em><em>e</em><em>r</em><em>l</em><em>a</em><em>p</em></sub></span>
 <ul>
 <li>hold time applies twice each cycle, once per each combinational circuit</li>
-<li><span class="math inline"><em>t</em><sub><em>n</em><em>o</em><em>n</em> − <em>o</em><em>v</em><em>e</em><em>r</em><em>l</em><em>a</em><em>p</em></sub></span>: phase between clock signals?</li>
+<li><span class="math inline"><em>t</em><sub><em>n</em><em>o</em><em>n</em> − <em>o</em><em>v</em><em>e</em><em>r</em><em>l</em><em>a</em><em>p</em></sub></span>: phase between clock signals</li>
 </ul></li>
 </ul></li>
 <li>time borrowing: for two-phase latch-based system, you can borrow time from one segment to the other while the latch is transparent
 <ul>
 <li>works (is possible) as long as the total circuit still completes within one clock cycle</li>
+<li>will need to change the phase the phase of the second clock</li>
 </ul></li>
 <li>clock skew:
 <ul>
 <li>when uncertain: causes tighter required CL propagation delay and minimum CL contamination delay, and reduces opportunity for time borrowing.</li>
-<li>when know constant skew: can help with same effect as time borrowing, except can also have effect for flip-flop based systems</li>
+<li>when know constant skew: can help with same effect as time borrowing, except it can also work for flip-flop based systems</li>
 </ul></li>
 <li>skew tolerance:
 <ul>
@@ -275,6 +283,7 @@
 <li>H-Tree (clock distribution network)
 <ul>
 <li>laid out in such a way that the delay from the center to any leaf node is equal</li>
+<li>if you're missing one of the nodes, just don't draw that part. Make sure the rest of the H-tree is the exact same shape though, so that the distances are the same</li>
 </ul></li>
 <li>Grid clock distribution
 <ul>
@@ -312,7 +321,8 @@
 <li>read: pre-charge bit and bit-bar, raise wordline, read result
 <ul>
 <li>need to pre-charge both bit and bit-bar to 1 or else read is destructive</li>
-<li>need sense amplifiers at the end of the bitlines because the signal will be weak, and the parasitic capacitance of the bitline depends on how many cells are 0 or 1</li>
+<li>need sense amplifiers at the end of the bitlines because the signal will be weak</li>
+<li>the parasitic capacitance of the bitline depends on how many cells are 0 or 1</li>
 </ul></li>
 <li>write: drive data onto bit and bit-bar and raise wordline to write</li>
 <li>cross coupled inverters must be much larger than the bitline transistors so that it doesn't flip while reading</li>
@@ -358,7 +368,10 @@
 <ul>
 <li>can be implemented with cascade of flip-flops
 <ul>
-<li>can lead to hold time violations because no delay from clock to next data line? (TODO what? how?)</li>
+<li>can lead to hold time violations because no delay from clock to next data line
+<ul>
+<li>problems when the Clk<span class="math inline">→</span>Q time is less than the hold time of the flip-flop</li>
+</ul></li>
 <li>not very dense</li>
 </ul></li>
 <li>store data in SRAM and store begin/end pointers
@@ -385,7 +398,10 @@
 <h2 id="section-3">2017.04.10, 2017.04.12</h2>
 <h1 id="low-power-design">Low Power Design</h1>
 <ul>
-<li>not so important when running from a battery since batteries store energy, not power</li>
+<li>not so useful when running from a battery since batteries store energy, not power
+<ul>
+<li>doing the same computation slower will use the same energy from the battery (generally)</li>
+</ul></li>
 <li>peak power
 <ul>
 <li>determines power/ground wiring and packaging limits</li>
@@ -404,7 +420,7 @@
 <li>reduce static power
 <ul>
 <li>power gating</li>
-<li>selectively use lower <span class="math inline"><em>V</em><sub><em>t</em></sub></span> devices</li>
+<li>selectively use lower <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> devices</li>
 <li>stacked devices</li>
 <li>body bias</li>
 </ul></li>
@@ -413,13 +429,13 @@
 <li>eliminates that component's dynamic power (but of course you can't use it)</li>
 <li>doesn't change static power</li>
 </ul></li>
-<li>voltage islands: different <span class="math inline"><em>V</em><sub><em>t</em></sub></span> for different devices
+<li>voltage islands: different <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> for different devices
 <ul>
-<li>allow low <span class="math inline"><em>V</em><sub><em>t</em></sub></span> devices to run slower because they don't need to be fast (maybe they're not in the critical path)</li>
+<li>allow low <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> devices to run slower because they don't need to be fast (maybe they're not in the critical path)</li>
 <li>often different voltage levels are alternated row by row in standard-cell layouts</li>
 <li>you must convert from one logic level to another, because high/low will be different
 <ul>
-<li>sometimes it's possible to avoid conversion, e.g. by using a buffer that you would have anyway, with inverters built from half high-<span class="math inline"><em>V</em><sub><em>t</em></sub></span> transistors and half low-<span class="math inline"><em>V</em><sub><em>t</em></sub></span> transistors</li>
+<li>sometimes it's possible to avoid conversion, e.g. by using a buffer that you would have anyway, with inverters built from half high-<span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> transistors and half low-<span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span> transistors</li>
 </ul></li>
 <li>there are all kinds of tricks for determining which components should be high/low voltage and where to put voltage islands and level converters</li>
 </ul></li>
@@ -431,7 +447,7 @@
 <li>supply regulation loop to for setting minimum <span class="math inline"><em>V</em><sub><em>D</em><em>D</em></sub></span></li>
 <li>software support for deciding best stable frequency and voltage for given load and performance goals</li>
 </ul></li>
-<li>voltage regulation loop
+<li>voltage regulation loop (charge pump)
 <ul>
 <li>voltage divider would be horribly inefficient</li>
 <li>instead, rapidly charge/discharge capacitor</li>
@@ -537,9 +553,9 @@
 </ul></li>
 <li>heat dissipation
 <ul>
-<li>formula: <span class="math inline"><em>δ</em><em>T</em> = <em>θ</em><sub><em>j</em><em>a</em></sub><em>P</em></span>
+<li>formula: <span class="math inline"><em>Δ</em><em>T</em> = <em>θ</em><sub><em>j</em><em>a</em></sub><em>P</em></span>
 <ul>
-<li><span class="math inline"><em>δ</em><em>T</em></span>: change in temperature on chip</li>
+<li><span class="math inline"><em>Δ</em><em>T</em></span>: change in temperature on chip</li>
 <li><span class="math inline"><em>θ</em><sub><em>j</em><em>a</em></sub></span>: thermal resistance of chip junction to ambient</li>
 <li><span class="math inline"><em>P</em></span>: power dissipation on chip</li>
 <li><span class="math inline"><em>θ</em></span> adds in series for chip<span class="math inline">→</span>package and package<span class="math inline">→</span>headsink</li>
