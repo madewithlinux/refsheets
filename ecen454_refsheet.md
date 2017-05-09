@@ -410,7 +410,7 @@ geometry: margin=0.75in
 	* can help to tell what is causing failures
 * stuck-at fault
 	* model a failure as stuck at 0 or 1
-		* there's a whole bunch of ways that silicon could be manufactured incorrectly, but stuck-at fault models most of these approximately right
+    * there's a whole bunch of ways that silicon could be manufactured incorrectly, but stuck-at fault models most of these approximately right
 * observability: how easy it it is to observe a node at the output
 	* to observe a node at the output, the output must be determined by that node
 * controllability: how easy it is to force a node to a specific value
