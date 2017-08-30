@@ -10,38 +10,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h1 id="refsheets">Refsheets</h1>
-<p>personal notes for classes and such</p>
-<p>I've tried to keep things neat for most of the classes I'm in.</p>
-<p>For past classes, some of them wouldn't compile, so I just put the offending stuff in a <code>\verb||</code> block so it would compile and the information would still be there. Not at all a good solution, but I don't need those notes anymore, just felt like sharing them.</p>
-<h1 id="disclaimer">Disclaimer</h1>
-<p>In addition to the included license:</p>
+<h1 id="csce-441-refsheet">CSCE 441 Refsheet</h1>
+<h1 id="geometry">Geometry</h1>
+<h2 id="vector">Vector</h2>
 <ul>
-<li>Don't cheat on exams using my notes</li>
-<li>Don't use my notes on homework unless you have permission from your professor</li>
-<li>please don't blatantly copy my work or pass it off as your own</li>
-<li>most importantly, don't be surprised if some of the notes are wrong.</li>
+<li>angle between vectors <span class="math inline"><em>a</em></span> and <span class="math inline"><em>b</em></span>: <span class="math inline">$\theta = \cos^{-1}\frac{a\dot b}{|a||b|}$</span></li>
+<li>dot product (scalar product): <span class="math inline">$a \dot b = a_xb_x + a_yb_y + a_zb_z$</span> <code>a . b = a_xb_x + a_yb_y + a_zb_z</code>
+<ul>
+<li>represented here with period</li>
+<li>properties:
+<ul>
+<li><code>a . a = |a|^2</code></li>
+<li><code>a . b = b . a</code> comutativity</li>
+<li><code>a . (b+c) = a . b + a . c</code> distributive</li>
+<li>etc...</li>
+</ul></li>
+</ul></li>
+<li>cross product (vector product): <span class="math inline"><em>a</em> × <em>b</em> = [ + (<em>a</em><sub><em>y</em></sub><em>b</em><sub><em>z</em></sub> − <em>a</em><sub><em>z</em></sub><em>b</em><sub><em>y</em></sub>)<em>i</em> − (<em>a</em><sub><em>x</em></sub><em>b</em><sub><em>z</em></sub> − <em>a</em><sub><em>z</em></sub><em>b</em><sub><em>x</em></sub>)<em>j</em> + (<em>a</em><sub><em>x</em></sub><em>b</em><sub><em>y</em></sub> − <em>a</em><sub><em>y</em></sub><em>b</em><sub><em>x</em></sub>)<em>k</em>]</span></li>
 </ul>
-<h1 id="links">Links</h1>
+<h2 id="matrix">Matrix</h2>
 <ul>
-<li><a href="ecen454_refsheet.pdf" class="uri">ecen454_refsheet.pdf</a></li>
-<li><a href="math311_reference_sheet.pdf" class="uri">math311_reference_sheet.pdf</a></li>
-<li><a href="csce441_refsheet.md.pdf" class="uri">csce441_refsheet.md.pdf</a></li>
-<li><a href="ecen454_refsheet.md.pdf" class="uri">ecen454_refsheet.md.pdf</a></li>
-<li><a href="math251_reference_sheet.pdf" class="uri">math251_reference_sheet.pdf</a></li>
-<li><a href="ecen325_refsheet.pdf" class="uri">ecen325_refsheet.pdf</a></li>
-<li><a href="csce221_reference_sheet.pdf" class="uri">csce221_reference_sheet.pdf</a></li>
-<li><a href="stat211_reference_sheet.pdf" class="uri">stat211_reference_sheet.pdf</a></li>
-<li><a href="ecen214_reference_sheet.pdf" class="uri">ecen214_reference_sheet.pdf</a></li>
-<li><a href="csce314_reference_sheet.pdf" class="uri">csce314_reference_sheet.pdf</a></li>
-<li><a href="ecen350_reference_sheet.pdf" class="uri">ecen350_reference_sheet.pdf</a></li>
-<li><a href="math308_reference_sheet.pdf" class="uri">math308_reference_sheet.pdf</a></li>
-<li><a href="ecen314_reference_sheet.pdf" class="uri">ecen314_reference_sheet.pdf</a></li>
-<li><a href="ecen248_reference_sheet.pdf" class="uri">ecen248_reference_sheet.pdf</a></li>
-<li><a href="csce222_reference_sheet.pdf" class="uri">csce222_reference_sheet.pdf</a></li>
-<li><a href="csce313_reference_sheet.pdf" class="uri">csce313_reference_sheet.pdf</a></li>
-<li><a href="csce441_refsheet.md.html" class="uri">csce441_refsheet.md.html</a></li>
-<li><a href="ecen454_refsheet.md.html" class="uri">ecen454_refsheet.md.html</a></li>
+<li><p>multiplying any matrix by the identity matrix yields the original matrix</p>
+<pre><code>  A + B = B + A
+  A + ( B + C ) = ( A + B ) + C
+  b ( A + B ) = b A + b B
+  ( b + d ) A = b A + d A
+  b ( d A ) = ( bd ) A = d ( b A )</code></pre></li>
+<li>transpose: swap rows and columns</li>
+<li>product of <span class="math inline"><em>A</em></span> and <span class="math inline"><em>B</em></span>:
+<ul>
+<li>matrixes are indexed like <code>matrix(row, column)</code> (just like matlab)</li>
+<li>defined iff (number of colums in <span class="math inline"><em>A</em></span>) == (number of rows in <span class="math inline"><em>B</em></span>). That is, <code>size(A) == [m n] &amp;&amp; size(B) == [n p]</code></li>
+<li>for result matrix <code>C</code>, each element defined as: <code>C(i,j) = A(i,1)*B(1,j) + A(i,2)*B(2,j) + ... + A(i,n)*B(n,j)</code></li>
+<li><p>properties:</p>
+<pre><code> ( AB ) C = A ( BC )
+ A ( B + C ) = AB + AC
+ ( A + B ) C = AC + BC
+ A ( k B ) = k ( AB ) = ( k A ) B</code></pre></li>
+</ul></li>
+<li><p>determinant of A is sometimes written |A|</p></li>
 </ul>
 </body>
 </html>
