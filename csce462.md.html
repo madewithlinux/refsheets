@@ -10,40 +10,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h1 id="refsheets">Refsheets</h1>
-<p>personal notes for classes and such</p>
-<p>I've tried to keep things neat for most of the classes I'm in.</p>
-<p>For past classes, some of them wouldn't compile, so I just put the offending stuff in a <code>\verb||</code> block so it would compile and the information would still be there. Not at all a good solution, but I don't need those notes anymore, just felt like sharing them.</p>
-<h1 id="disclaimer">Disclaimer</h1>
-<p>In addition to the included license:</p>
+<h1 id="csce-462">CSCE 462</h1>
+<h1 id="soc">SOC:</h1>
 <ul>
-<li>Don't cheat on exams using my notes</li>
-<li>Don't use my notes on homework unless you have permission from your professor</li>
-<li>please don't blatantly copy my work or pass it off as your own</li>
-<li>most importantly, don't be surprised if some of the notes are wrong.</li>
+<li>System On a Chip</li>
 </ul>
-<h1 id="links">Links</h1>
+<h1 id="latency-vs-throughput">Latency vs Throughput</h1>
 <ul>
-<li><a href="ecen454_refsheet.pdf" class="uri">ecen454_refsheet.pdf</a></li>
-<li><a href="math311_reference_sheet.pdf" class="uri">math311_reference_sheet.pdf</a></li>
-<li><a href="csce441_refsheet.md.pdf" class="uri">csce441_refsheet.md.pdf</a></li>
-<li><a href="ecen454_refsheet.md.pdf" class="uri">ecen454_refsheet.md.pdf</a></li>
-<li><a href="math251_reference_sheet.pdf" class="uri">math251_reference_sheet.pdf</a></li>
-<li><a href="ecen325_refsheet.pdf" class="uri">ecen325_refsheet.pdf</a></li>
-<li><a href="csce221_reference_sheet.pdf" class="uri">csce221_reference_sheet.pdf</a></li>
-<li><a href="csce462.md.pdf" class="uri">csce462.md.pdf</a></li>
-<li><a href="stat211_reference_sheet.pdf" class="uri">stat211_reference_sheet.pdf</a></li>
-<li><a href="ecen214_reference_sheet.pdf" class="uri">ecen214_reference_sheet.pdf</a></li>
-<li><a href="csce314_reference_sheet.pdf" class="uri">csce314_reference_sheet.pdf</a></li>
-<li><a href="ecen350_reference_sheet.pdf" class="uri">ecen350_reference_sheet.pdf</a></li>
-<li><a href="math308_reference_sheet.pdf" class="uri">math308_reference_sheet.pdf</a></li>
-<li><a href="ecen314_reference_sheet.pdf" class="uri">ecen314_reference_sheet.pdf</a></li>
-<li><a href="ecen248_reference_sheet.pdf" class="uri">ecen248_reference_sheet.pdf</a></li>
-<li><a href="csce222_reference_sheet.pdf" class="uri">csce222_reference_sheet.pdf</a></li>
-<li><a href="csce313_reference_sheet.pdf" class="uri">csce313_reference_sheet.pdf</a></li>
-<li><a href="csce462.md.html" class="uri">csce462.md.html</a></li>
-<li><a href="csce441_refsheet.md.html" class="uri">csce441_refsheet.md.html</a></li>
-<li><a href="ecen454_refsheet.md.html" class="uri">ecen454_refsheet.md.html</a></li>
+<li>latency: time to complete one operation</li>
+<li>throughput: operations per second</li>
+<li>memory has both latency and throughput</li>
+</ul>
+<h1 id="gpio">GPIO</h1>
+<ul>
+<li>General Purpose Input/Output</li>
+</ul>
+<h1 id="raspberry-pi-3">Raspberry Pi 3</h1>
+<ul>
+<li>1.2GHz 4-core processor</li>
+<li>1GB RAM</li>
+<li>40 board pins, 26 are GPIO</li>
+<li>WiFi, Ethernet</li>
+</ul>
+<h1 id="arm">ARM</h1>
+<ul>
+<li>link register: stores return address of function
+<ul>
+<li>means that leaf function calls are faster</li>
+</ul></li>
+</ul>
+<h1 id="arm-assembly">ARM Assembly</h1>
+<ul>
+<li>instruction format: <code>add{cond}{s} &lt;dest&gt;, &lt;lhs&gt;, &lt;rhs&gt;</code>
+<ul>
+<li><code>s</code>, if present, means the instruction can change processor flags (e.g. over/underflow)</li>
+</ul></li>
+<li><code>ldr</code>: load word (to register)</li>
+<li><code>str</code>: store word</li>
+<li>16 registers: <code>R0</code>-<code>R15</code>, and <code>CPSR</code>
+<ul>
+<li><code>R0</code>-<code>R3</code>: arguments to function call, and return value</li>
+<li><code>R12 IP</code>: Intra procedural call</li>
+<li><code>R13 SP</code>: Stack Pointer</li>
+<li><code>R14 LR</code>: Link Register
+<ul>
+<li>stores return address</li>
+</ul></li>
+<li><code>R15 PC</code>: Program Counter
+<ul>
+<li>you can read/write to this directly, it's not special (though not a good idea)</li>
+</ul></li>
+<li><code>CPSR</code>: Current Program State Register:
+<ul>
+<li>stores flags about the state of the program: negative, zero, carry, overflow, underflow, privileged mode, etc...</li>
+<li>can be modified directly (want to do read-modify-write state backup first)</li>
+</ul></li>
+<li><code>R4-R11</code> and <code>R13 SP</code> are callee preserved: function should push during prologue and pop in epilogue of function</li>
+<li>callee must preserve <code>R14 LR</code> if it wishes to call subroutines</li>
+<li><code>R12 IP</code> is weird. Used for libraries as stack space?</li>
+</ul></li>
+<li><code>push</code>/<code>pop</code> for accessing stack
+<ul>
+<li><p>you can push/pop multiple things at once, but you need to reverse at the end:</p>
+<pre><code>push {ip, lr, sp}
+pop {sp, lr, ip}</code></pre></li>
+</ul></li>
+<li><code>bl</code>: branch and link (set link register). use to call subroutines</li>
+<li><code>bx lr</code>: branch to link register, to return from subroutine</li>
+<li>constants: <code>mov r1, =label</code>
+<ul>
+<li>can do <code>ldr r0, =0x523</code> (translates to <code>PC</code> relative load)</li>
+</ul></li>
+<li>literal: <code>mov r0, #5</code>, <code>mov r2, #0x1C</code></li>
+<li>memory access: <code>ldr r0 [r0]</code>, <code>str r0 [r1, #offset]</code>
+<ul>
+<li>memory access is sometimes done relative to <code>PC</code></li>
+</ul></li>
+</ul>
+<h1 id="powers-of-two">powers of two:</h1>
+<ul>
+<li><span class="math inline">2<sup>10</sup></span> is 1K</li>
+<li><span class="math inline">2<sup>20</sup></span> is 1M</li>
+<li><span class="math inline">2<sup>30</sup></span> is 1G</li>
+</ul>
+<h1 id="systick-timer">SysTick timer</h1>
+<ul>
+<li>24-bit timer that counts down at bus clock frequency</li>
+<li>interrupts CPU when it hits 0? TODO</li>
+<li>control registers (memory mapped)
+<ul>
+<li><code>ctrl</code>: control
+<ul>
+<li>controls whether counts up/down? TODO</li>
+<li>can have different sources (but is always internal on raspberry pi)</li>
+</ul></li>
+<li><code>reload</code>: value to start at</li>
+<li><code>current</code>: TODO</li>
+</ul></li>
+</ul>
+<h1 id="finite-state-machine-fsm">Finite State Machine (FSM)</h1>
+<ul>
+<li>Mealy vs Moore
+<ul>
+<li>Moore</li>
+<li>output on states</li>
+<li>output based on current state only</li>
+<li>Mealy</li>
+<li>output on state transitions (edges of graph)</li>
+<li>output based on state and current input</li>
+</ul></li>
+<li>FSM can be implemented like a linked list (or other ways)</li>
+</ul>
+<h1 id="interrupts">interrupts</h1>
+<ul>
+<li>in ARM, each source of hardware interrupt has one bit (in some control register?)
+<ul>
+<li>hardware sets that bit to interrupt the CPU</li>
+</ul></li>
+<li>can set other bit to enable/disable interrupts by source</li>
 </ul>
 </body>
 </html>
