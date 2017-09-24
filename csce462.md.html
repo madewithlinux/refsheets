@@ -102,10 +102,11 @@ pop {sp, lr, ip}</code></pre></li>
 <li><code>ctrl</code>: control
 <ul>
 <li>controls whether counts up/down? TODO</li>
+<li>enable bit to start timer</li>
 <li>can have different sources (but is always internal on raspberry pi)</li>
 </ul></li>
-<li><code>reload</code>: value to start at</li>
-<li><code>current</code>: TODO</li>
+<li><code>reload</code>: value to start at (after counting wraps)</li>
+<li><code>current</code>: current value timer is counting at</li>
 </ul></li>
 </ul>
 <h1 id="finite-state-machine-fsm">Finite State Machine (FSM)</h1>
@@ -119,15 +120,53 @@ pop {sp, lr, ip}</code></pre></li>
 <li>output on state transitions (edges of graph)</li>
 <li>output based on state and current input</li>
 </ul></li>
-<li>FSM can be implemented like a linked list (or other ways)</li>
+<li>can have wait time at each state</li>
+<li>can be implemented like a linked list (or other ways)</li>
+<li>implementation
+<ul>
+<li>linked list: pointers link to adjacent nodes</li>
+<li>table: stores indexes of adjacent nodes</li>
+</ul></li>
+<li>if you implement with a data structure, you need a driver function to advance states and whatnot</li>
+<li>data structure implementation seems way over complicated</li>
 </ul>
 <h1 id="interrupts">interrupts</h1>
 <ul>
-<li>in ARM, each source of hardware interrupt has one bit (in some control register?)
+<li>generated externally or internally
 <ul>
-<li>hardware sets that bit to interrupt the CPU</li>
+<li>external: IO device (e.g. keyboard)</li>
+<li>internal, e.g. exception, syscall</li>
 </ul></li>
+<li>each interrupt source has two bits:
+<ul>
+<li>arm bit: allow that interrupt to be triggered</li>
+<li>flag bit: hardware sets this flag to throw interrupt, software clears flag when it starts handling the interrupt</li>
+</ul></li>
+<li>interrupts are prioritized
+<ul>
+<li>against each other and against current state of CPU</li>
+<li>PRIMASK: interrupt priority mask register</li>
+</ul></li>
+<li>there is a global interrupt enable/disable flag</li>
+<li>acknowledge interrupt means clear flag bit and begin handling interrupt</li>
 <li>can set other bit to enable/disable interrupts by source</li>
+<li>interrupt program status register IPSR: stores info about current interrupt</li>
+<li>interrupt service routine ISR: called by CPU when interrupt happens
+<ul>
+<li>TODO is there a separate one per interrupt?</li>
+</ul></li>
+</ul>
+<h1 id="software-abstraction">Software abstraction</h1>
+<ul>
+<li>Define a problem with a minimal set of basic, abstract principles / concepts</li>
+<li>Separation of concerns via interface/policy mechanisms</li>
+<li>Straightforward, mechanical path to implementation</li>
+<li>advantages
+<ul>
+<li>faster to develop</li>
+<li>easier to debug</li>
+<li>easier to change</li>
+</ul></li>
 </ul>
 </body>
 </html>

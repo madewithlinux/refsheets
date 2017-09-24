@@ -67,9 +67,10 @@
 * control registers (memory mapped)
 	* `ctrl`: control
 		* controls whether counts up/down? TODO
+        * enable bit to start timer
 		* can have different sources (but is always internal on raspberry pi)
-	* `reload`: value to start at
-	* `current`: TODO
+	* `reload`: value to start at (after counting wraps)
+	* `current`: current value timer is counting at
 
 
 # Finite State Machine (FSM)
@@ -80,9 +81,37 @@
 	* Mealy
 	  * output on state transitions (edges of graph)
 	  * output based on state and current input
-* FSM can be implemented like a linked list (or other ways)
+* can have wait time at each state
+* can be implemented like a linked list (or other ways)
+* implementation
+    * linked list: pointers link to adjacent nodes
+    * table: stores indexes of adjacent nodes
+* if you implement with a data structure, you need a driver function to advance states and whatnot
+* data structure implementation seems way over complicated
 
 # interrupts
-* in ARM, each source of hardware interrupt has one bit (in some control register?)
-	* hardware sets that bit to interrupt the CPU
+* generated externally or internally
+    * external: IO device (e.g. keyboard)
+    * internal, e.g. exception, syscall
+* each interrupt source has two bits:
+    * arm bit: allow that interrupt to be triggered
+    * flag bit: hardware sets this flag to throw interrupt, software clears flag when it starts handling the interrupt 
+* interrupts are prioritized
+    * against each other and against current state of CPU
+    * PRIMASK: interrupt priority mask register
+* there is a global interrupt enable/disable flag
+* acknowledge interrupt means clear flag bit and begin handling interrupt
 * can set other bit to enable/disable interrupts by source
+* interrupt program status register IPSR: stores info about current interrupt
+* interrupt service routine ISR: called by CPU when interrupt happens
+    * TODO is there a separate one per interrupt?
+
+# Software abstraction
+* Define a problem with a minimal set of basic, abstract principles / concepts
+* Separation of concerns via interface/policy mechanisms
+* Straightforward, mechanical path to implementation
+* advantages
+    * faster to develop
+    * easier to debug
+    * easier to change
+
