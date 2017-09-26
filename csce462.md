@@ -11,6 +11,7 @@
 
 # GPIO
 * General Purpose Input/Output
+* sometimes called "Port A"
 
 # Raspberry Pi 3
 * 1.2GHz 4-core processor
@@ -23,10 +24,15 @@
 	* means that leaf function calls are faster
 
 # ARM Assembly
+* [http://www.peter-cockerell.net/aalp/html/ch-2.html](http://www.peter-cockerell.net/aalp/html/ch-2.html)
+* [http://www.peter-cockerell.net/aalp/html/ch-3.html](http://www.peter-cockerell.net/aalp/html/ch-3.html)
 * instruction format: `add{cond}{s} <dest>, <lhs>, <rhs>`
 	* `s`, if present, means the instruction can change processor flags (e.g. over/underflow)
 * `ldr`: load word (to register)
 * `str`: store word
+	* load/store can have suffix to do non-32-bit sizes:
+		* `b`: byte
+		* `h`: half-word (16 bits)
 * 16 registers: `R0`-`R15`, and `CPSR`
 	* `R0`-`R3`: arguments to function call, and return value
 	* `R12 IP`: Intra procedural call

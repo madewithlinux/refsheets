@@ -24,6 +24,7 @@
 <h1 id="gpio">GPIO</h1>
 <ul>
 <li>General Purpose Input/Output</li>
+<li>sometimes called &quot;Port A&quot;</li>
 </ul>
 <h1 id="raspberry-pi-3">Raspberry Pi 3</h1>
 <ul>
@@ -41,12 +42,21 @@
 </ul>
 <h1 id="arm-assembly">ARM Assembly</h1>
 <ul>
+<li><a href="http://www.peter-cockerell.net/aalp/html/ch-2.html" class="uri">http://www.peter-cockerell.net/aalp/html/ch-2.html</a></li>
+<li><a href="http://www.peter-cockerell.net/aalp/html/ch-3.html" class="uri">http://www.peter-cockerell.net/aalp/html/ch-3.html</a></li>
 <li>instruction format: <code>add{cond}{s} &lt;dest&gt;, &lt;lhs&gt;, &lt;rhs&gt;</code>
 <ul>
 <li><code>s</code>, if present, means the instruction can change processor flags (e.g. over/underflow)</li>
 </ul></li>
 <li><code>ldr</code>: load word (to register)</li>
-<li><code>str</code>: store word</li>
+<li><code>str</code>: store word
+<ul>
+<li>load/store can have suffix to do non-32-bit sizes:
+<ul>
+<li><code>b</code>: byte</li>
+<li><code>h</code>: half-word (16 bits)</li>
+</ul></li>
+</ul></li>
 <li>16 registers: <code>R0</code>-<code>R15</code>, and <code>CPSR</code>
 <ul>
 <li><code>R0</code>-<code>R3</code>: arguments to function call, and return value</li>
