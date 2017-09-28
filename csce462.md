@@ -19,11 +19,39 @@
 * 40 board pins, 26 are GPIO
 * WiFi, Ethernet
 
+# positive vs negative logic
+* positive logic
+	* AKA pull down resistor
+	* switch:
+		* resistor from GPIO to ground
+		* switch from Vcc to GPIO
+	* LED: resistor and LED in series between GPIO and ground
+* negative logic
+	* AKA pull up resistor
+	* switch:
+		* resistor between GPIO and Vcc
+		* switch between GPIO and ground
+	* LED: resistor and LED in series between GPIO and Vcc
+* in all cases, LED must be oriented correctly (pointing toward lower voltage)
+* GPIO should only be used for less than 8mA
+	* if LED or something needs more than that, connect it to an inverter, then connect the LED using the other kind of logic (positive/negative)
+* typically use about 10k Ohm resistor with switches
+
 # ARM
 * link register: stores return address of function
 	* means that leaf function calls are faster
-
-# ARM Assembly
+* flag bits
+	* `c` carry (unsigned overflow)
+		* `c` set after unsigned addition => overflow
+		* `c` **NOT** set after unsigned subtraction => overflow
+	* `v` overflow (signed overflow)
+		* `v` set after signed addition => overflow
+		* `v` set after signed subtraction => overflow
+	* `z` zero
+	* `n` negative
+	* `p` parity
+		* just xor of all bits together
+	* flags set after every instruction?
 * [http://www.peter-cockerell.net/aalp/html/ch-2.html](http://www.peter-cockerell.net/aalp/html/ch-2.html)
 * [http://www.peter-cockerell.net/aalp/html/ch-3.html](http://www.peter-cockerell.net/aalp/html/ch-3.html)
 * instruction format: `add{cond}{s} <dest>, <lhs>, <rhs>`
@@ -33,6 +61,7 @@
 	* load/store can have suffix to do non-32-bit sizes:
 		* `b`: byte
 		* `h`: half-word (16 bits)
+	* `ldr Rd, =label` (pseudo-instruction): loads address of label into register
 * 16 registers: `R0`-`R15`, and `CPSR`
 	* `R0`-`R3`: arguments to function call, and return value
 	* `R12 IP`: Intra procedural call
@@ -73,7 +102,7 @@
 * control registers (memory mapped)
 	* `ctrl`: control
 		* controls whether counts up/down? TODO
-        * enable bit to start timer
+		* enable bit to start timer
 		* can have different sources (but is always internal on raspberry pi)
 	* `reload`: value to start at (after counting wraps)
 	* `current`: current value timer is counting at
@@ -82,42 +111,45 @@
 # Finite State Machine (FSM)
 * Mealy vs Moore
 	* Moore
-	  * output on states
-	  * output based on current state only
+		* output on states
+		* output based on current state only
 	* Mealy
-	  * output on state transitions (edges of graph)
-	  * output based on state and current input
+		* output on state transitions (edges of graph)
+		* output based on state and current input
 * can have wait time at each state
 * can be implemented like a linked list (or other ways)
 * implementation
-    * linked list: pointers link to adjacent nodes
-    * table: stores indexes of adjacent nodes
+	* linked list: pointers link to adjacent nodes
+	* table: stores indexes of adjacent nodes
 * if you implement with a data structure, you need a driver function to advance states and whatnot
 * data structure implementation seems way over complicated
-
-# interrupts
-* generated externally or internally
-    * external: IO device (e.g. keyboard)
-    * internal, e.g. exception, syscall
-* each interrupt source has two bits:
-    * arm bit: allow that interrupt to be triggered
-    * flag bit: hardware sets this flag to throw interrupt, software clears flag when it starts handling the interrupt 
-* interrupts are prioritized
-    * against each other and against current state of CPU
-    * PRIMASK: interrupt priority mask register
-* there is a global interrupt enable/disable flag
-* acknowledge interrupt means clear flag bit and begin handling interrupt
-* can set other bit to enable/disable interrupts by source
-* interrupt program status register IPSR: stores info about current interrupt
-* interrupt service routine ISR: called by CPU when interrupt happens
-    * TODO is there a separate one per interrupt?
 
 # Software abstraction
 * Define a problem with a minimal set of basic, abstract principles / concepts
 * Separation of concerns via interface/policy mechanisms
 * Straightforward, mechanical path to implementation
 * advantages
-    * faster to develop
-    * easier to debug
-    * easier to change
+	* faster to develop
+	* easier to debug
+	* easier to change
 
+
+<!-- stuff not on exam 1 -->
+<!-- 
+# interrupts
+* generated externally or internally
+	* external: IO device (e.g. keyboard)
+	* internal, e.g. exception, syscall
+* each interrupt source has two bits:
+	* arm bit: allow that interrupt to be triggered
+	* flag bit: hardware sets this flag to throw interrupt, software clears flag when it starts handling the interrupt 
+* interrupts are prioritized
+	* against each other and against current state of CPU
+	* PRIMASK: interrupt priority mask register
+* there is a global interrupt enable/disable flag
+* acknowledge interrupt means clear flag bit and begin handling interrupt
+* can set other bit to enable/disable interrupts by source
+* interrupt program status register IPSR: stores info about current interrupt
+* interrupt service routine ISR: called by CPU when interrupt happens
+	* TODO is there a separate one per interrupt?
+ -->

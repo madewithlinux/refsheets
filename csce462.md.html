@@ -33,15 +33,61 @@
 <li>40 board pins, 26 are GPIO</li>
 <li>WiFi, Ethernet</li>
 </ul>
+<h1 id="positive-vs-negative-logic">positive vs negative logic</h1>
+<ul>
+<li>positive logic
+<ul>
+<li>AKA pull down resistor</li>
+<li>switch:
+<ul>
+<li>resistor from GPIO to ground</li>
+<li>switch from Vcc to GPIO</li>
+</ul></li>
+<li>LED: resistor and LED in series between GPIO and ground</li>
+</ul></li>
+<li>negative logic
+<ul>
+<li>AKA pull up resistor</li>
+<li>switch:
+<ul>
+<li>resistor between GPIO and Vcc</li>
+<li>switch between GPIO and ground</li>
+</ul></li>
+<li>LED: resistor and LED in series between GPIO and Vcc</li>
+</ul></li>
+<li>in all cases, LED must be oriented correctly (pointing toward lower voltage)</li>
+<li>GPIO should only be used for less than 8mA
+<ul>
+<li>if LED or something needs more than that, connect it to an inverter, then connect the LED using the other kind of logic (positive/negative)</li>
+</ul></li>
+<li>typically use about 10k Ohm resistor with switches</li>
+</ul>
 <h1 id="arm">ARM</h1>
 <ul>
 <li>link register: stores return address of function
 <ul>
 <li>means that leaf function calls are faster</li>
 </ul></li>
-</ul>
-<h1 id="arm-assembly">ARM Assembly</h1>
+<li>flag bits
 <ul>
+<li><code>c</code> carry (unsigned overflow)
+<ul>
+<li><code>c</code> set after unsigned addition =&gt; overflow</li>
+<li><code>c</code> <strong>NOT</strong> set after unsigned subtraction =&gt; overflow</li>
+</ul></li>
+<li><code>v</code> overflow (signed overflow)
+<ul>
+<li><code>v</code> set after signed addition =&gt; overflow</li>
+<li><code>v</code> set after signed subtraction =&gt; overflow</li>
+</ul></li>
+<li><code>z</code> zero</li>
+<li><code>n</code> negative</li>
+<li><code>p</code> parity
+<ul>
+<li>just xor of all bits together</li>
+</ul></li>
+<li>flags set after every instruction?</li>
+</ul></li>
 <li><a href="http://www.peter-cockerell.net/aalp/html/ch-2.html" class="uri">http://www.peter-cockerell.net/aalp/html/ch-2.html</a></li>
 <li><a href="http://www.peter-cockerell.net/aalp/html/ch-3.html" class="uri">http://www.peter-cockerell.net/aalp/html/ch-3.html</a></li>
 <li>instruction format: <code>add{cond}{s} &lt;dest&gt;, &lt;lhs&gt;, &lt;rhs&gt;</code>
@@ -56,6 +102,7 @@
 <li><code>b</code>: byte</li>
 <li><code>h</code>: half-word (16 bits)</li>
 </ul></li>
+<li><code>ldr Rd, =label</code> (pseudo-instruction): loads address of label into register</li>
 </ul></li>
 <li>16 registers: <code>R0</code>-<code>R15</code>, and <code>CPSR</code>
 <ul>
@@ -123,12 +170,16 @@ pop {sp, lr, ip}</code></pre></li>
 <ul>
 <li>Mealy vs Moore
 <ul>
-<li>Moore</li>
+<li>Moore
+<ul>
 <li>output on states</li>
 <li>output based on current state only</li>
-<li>Mealy</li>
+</ul></li>
+<li>Mealy
+<ul>
 <li>output on state transitions (edges of graph)</li>
 <li>output based on state and current input</li>
+</ul></li>
 </ul></li>
 <li>can have wait time at each state</li>
 <li>can be implemented like a linked list (or other ways)</li>
@@ -139,32 +190,6 @@ pop {sp, lr, ip}</code></pre></li>
 </ul></li>
 <li>if you implement with a data structure, you need a driver function to advance states and whatnot</li>
 <li>data structure implementation seems way over complicated</li>
-</ul>
-<h1 id="interrupts">interrupts</h1>
-<ul>
-<li>generated externally or internally
-<ul>
-<li>external: IO device (e.g. keyboard)</li>
-<li>internal, e.g. exception, syscall</li>
-</ul></li>
-<li>each interrupt source has two bits:
-<ul>
-<li>arm bit: allow that interrupt to be triggered</li>
-<li>flag bit: hardware sets this flag to throw interrupt, software clears flag when it starts handling the interrupt</li>
-</ul></li>
-<li>interrupts are prioritized
-<ul>
-<li>against each other and against current state of CPU</li>
-<li>PRIMASK: interrupt priority mask register</li>
-</ul></li>
-<li>there is a global interrupt enable/disable flag</li>
-<li>acknowledge interrupt means clear flag bit and begin handling interrupt</li>
-<li>can set other bit to enable/disable interrupts by source</li>
-<li>interrupt program status register IPSR: stores info about current interrupt</li>
-<li>interrupt service routine ISR: called by CPU when interrupt happens
-<ul>
-<li>TODO is there a separate one per interrupt?</li>
-</ul></li>
 </ul>
 <h1 id="software-abstraction">Software abstraction</h1>
 <ul>
@@ -178,5 +203,24 @@ pop {sp, lr, ip}</code></pre></li>
 <li>easier to change</li>
 </ul></li>
 </ul>
+<!-- stuff not on exam 1 -->
+<!-- 
+# interrupts
+* generated externally or internally
+    * external: IO device (e.g. keyboard)
+    * internal, e.g. exception, syscall
+* each interrupt source has two bits:
+    * arm bit: allow that interrupt to be triggered
+    * flag bit: hardware sets this flag to throw interrupt, software clears flag when it starts handling the interrupt 
+* interrupts are prioritized
+    * against each other and against current state of CPU
+    * PRIMASK: interrupt priority mask register
+* there is a global interrupt enable/disable flag
+* acknowledge interrupt means clear flag bit and begin handling interrupt
+* can set other bit to enable/disable interrupts by source
+* interrupt program status register IPSR: stores info about current interrupt
+* interrupt service routine ISR: called by CPU when interrupt happens
+    * TODO is there a separate one per interrupt?
+ -->
 </body>
 </html>
