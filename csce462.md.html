@@ -153,17 +153,24 @@ pop {sp, lr, ip}</code></pre></li>
 <h1 id="systick-timer">SysTick timer</h1>
 <ul>
 <li>24-bit timer that counts down at bus clock frequency</li>
-<li>interrupts CPU when it hits 0? TODO</li>
+<li>only counts down</li>
 <li>control registers (memory mapped)
 <ul>
 <li><code>ctrl</code>: control
 <ul>
-<li>controls whether counts up/down? TODO</li>
-<li>enable bit to start timer</li>
 <li>can have different sources (but is always internal on raspberry pi)</li>
+<li>bit 16: COUNT bit
+<ul>
+<li>1 if current value has been 0 since the last time you read ctrl register</li>
+<li>0 otherwise</li>
+</ul></li>
+<li>enable bit to start timer (bit 0)</li>
 </ul></li>
 <li><code>reload</code>: value to start at (after counting wraps)</li>
-<li><code>current</code>: current value timer is counting at</li>
+<li><code>current</code>: current value timer is counting at
+<ul>
+<li>whenever you write to this, no matter what you write, it resets the counter</li>
+</ul></li>
 </ul></li>
 </ul>
 <h1 id="finite-state-machine-fsm">Finite State Machine (FSM)</h1>

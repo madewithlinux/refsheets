@@ -98,14 +98,17 @@
 
 # SysTick timer
 * 24-bit timer that counts down at bus clock frequency
-* interrupts CPU when it hits 0? TODO
+* only counts down
 * control registers (memory mapped)
 	* `ctrl`: control
-		* controls whether counts up/down? TODO
-		* enable bit to start timer
 		* can have different sources (but is always internal on raspberry pi)
+        * bit 16: COUNT bit
+            * 1 if current value has been 0 since the last time you read ctrl register
+            * 0 otherwise
+		* enable bit to start timer (bit 0)
 	* `reload`: value to start at (after counting wraps)
 	* `current`: current value timer is counting at
+        * whenever you write to this, no matter what you write, it resets the counter
 
 
 # Finite State Machine (FSM)
