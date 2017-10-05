@@ -90,6 +90,7 @@
 * literal: `mov r0, #5`, `mov r2, #0x1C`
 * memory access: `ldr r0 [r0]`, `str r0 [r1, #offset]`
 	* memory access is sometimes done relative to `PC`
+* `bic {Rd,} Rn, <op2>`: bit-clear. Clears all bits in `Rd` that are set in `Rn`. Equivalent to `Rd = Rn & (~op2)`
 
 # powers of two:
 * $2^{10}$ is 1K
