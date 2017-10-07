@@ -3,6 +3,7 @@ TEX     := pdflatex
 TEX_OPTS    := --halt-on-error -shell-escape
 PANDOC_OPTS := -s -f markdown+grid_tables+pipe_tables \
 	--self-contained --css pandoc.css \
+	# --mathjax=https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML \
 	-H header.html
 TEX_SOURCES := $(wildcard *.tex)
 MD_SOURCES  := $(filter-out index.md README.md, $(wildcard *.md))
