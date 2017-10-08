@@ -157,8 +157,8 @@ sub {
 }
 
 ul, ol {
-  margin: 1em 0;
-  padding: 0 0 0 2em;
+  margin: 0;
+  padding: 0 0 0 1.25em;
 }
 
 li p:last-child {
@@ -166,7 +166,7 @@ li p:last-child {
 }
 
 ul ul, ol ol {
-  margin: .3em 0;
+  margin: 0;
 }
 
 dl {
@@ -210,7 +210,8 @@ figcaption {
 }
 
 table {
-  margin-bottom: 2em;
+  display: inline-block;
+  /*margin-bottom: 2em;*/
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-spacing: 0;

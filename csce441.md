@@ -70,6 +70,16 @@ $$
 	* same as Bresenham's algorithm (more common algorithm)
 
 # scan conversion of polygons
+* to deal with overlap, we do not draw the top and right of a polygon
+	* this means artifacts are possible. This doesn't really matter since pixels are very small
+* rectangles (aligned with axes) are easy
+* scan line: one row of pixels
+* general polygons: basic idea
+	* intersect scan lines with edges of polygon
+	* this means you must keep track of which edges intersect with which scan lines
+		* this is easy to do: just look at the y coordinate
+	* consecutive scan lines will usually intersect with a similar set of edges
+		* so we can use coherence to speed stuff up
 
 # clipping lines
 

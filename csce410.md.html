@@ -6,15 +6,166 @@
   <meta name="generator" content="pandoc" />
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link href="data:text/css;charset=utf-8,%0Ahtml%20%7B%0Afont%2Dsize%3A%20100%25%3B%0Aoverflow%2Dy%3A%20scroll%3B%0A%2Dwebkit%2Dtext%2Dsize%2Dadjust%3A%20100%25%3B%0A%2Dms%2Dtext%2Dsize%2Dadjust%3A%20100%25%3B%0A%7D%0Abody%20%7B%0Acolor%3A%20%23444%3B%0Afont%2Dfamily%3A%20Georgia%2C%20Palatino%2C%20%27Palatino%20Linotype%27%2C%20Times%2C%20%27Times%20New%20Roman%27%2C%20serif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E7%3B%0Apadding%3A%201em%3B%0Amargin%3A%20auto%3B%0Amax%2Dwidth%3A%2050em%3B%0Abackground%3A%20%23fefefe%3B%0A%7D%0Aa%2C%20p%2C%20dl%2C%20dt%2C%20ul%2C%20li%20%7B%0Afont%2Dsize%3A%2018px%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230645ad%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%230b0080%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%2306e%3B%0A%7D%0Aa%3Aactive%20%7B%0Acolor%3A%20%23faa700%3B%0A%7D%0Aa%3Afocus%20%7B%0Aoutline%3A%20thin%20dotted%3B%0A%7D%0Ap%20%7B%0Amargin%3A%201em%200%3B%0A%7D%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%3B%0A%7D%0Ah1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%20%7B%0Acolor%3A%20%23111%3B%0Aline%2Dheight%3A%20125%25%3B%0Amargin%2Dtop%3A%202em%3B%0Amargin%2Dbottom%3A%200%2E125em%3B%0Afont%2Dweight%3A%20normal%3B%0A%7D%0Ah4%2C%20h5%2C%20h6%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%202em%3B%0A%7D%0Ah2%20%7B%0Afont%2Dsize%3A%201%2E5em%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%201%2E2em%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%201%2E1em%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%201em%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%200%2E9em%3B%0A%7D%0Ablockquote%20%7B%0Acolor%3A%20%23666666%3B%0Amargin%3A%200%3B%0Apadding%2Dleft%3A%203em%3B%0Aborder%2Dleft%3A%200%2E5em%20%23EEE%20solid%3B%0A%7D%0Ahr%20%7B%0Adisplay%3A%20block%3B%0Aheight%3A%202px%3B%0Aborder%3A%200%3B%0Aborder%2Dtop%3A%201px%20solid%20%23aaa%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23eee%3B%0Amargin%3A%201em%200%3B%0Apadding%3A%200%3B%0A%7D%0Apre%2C%20code%2C%20kbd%2C%20samp%20%7B%0Acolor%3A%20%23000%3B%0Afont%2Dfamily%3A%20monospace%2C%20monospace%3B%0A%5Ffont%2Dfamily%3A%20%27courier%20new%27%2C%20monospace%3B%0Afont%2Dsize%3A%200%2E98em%3B%0A%7D%0Apre%20%7B%0Awhite%2Dspace%3A%20pre%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%0Aword%2Dwrap%3A%20break%2Dword%3B%0A%7D%0Ab%2C%20strong%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Adfn%20%7B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0Ains%20%7B%0Abackground%3A%20%23ff9%3B%0Acolor%3A%20%23000%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Amark%20%7B%0Abackground%3A%20%23ff0%3B%0Acolor%3A%20%23000%3B%0Afont%2Dstyle%3A%20italic%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Asub%2C%20sup%20%7B%0Afont%2Dsize%3A%2075%25%3B%0Aline%2Dheight%3A%200%3B%0Aposition%3A%20relative%3B%0Avertical%2Dalign%3A%20baseline%3B%0A%7D%0Asup%20%7B%0Atop%3A%20%2D0%2E5em%3B%0A%7D%0Asub%20%7B%0Abottom%3A%20%2D0%2E25em%3B%0A%7D%0Aul%2C%20ol%20%7B%0Amargin%3A%201em%200%3B%0Apadding%3A%200%200%200%202em%3B%0A%7D%0Ali%20p%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Aul%20ul%2C%20ol%20ol%20%7B%0Amargin%3A%20%2E3em%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dbottom%3A%201em%3B%0A%7D%0Adt%20%7B%0Afont%2Dweight%3A%20bold%3B%0Amargin%2Dbottom%3A%20%2E8em%3B%0A%7D%0Add%20%7B%0Amargin%3A%200%200%20%2E8em%202em%3B%0A%7D%0Add%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Aimg%20%7B%0Aborder%3A%200%3B%0A%2Dms%2Dinterpolation%2Dmode%3A%20bicubic%3B%0Avertical%2Dalign%3A%20middle%3B%0A%7D%0Afigure%20%7B%0Adisplay%3A%20block%3B%0Atext%2Dalign%3A%20center%3B%0Amargin%3A%201em%200%3B%0A%7D%0Afigure%20img%20%7B%0Aborder%3A%20none%3B%0Amargin%3A%200%20auto%3B%0A%7D%0Afigcaption%20%7B%0Afont%2Dsize%3A%200%2E8em%3B%0Afont%2Dstyle%3A%20italic%3B%0Amargin%3A%200%200%20%2E8em%3B%0A%7D%0Atable%20%7B%0Amargin%2Dbottom%3A%202em%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dright%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dspacing%3A%200%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Apadding%3A%20%2E2em%201em%3B%0Abackground%2Dcolor%3A%20%23eee%3B%0Aborder%2Dtop%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dleft%3A%201px%20solid%20%23ddd%3B%0A%7D%0Atable%20td%20%7B%0Apadding%3A%20%2E2em%201em%3B%0Aborder%2Dtop%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dleft%3A%201px%20solid%20%23ddd%3B%0Avertical%2Dalign%3A%20top%3B%0A%7D%0A%2Eauthor%20%7B%0Afont%2Dsize%3A%201%2E2em%3B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%40media%20only%20screen%20and%20%28min%2Dwidth%3A%20480px%29%20%7B%0Abody%20%7B%0Afont%2Dsize%3A%2014px%3B%0A%7D%0A%7D%0A%40media%20only%20screen%20and%20%28min%2Dwidth%3A%20768px%29%20%7B%0Abody%20%7B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0A%7D%0A%40media%20print%20%7B%0A%2A%20%7B%0Abackground%3A%20transparent%20%21important%3B%0Acolor%3A%20black%20%21important%3B%0Afilter%3A%20none%20%21important%3B%0A%2Dms%2Dfilter%3A%20none%20%21important%3B%0A%7D%0Abody%20%7B%0Afont%2Dsize%3A%2012pt%3B%0Amax%2Dwidth%3A%20100%25%3B%0A%7D%0Aa%2C%20a%3Avisited%20%7B%0Atext%2Ddecoration%3A%20underline%3B%0A%7D%0Ahr%20%7B%0Aheight%3A%201px%3B%0Aborder%3A%200%3B%0Aborder%2Dbottom%3A%201px%20solid%20black%3B%0A%7D%0Aa%5Bhref%5D%3Aafter%20%7B%0Acontent%3A%20%22%20%28%22%20attr%28href%29%20%22%29%22%3B%0A%7D%0Aabbr%5Btitle%5D%3Aafter%20%7B%0Acontent%3A%20%22%20%28%22%20attr%28title%29%20%22%29%22%3B%0A%7D%0A%2Eir%20a%3Aafter%2C%20a%5Bhref%5E%3D%22javascript%3A%22%5D%3Aafter%2C%20a%5Bhref%5E%3D%22%23%22%5D%3Aafter%20%7B%0Acontent%3A%20%22%22%3B%0A%7D%0Apre%2C%20blockquote%20%7B%0Aborder%3A%201px%20solid%20%23999%3B%0Apadding%2Dright%3A%201em%3B%0Apage%2Dbreak%2Dinside%3A%20avoid%3B%0A%7D%0Atr%2C%20img%20%7B%0Apage%2Dbreak%2Dinside%3A%20avoid%3B%0A%7D%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%20%21important%3B%0A%7D%0A%40page%20%3Aleft%20%7B%0Amargin%3A%2015mm%2020mm%2015mm%2010mm%3B%0A%7D%0A%40page%20%3Aright%20%7B%0Amargin%3A%2015mm%2010mm%2015mm%2020mm%3B%0A%7D%0Ap%2C%20h2%2C%20h3%20%7B%0Aorphans%3A%203%3B%0Awidows%3A%203%3B%0A%7D%0Ah2%2C%20h3%20%7B%0Apage%2Dbreak%2Dafter%3A%20avoid%3B%0A%7D%0A%7D%0A" rel="stylesheet" type="text/css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="data:text/css;charset=utf-8,%0Ahtml%20%7B%0Afont%2Dsize%3A%20100%25%3B%0Aoverflow%2Dy%3A%20scroll%3B%0A%2Dwebkit%2Dtext%2Dsize%2Dadjust%3A%20100%25%3B%0A%2Dms%2Dtext%2Dsize%2Dadjust%3A%20100%25%3B%0A%7D%0Abody%20%7B%0Acolor%3A%20%23444%3B%0Afont%2Dfamily%3A%20Georgia%2C%20Palatino%2C%20%27Palatino%20Linotype%27%2C%20Times%2C%20%27Times%20New%20Roman%27%2C%20serif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E7%3B%0Apadding%3A%201em%3B%0Amargin%3A%20auto%3B%0Amax%2Dwidth%3A%2050em%3B%0Abackground%3A%20%23fefefe%3B%0A%7D%0Aa%2C%20p%2C%20dl%2C%20dt%2C%20ul%2C%20li%20%7B%0Afont%2Dsize%3A%2018px%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230645ad%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%230b0080%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%2306e%3B%0A%7D%0Aa%3Aactive%20%7B%0Acolor%3A%20%23faa700%3B%0A%7D%0Aa%3Afocus%20%7B%0Aoutline%3A%20thin%20dotted%3B%0A%7D%0Ap%20%7B%0Amargin%3A%201em%200%3B%0A%7D%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%3B%0A%7D%0Ah1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%20%7B%0Acolor%3A%20%23111%3B%0Aline%2Dheight%3A%20125%25%3B%0Amargin%2Dtop%3A%202em%3B%0Amargin%2Dbottom%3A%200%2E125em%3B%0Afont%2Dweight%3A%20normal%3B%0A%7D%0Ah4%2C%20h5%2C%20h6%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%202em%3B%0A%7D%0Ah2%20%7B%0Afont%2Dsize%3A%201%2E5em%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%201%2E2em%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%201%2E1em%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%201em%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%200%2E9em%3B%0A%7D%0Ablockquote%20%7B%0Acolor%3A%20%23666666%3B%0Amargin%3A%200%3B%0Apadding%2Dleft%3A%203em%3B%0Aborder%2Dleft%3A%200%2E5em%20%23EEE%20solid%3B%0A%7D%0Ahr%20%7B%0Adisplay%3A%20block%3B%0Aheight%3A%202px%3B%0Aborder%3A%200%3B%0Aborder%2Dtop%3A%201px%20solid%20%23aaa%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23eee%3B%0Amargin%3A%201em%200%3B%0Apadding%3A%200%3B%0A%7D%0Apre%2C%20code%2C%20kbd%2C%20samp%20%7B%0Acolor%3A%20%23000%3B%0Afont%2Dfamily%3A%20monospace%2C%20monospace%3B%0A%5Ffont%2Dfamily%3A%20%27courier%20new%27%2C%20monospace%3B%0Afont%2Dsize%3A%200%2E98em%3B%0A%7D%0Apre%20%7B%0Awhite%2Dspace%3A%20pre%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%0Aword%2Dwrap%3A%20break%2Dword%3B%0A%7D%0Ab%2C%20strong%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Adfn%20%7B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0Ains%20%7B%0Abackground%3A%20%23ff9%3B%0Acolor%3A%20%23000%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Amark%20%7B%0Abackground%3A%20%23ff0%3B%0Acolor%3A%20%23000%3B%0Afont%2Dstyle%3A%20italic%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Asub%2C%20sup%20%7B%0Afont%2Dsize%3A%2075%25%3B%0Aline%2Dheight%3A%200%3B%0Aposition%3A%20relative%3B%0Avertical%2Dalign%3A%20baseline%3B%0A%7D%0Asup%20%7B%0Atop%3A%20%2D0%2E5em%3B%0A%7D%0Asub%20%7B%0Abottom%3A%20%2D0%2E25em%3B%0A%7D%0Aul%2C%20ol%20%7B%0Amargin%3A%200%3B%0Apadding%3A%200%200%200%201%2E25em%3B%0A%7D%0Ali%20p%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Aul%20ul%2C%20ol%20ol%20%7B%0Amargin%3A%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dbottom%3A%201em%3B%0A%7D%0Adt%20%7B%0Afont%2Dweight%3A%20bold%3B%0Amargin%2Dbottom%3A%20%2E8em%3B%0A%7D%0Add%20%7B%0Amargin%3A%200%200%20%2E8em%202em%3B%0A%7D%0Add%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Aimg%20%7B%0Aborder%3A%200%3B%0A%2Dms%2Dinterpolation%2Dmode%3A%20bicubic%3B%0Avertical%2Dalign%3A%20middle%3B%0A%7D%0Afigure%20%7B%0Adisplay%3A%20block%3B%0Atext%2Dalign%3A%20center%3B%0Amargin%3A%201em%200%3B%0A%7D%0Afigure%20img%20%7B%0Aborder%3A%20none%3B%0Amargin%3A%200%20auto%3B%0A%7D%0Afigcaption%20%7B%0Afont%2Dsize%3A%200%2E8em%3B%0Afont%2Dstyle%3A%20italic%3B%0Amargin%3A%200%200%20%2E8em%3B%0A%7D%0Atable%20%7B%0Adisplay%3A%20inline%2Dblock%3B%0A%0Aborder%2Dbottom%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dright%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dspacing%3A%200%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Apadding%3A%20%2E2em%201em%3B%0Abackground%2Dcolor%3A%20%23eee%3B%0Aborder%2Dtop%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dleft%3A%201px%20solid%20%23ddd%3B%0A%7D%0Atable%20td%20%7B%0Apadding%3A%20%2E2em%201em%3B%0Aborder%2Dtop%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dleft%3A%201px%20solid%20%23ddd%3B%0Avertical%2Dalign%3A%20top%3B%0A%7D%0A%2Eauthor%20%7B%0Afont%2Dsize%3A%201%2E2em%3B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%40media%20only%20screen%20and%20%28min%2Dwidth%3A%20480px%29%20%7B%0Abody%20%7B%0Afont%2Dsize%3A%2014px%3B%0A%7D%0A%7D%0A%40media%20only%20screen%20and%20%28min%2Dwidth%3A%20768px%29%20%7B%0Abody%20%7B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0A%7D%0A%40media%20print%20%7B%0A%2A%20%7B%0Abackground%3A%20transparent%20%21important%3B%0Acolor%3A%20black%20%21important%3B%0Afilter%3A%20none%20%21important%3B%0A%2Dms%2Dfilter%3A%20none%20%21important%3B%0A%7D%0Abody%20%7B%0Afont%2Dsize%3A%2012pt%3B%0Amax%2Dwidth%3A%20100%25%3B%0A%7D%0Aa%2C%20a%3Avisited%20%7B%0Atext%2Ddecoration%3A%20underline%3B%0A%7D%0Ahr%20%7B%0Aheight%3A%201px%3B%0Aborder%3A%200%3B%0Aborder%2Dbottom%3A%201px%20solid%20black%3B%0A%7D%0Aa%5Bhref%5D%3Aafter%20%7B%0Acontent%3A%20%22%20%28%22%20attr%28href%29%20%22%29%22%3B%0A%7D%0Aabbr%5Btitle%5D%3Aafter%20%7B%0Acontent%3A%20%22%20%28%22%20attr%28title%29%20%22%29%22%3B%0A%7D%0A%2Eir%20a%3Aafter%2C%20a%5Bhref%5E%3D%22javascript%3A%22%5D%3Aafter%2C%20a%5Bhref%5E%3D%22%23%22%5D%3Aafter%20%7B%0Acontent%3A%20%22%22%3B%0A%7D%0Apre%2C%20blockquote%20%7B%0Aborder%3A%201px%20solid%20%23999%3B%0Apadding%2Dright%3A%201em%3B%0Apage%2Dbreak%2Dinside%3A%20avoid%3B%0A%7D%0Atr%2C%20img%20%7B%0Apage%2Dbreak%2Dinside%3A%20avoid%3B%0A%7D%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%20%21important%3B%0A%7D%0A%40page%20%3Aleft%20%7B%0Amargin%3A%2015mm%2020mm%2015mm%2010mm%3B%0A%7D%0A%40page%20%3Aright%20%7B%0Amargin%3A%2015mm%2010mm%2015mm%2020mm%3B%0A%7D%0Ap%2C%20h2%2C%20h3%20%7B%0Aorphans%3A%203%3B%0Awidows%3A%203%3B%0A%7D%0Ah2%2C%20h3%20%7B%0Apage%2Dbreak%2Dafter%3A%20avoid%3B%0A%7D%0A%7D%0A" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <h1 id="csce-410">CSCE 410</h1>
+<h1 id="history-1-1">history (1-1)</h1>
+<ul>
+<li>1st gen
+<ul>
+<li>single user writes program that operates entire computer and manages all hardware
+<ul>
+<li>TODO? no development except right at the computer?</li>
+</ul></li>
+<li>no need for relocatable code
+<ul>
+<li>drivers and such were per-machine? TODO</li>
+</ul></li>
+</ul></li>
+<li>2nd gen
+<ul>
+<li>move programming off-line (no longer programming in production?)</li>
+<li>automated program loading by special monitor program
+<ul>
+<li>batch programming, but only one program kept in memory at a time</li>
+</ul></li>
+<li>misbehaving programs could mess with monitor, or other programs though</li>
+</ul></li>
+<li>3rd gen
+<ul>
+<li>scheduling of user programs to allow other stuff to happen while one program is waiting for IO
+<ul>
+<li>time sharing</li>
+</ul></li>
+<li>created need for time sharing</li>
+<li>time sharing brought need for and development of
+<ul>
+<li>passwords</li>
+<li>filesystems</li>
+<li>interleaved execution of multiple programs (process scheduling)</li>
+<li>remote access (computing as a utility)</li>
+<li>virtual memory</li>
+</ul></li>
+</ul></li>
+<li>what is an OS
+<ul>
+<li>OS controls and coordinates physical resources</li>
+<li>abstracts various hardware details
+<ul>
+<li>IO, networking, processes</li>
+</ul></li>
+<li>keeps computer efficient
+<ul>
+<li>scheduling</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="architectural-support-1-2">architectural support (1-2)</h1>
+<ul>
+<li>OSes need hardware to do: asynchronous events, hardware protection (of other processes), address spaces, timers</li>
+<li>asynchronous events
+<ul>
+<li>(nearly) all asynchronous events are handled using interrupts
+<ul>
+<li>IO, user input, timers, etc...</li>
+</ul></li>
+<li>when an interrupt happens the CPU does:
+<ul>
+<li>stop current execution</li>
+<li>save state (registers and flags and stuff)</li>
+<li>changes to supervisor mode (privileged mode)</li>
+<li>branches to predefined location (interrupt handler corresponding to interrupt, in interrupt vector table (IVT))</li>
+</ul></li>
+<li>return from interrupt (<code>rti</code>) instruction automatically restores state</li>
+<li>interrupt can be caused by
+<ul>
+<li>an asynchronous event (hardware, timer, error)</li>
+<li>software (system call)</li>
+</ul></li>
+</ul></li>
+<li>hardware protection
+<ul>
+<li>some instructions are marked as supervisor-mode-only, so regular user programs can't use them
+<ul>
+<li>OS then exposes that functionality using system calls</li>
+</ul></li>
+<li>memory is segmented (base+limit), so user programs can't access out of their bounds
+<ul>
+<li>also virtual memory allows multiple programs to have the same virtual addresses, but be in different physical memory locations</li>
+</ul></li>
+<li>hardware-provided timers allow OS to regain control from user programs at a regular interval
+<ul>
+<li>needed for reliable scheduling</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="os-structure-1-3">OS structure (1-3)</h1>
+<ul>
+<li>TODO</li>
+</ul>
+<h1 id="system-calls-1-4">system calls (1-4)</h1>
+<ul>
+<li>TODO</li>
+</ul>
+<h1 id="interrupts-and-exceptions-1-5">interrupts and exceptions (1-5)</h1>
+<ul>
+<li>TODO</li>
+</ul>
 <h1 id="kernel-types">kernel types</h1>
 <ul>
 <li>unikernel, microkernel, exokernel</li>
 <li>TODO</li>
+</ul>
+<h1 id="allocation-2-1">allocation (2-1)</h1>
+<ul>
+<li>need to allocate space for:
+<ul>
+<li>new process (<code>fork()</code>)</li>
+<li>new program (<code>execve()</code>)</li>
+<li>process stack grows</li>
+<li>process expands heap (<code>malloc()</code>)</li>
+<li>process creates (attaches to) shared memory(<code>shmat()</code>)</li>
+</ul></li>
+<li>external vs internal fragmentation
+<ul>
+<li>external: OS needs to allocate a contiguous block of frames but there is no single contiguous space big enough</li>
+<li>internal: you need a specific amount of memory, but maybe you have to round up to a multiple of page size. The difference between needed and what it takes up is internal fragmentation?</li>
+</ul></li>
+<li>naive allocator
+<ul>
+<li>TODO is a slab allocator a naive allocator?</li>
+<li>TODO</li>
+</ul></li>
+<li>buddy allocator
+<ul>
+<li>maintain free lists in power-of-2 sizes</li>
+<li>allocate:
+<ul>
+<li>round up size to next power of 2</li>
+<li>lookup in free list of that size</li>
+<li>if available, return</li>
+<li>if that free list is empty, split a block from the next size up into 2 blocks and repeat
+<ul>
+<li>may need to split more than one size larger</li>
+</ul></li>
+</ul></li>
+<li>deallocation
+<ul>
+<li>put back into free list</li>
+<li>check buddy (flip bit in offset). if buddy is also free, join the blocks
+<ul>
+<li>may need to join more than one size larger</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>different allocators:
+<ul>
+<li><code>malloc()</code>: virtually contiguous, size in bytes, implemented in user level library</li>
+<li><code>kmalloc()</code>: physically contiguous, bytes, kernel, slab allocator</li>
+<li><code>vmalloc()</code>: virtually contiguous, bytes, kernel, slab allocator</li>
+<li><code>alloc_pages()</code>, <code>__get_free_pages()</code>: contiguous frames/pages, kernel, buddy allocator</li>
+</ul></li>
 </ul>
 <h1 id="interruptsexceptions">interrupts/exceptions</h1>
 <ul>
@@ -30,7 +181,7 @@
 <li>locality of reference</li>
 <li>TODO</li>
 </ul>
-<h1 id="page-replacement-policies">page replacement policies</h1>
+<h1 id="page-replacement-policies-2-10">page replacement policies (2-10)</h1>
 <ul>
 <li>when you need more memory, how do you decide which pages to evict (and possibly writ to disk)?</li>
 <li>FIFO
@@ -59,14 +210,63 @@
 <li>2nd chance
 <ul>
 <li>approximation to LRU</li>
-<li>TODO</li>
+<li>have a use bit for each page, and keep a pointer to the next candidate victim page
+<ul>
+<li>use bit is set every time frame is referenced</li>
+<li>when a frame is newly loaded, use bit starts at 1</li>
+</ul></li>
+<li>when reclaiming memory:
+<ul>
+<li>if pointed-to page has use bit 0: use that frame as victim, and increment pointer to next frame</li>
+<li>if pointed-to page has use bit 1: set that use bit to 0, increment pointer, and start over</li>
+</ul></li>
+<li>when victim pointer reaches end of memory, wrap it around to the beginning</li>
+<li>if all frames have use bit 1, you will end up looping through all of them (and setting use bit 0 each time), and finally selecting the one that was pointed to at first</li>
 </ul></li>
 <li>2nd chance enhanced
 <ul>
-<li>TODO</li>
+<li>also track dirty bit
+<ul>
+<li>dirty bit is only set when frame is written to (and thus the frame is dirty)</li>
+</ul></li>
+<li>also keep track of dirty frames separately, because we sometimes clear dirty bit in algorithm</li>
+<li>choice at each step (bits are u,d)
+<ul>
+<li><table>
+<thead>
+<tr class="header">
+<th>use, dirty</th>
+<th>next</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1,1</td>
+<td>0,1</td>
+</tr>
+<tr class="even">
+<td>1,0</td>
+<td>0,0</td>
+</tr>
+<tr class="odd">
+<td>0,1</td>
+<td>0,0*</td>
+</tr>
+<tr class="even">
+<td>0,0</td>
+<td>select as victim</td>
+</tr>
+</tbody>
+</table></li>
+<li>when going from 0,1 =&gt; 0,0* , you must list that page in the external dirty frames list, because it's still dirty, but it is now not indicated in bits</li>
+</ul></li>
+<li>the choice steps (above) mean that a dirty page will not be selected as victim until passed over twice
+<ul>
+<li>this is desirable because dirty frames incur a higher eviction penalty (they must be written to disk)</li>
+</ul></li>
 </ul></li>
 </ul>
-<h1 id="working-set">working set</h1>
+<h1 id="working-set-2-11">working set (2-11)</h1>
 <ul>
 <li>AKA resident set? TODO I think it's a little different</li>
 <li>ideal resident set size changes dynamically as program runs
@@ -82,9 +282,10 @@
 <li>at each reference, working set is determined, and only pages in virtual set are kept in memory</li>
 <li>a program can only run if it's entire current resident set is in memory</li>
 </ol></li>
-<li>if all you reference is one page, working set eventually becomes only that page</li>
+<li>note: if all you reference is one page, working set eventually becomes only that page</li>
 <li>removing frames
 <ul>
+<li>remove any frames last referenced longer than (time delta) time ago</li>
 <li>victims are not overwritten immediately, instead are put into one of two lists:</li>
 <li>free frame list
 <ul>
@@ -112,7 +313,15 @@
 <li>pick from modified list, <strong>but write it to disk first</strong></li>
 </ul></li>
 </ul></li>
-<li>TODO: solaris page buffering</li>
+<li>case study: solaris page buffering
+<ul>
+<li>TODO do we need to know this?</li>
+</ul></li>
+<li>demand paging: TODO is this the same as working set?</li>
+<li>demand paging on less sophisticated hardware
+<ul>
+<li>for when you don't have a hardware-managed valid bit?</li>
+</ul></li>
 </ul>
 <h1 id="recursive-paging">recursive paging</h1>
 <ul>
