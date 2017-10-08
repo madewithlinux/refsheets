@@ -143,7 +143,7 @@ $$</span><br /></li>
 </ul></li>
 <li>rectangles (aligned with axes) are easy</li>
 <li>scan line: one row of pixels</li>
-<li>general polygons: basic idea
+<li>general polygons: basic idea (<strong>scanline method</strong>)
 <ul>
 <li>intersect scan lines with edges of polygon</li>
 <li>this means you must keep track of which edges intersect with which scan lines
@@ -154,10 +154,200 @@ $$</span><br /></li>
 <ul>
 <li>so we can use coherence to speed stuff up</li>
 </ul></li>
+<li>we can throw out horizontal lines. They are implicitly represented by start and end, connecting to the other edges</li>
+<li>data structures
+<ul>
+<li>edge: maxY, currentX, xIncr (increment)
+<ul>
+<li>calculate these from the two points</li>
+<li>xIncr is inverse of slope, but you can't calculate the slope and invert it, because divide by 0</li>
+<li>maxY: y value of higher point</li>
+<li>currentX: x value of lower point</li>
+</ul></li>
+<li>active edge table
+<ul>
+<li>has entry for every scanline on the screen</li>
+<li>initialize with edges by indexing by minY of edge</li>
+</ul></li>
+<li>active edge list
+<ul>
+<li>stores edges that intersect with the current scan line being processed</li>
+<li>edges must always be sorted by current x value</li>
+</ul></li>
+</ul></li>
+<li>at each step of the algorithm, you must update the active edge list
+<ul>
+<li>remove edges where maxY is less than or equal to the current scan line
+<ul>
+<li>less or equal because we don't draw the top and right of the polygon</li>
+</ul></li>
+<li>add edges from the current scan line to the edge list</li>
+<li>sort all edges by currentX</li>
+</ul></li>
+<li>then draw the scan line
+<ul>
+<li>take pairs of edges and fill in between their currentX values
+<ul>
+<li>do not include the right point (because we don't draw the top and right of the polygon)</li>
+</ul></li>
+<li>if you ever have an odd number of edges in the active edge list, you made a mistake</li>
+</ul></li>
+<li>disadvantages
+<ul>
+<li>does not handle long, thin polygons well</li>
+<li>incremental updates are not suitable for massively parallel GPUs</li>
+</ul></li>
+</ul></li>
+<li>boundary fill
+<ul>
+<li>draw the boundary of the polygon, then fill in interior
+<ul>
+<li>fill in interior wherever it is not the same color as you are drawing</li>
+</ul></li>
+<li>need to be sure filling can't escape out from an edge or corner</li>
+<li>need to be able to choose arbitrary interior point to start from</li>
+</ul></li>
+<li>flood fill
+<ul>
+<li>starting at point, recursively replace one color with another</li>
+<li>paint bucket tool</li>
+</ul></li>
+</ul>
+<h1 id="opengl-data-cpu-to-gpu">openGL data CPU to GPU</h1>
+<ul>
+<li>openGL can accept data various ways, with different speed impacts</li>
+<li>speed depends on driver implementation
+<ul>
+<li>GPUs only render triangles, and triangles usually share vertexes with other triangles, so saving lots of bandwidth is possible</li>
+</ul></li>
+<li>fastest is usually vertex buffer objects?
+<ul>
+<li>stores data directly on GPU?</li>
 </ul></li>
 </ul>
 <h1 id="clipping-lines">clipping lines</h1>
+<ul>
+<li>it's not really possible to draw things that are outside of the viewing area</li>
+<li>clipping points is easy (when comparing to rectangular window)</li>
+<li>clipping lines:
+<ul>
+<li>if both end points are inside window, draw it</li>
+</ul></li>
+<li>window intersection method:
+<ul>
+<li>if either or both is outside, intersect line with each window border in sequence</li>
+<li><span class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>),(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>)</span> intersect with vertical edge at <span class="math inline"><em>x</em><sub><em>r</em><em>i</em><em>g</em><em>h</em><em>t</em></sub></span>:<br />
+<span class="math inline"><em>y</em><sub><em>i</em><em>n</em><em>t</em><em>e</em><em>r</em><em>s</em><em>e</em><em>c</em><em>t</em></sub> = <em>y</em><sub>1</sub> + <em>m</em> * (<em>x</em><sub><em>r</em><em>i</em><em>g</em><em>h</em><em>t</em></sub> − <em>x</em><sub>1</sub>)</span>, where <span class="math inline"><em>m</em> = (<em>y</em><sub>2</sub> − <em>y</em><sub>1</sub>)/(<em>x</em><sub>2</sub> − <em>x</em><sub>1</sub>)</span></li>
+<li><span class="math inline">(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>),(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>)</span> intersect with horizontal edge at <span class="math inline"><em>y</em><sub><em>b</em><em>o</em><em>t</em><em>t</em><em>o</em><em>m</em></sub></span>:<br />
+<span class="math inline"><em>x</em><sub><em>i</em><em>n</em><em>t</em><em>e</em><em>r</em><em>s</em><em>e</em><em>c</em><em>t</em></sub> = <em>x</em><sub>1</sub> + (<em>y</em><sub><em>b</em><em>o</em><em>t</em><em>t</em><em>o</em><em>m</em></sub> − <em>y</em><sub>1</sub>)/<em>m</em></span>, where <span class="math inline"><em>m</em> = (<em>y</em><sub>2</sub> − <em>y</em><sub>1</sub>)/(<em>x</em><sub>2</sub> − <em>x</em><sub>1</sub>)</span></li>
+<li>all these intersections are costly to compute
+<ul>
+<li>we would like to efficiently handle trivial accepts and trivial rejects</li>
+</ul></li>
+</ul></li>
+<li>cohen-sutherland algorithm
+<ul>
+<li>classify two points <span class="math inline"><em>p</em><sub>1</sub>, <em>p</em><sub>2</sub></span> using 4-bit codes <code>c0</code> and <code>c1</code></li>
+<li>if <code>c0 &amp; c1 != 0</code>: trivial reject
+<ul>
+<li>bitwise AND</li>
+<li>both points are outside one of the boundaries</li>
+</ul></li>
+<li>if <code>c0 | c1 == 0</code>: trivial accept
+<ul>
+<li>bitwise OR</li>
+<li>none of the coordinates of either point is outside any boundary =&gt; line is entirely within window</li>
+</ul></li>
+<li>otherwise split line until it is a trivial case</li>
+<li>bits: <code>| top | bottom | right | left</code>
+<ul>
+<li>doesn't matter as long as you're consistent? TODO</li>
+<li>you can determine each of these by just comparing one coordinate with the axes</li>
+<li>thus the comparison is fast</li>
+</ul></li>
+<li>disadvantages
+<ul>
+<li>repeated clipping is expensive</li>
+</ul></li>
+<li>advantages
+<ul>
+<li>considers all possible trivial accept/reject</li>
+</ul></li>
+</ul></li>
+<li>laing-barsky algorithm
+<ul>
+<li>use parametric form of line for clipping
+<ul>
+<li>means that lines are oriented (have a direction)</li>
+</ul></li>
+<li>need to classify lines as moving into or out of the window</li>
+<li>since lines are parametric, we will be finding the parameter value of the intersection
+<ul>
+<li>we can put that back into the formula to get the actual point</li>
+</ul></li>
+<li>parametric lines
+<ul>
+<li><span class="math inline"><em>x</em>(<em>t</em>)=<em>x</em><sub>0</sub> + (<em>x</em><sub>1</sub> − <em>x</em><sub>0</sub>)*<em>t</em></span></li>
+<li><span class="math inline"><em>y</em>(<em>t</em>)=<em>y</em><sub>0</sub> + (<em>y</em><sub>1</sub> − <em>y</em><sub>0</sub>)*<em>t</em></span></li>
+<li><span class="math inline">0 ≤ <em>t</em> ≤ 1</span></li>
+<li>solve 2d matrix to intersect lines:<br />
+<code>[ x1-x0, x2-x3 ][ t ] == [ x2-x0 ]</code><br />
+<code>[ y1-y0, y2-y3 ][ s ] == [ y2-y0 ]</code></li>
+</ul></li>
+<li>algorithm:
+<ul>
+<li>start with <span class="math inline"><em>t</em></span> on range <span class="math inline">[0, 1]</span>
+<ul>
+<li>this is <span class="math inline"><em>t</em><sub><em>m</em><em>i</em><em>n</em></sub>, <em>t</em><sub><em>m</em><em>a</em><em>x</em></sub></span></li>
+</ul></li>
+<li>iteratively intersect each line with each edge
+<ul>
+<li>find intersection at <span class="math inline"><em>t</em></span> <!-- can't put these on a separate line because it's too deeply nested for latex --></li>
+<li>if line is moving in to out: <span class="math inline"><em>t</em><sub><em>m</em><em>a</em><em>x</em></sub> = <em>m</em><em>i</em><em>n</em>(<em>t</em><sub><em>m</em><em>a</em><em>x</em></sub>, <em>t</em>)</span></li>
+<li>else: <span class="math inline"><em>t</em><sub><em>m</em><em>i</em><em>n</em></sub> = <em>m</em><em>a</em><em>x</em>(<em>t</em><sub><em>m</em><em>i</em><em>n</em></sub>, <em>t</em>)</span></li>
+<li>if <span class="math inline"><em>t</em><sub><em>m</em><em>i</em><em>n</em></sub> &gt; <em>t</em><sub><em>m</em><em>a</em><em>x</em></sub></span>: reject line</li>
+</ul></li>
+</ul></li>
+<li>moving out vs moving in can be determined by looking at coordinates
+<ul>
+<li>different for each boundary</li>
+<li>e.g. for right boundary, <span class="math inline"><em>x</em><sub>1</sub> &lt; <em>x</em><sub>2</sub></span> is moving in</li>
+<li>does not depend on where either point is, or whether either point is inside/outside window boundary, just relative positions of the points</li>
+</ul></li>
+<li>disadvantages
+<ul>
+<li>does not consider trivial accept/reject</li>
+</ul></li>
+<li>advantages
+<ul>
+<li>computation of <span class="math inline">(<em>x</em>, <em>y</em>)</span> is done only once at the end</li>
+<li>computation of parametric intersections is fast (only one division)</li>
+</ul></li>
+</ul></li>
+<li>note: clipping line and then rounding to integer coordinates may not produce the correct result, due to round-off error
+<ul>
+<li>can account for this by calculating sum for use in midpoint algorithm</li>
+</ul></li>
+</ul>
 <h1 id="clipping-polygons">clipping polygons</h1>
+<ul>
+<li>clipping a polygon can change the number of sides it has
+<ul>
+<li>minimum number of sides is 3 (triangle)</li>
+<li>maximum number of sides is <span class="math inline">2<em>n</em> + 1</span>? TODO</li>
+<li>e.g. maximum number of sides of triangle after clipping is 7 sides</li>
+</ul></li>
+<li>when clipping convex polygons, you could end up with multiple polygons</li>
+<li>sutherland hodgman clipping
+<ul>
+<li>clip polygon vs each edge of window individually</li>
+<li>is not guaranteed to handle convex polygons correctly
+<ul>
+<li>does not split into multiple polygons</li>
+<li>but usually looks about right</li>
+</ul></li>
+</ul></li>
+</ul>
 <h1 id="transformations-in-2d">transformations in 2D</h1>
 <h1 id="fractals-and-iterated-function-systems">fractals and iterated function systems</h1>
 <h1 id="transformations-in-3d">transformations in 3D</h1>
