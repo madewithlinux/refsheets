@@ -193,20 +193,132 @@ $$
 	* maximum number of sides is $2n+1$? TODO
 	* e.g. maximum number of sides of triangle after clipping is 7 sides
 * when clipping convex polygons, you could end up with multiple polygons
-* sutherland hodgman clipping
+* sutherland-hodgman clipping
 	* clip polygon vs each edge of window individually
+	* TODO can this algorithm handle non-rectangular windows?
 	* is not guaranteed to handle convex polygons correctly
 		* does not split into multiple polygons
 		* but usually looks about right
-
-
+	* output is mixture of old/new vertexes
+		* will be exactly old vertexes if polygon was entirely inside the window
+		* will be only new vertexes if all vertexes were outside the window (but not necessarily all edges)
+	* process each side of the rectangular window separately
+		* and also, process each edge in polygon iteratively
+	* 4 cases for an edge from S to E:
+		* S and E both outside: no output
+		* S and E both inside: output only E
+		* S inside, E outside: compute intersection with border, and output that
+		* S outside, E inside: output intersection with border, and output E
+	* output of one intersection is used as input for next intersection
+		* you can kind of do these in parallel, with the partial output from the previous stage
+			* pipeline
+		* then you need a end-of-polygon marker, and you need to use that along with the first edge to make the last edge
+* weiler-atherton algorithm
+	* general intersection between any two kinds of polygons
+	* handles non-convex polygons
+		* thus can output more than one polygon for a single input polygon
+	* not as efficient as sutherland-hodgman
+		* all those intersections are expensive
+		* difficult to parallelize
+	* algorithm
+		* start at point on polygon
+		* follow polygon edges counterclockwise until an edge crosses out of the window
+		* follow window edges from the intersection point until the polygon intersects again
+		* now that part is a polygon. Go back to the first intersection point and follow the polygon until it re-enters the window, and find more polygons
 
 
 # transformations in 2D
+* coordinates
+	* need point of origin (0,0) and axes (x and y)
+	* we want to define transformations generally, without need for coordinates
+	* but hardware uses coordinates, so we must use them eventually
+* dot product
+	* product of magnitudes and cosine of angle between
+		* or sum of product of coordinates along each axes
+	* when dot product is 0, vectors are perpendicular
+* 2d cross product
+	* the cross product we normally think of only makes sense in 3d
+	* our 2d cross product is just a vector of same magnitude, perpendicular to original
+	* unary operation
+	* represented by $v$ superscript perpendicular-sign
+	* $vp = (-v.y, v.x)$
+	* v dot product with (v cross product) == 0
+* there are two kinds of transformations
+	* conformal:
+		* preserves angles
+		* translation, rotation, uniform scaling
+	* affine
+		* can be represented by matrix multiplication
+		* TODO is affine transform a superset of conformal transform?
+		* translation, rotation, uniform/non-uniform scaling, shear
+* translation
+	* add a vector to every point
+* uniform scaling
+	* scale about a point (about an origin) by a scale factor
+	* the point (origin) about which you scale will be unaffected by the scaling
+	* the farther something is from the point (origin), the more it's position will change
+* non-uniform scaling
+	* same as uniform scaling, but you now have a vector that you're scaling along
+	* so take the vector from transform-origin to point, find parallel to transform vector, and scale that
+	* scaling along a vector is not the same as scaling along the x and y components of that vector separately
+* rotation
+	* q = vector from transform-origin to p
+	* new point is transform-origin + linear combination of q and q-cross determined by sin and cos of theta
+* shear
+	* not the same as non-uniform scaling
+	* move point in direction of v, proportional to distance to o perpendicular to v
+* reflection
+	* TODO do we need to know this?
+* matrix representation
+	* compact
+	* allows multiple transforms to be composed to single matrix (efficient)
+	* if you have 3 points and those 3 points after some transformation, you can solve for the transformation
+		* TODO assuming it is an affine transform?
+		* TODO do we need to know how to solve that on the exam?
+* TODO how much of the transformation equations do we need to know?
+
 
 # fractals and iterated function systems
+* affine transform fractal is defined by set of contractive transformations
+* contractive transform: transform $F$ is contractive if for any two compact sets $X1,X2$, the distance between them is less after transforming them
+	* that is, $D( F(X1), F(X2) ) < D( X1, X2 )$
+* hausdroff distance:
+	* if two sets are equal, their distance is 0
+	* distance of a,b is same as distance b,a
+	* hausdroff distance is the maximum distance of a point in one set to the closest point in the other
+* attractor: shape that fractal approaches after a large (ideally infinite) number of iterations
+	* if transforms are contractive, attractor is independent of starting point(s)
+* fractal tennis:
+	* algorithm to draw fractal by randomly applying transforms to the same point
+		* but need to iterate point for a few hundred iterations first to get it into the attractor
+	* resulting fractal is not perfect
+	* can be made better by weighting fractal transform random choice by area
+		* difficult to calculate the area of a transform (TODO do you just guess?)
+* condensation set: basically a thing you add in at every iteration
+	* allows shape to build on itself
+* fractal dimension
+	* like spatial dimension, but for fractals
+	* $dim = -log(\#transformations)/log(scale factor)$
+* fractal curves can have infinite length but enclose finite surface area
+	* and that's fine
+	* fractal paint bucket would not work because paint atoms have finite size
+
 
 # transformations in 3D
+* very similar to transformations in 2d
+* things that are the same:
+	* dot product, translation, uniform/non-uniform scaling
+* cross product
+	* now is binary operator
+	* produces third vector that is perpendicular to both input vectors
+	* magnitude: product of magnitudes and sine of angle between
+		* mag represents area of 4-sided polygon formed by the two vectors
+* rotation
+	* input: axis to rotate about (specified as point and unit vector), theta to rotate
+	* thus you're rotating in the plane that is perpendicular to the axis
+	* component of q parallel to axis does not change, perpendicular component is rotated (in plane)
+* mirror image
+	* 
 
 # color
 

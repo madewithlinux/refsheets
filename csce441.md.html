@@ -338,19 +338,213 @@ $$</span><br /></li>
 <li>e.g. maximum number of sides of triangle after clipping is 7 sides</li>
 </ul></li>
 <li>when clipping convex polygons, you could end up with multiple polygons</li>
-<li>sutherland hodgman clipping
+<li>sutherland-hodgman clipping
 <ul>
 <li>clip polygon vs each edge of window individually</li>
+<li>TODO can this algorithm handle non-rectangular windows?</li>
 <li>is not guaranteed to handle convex polygons correctly
 <ul>
 <li>does not split into multiple polygons</li>
 <li>but usually looks about right</li>
 </ul></li>
+<li>output is mixture of old/new vertexes
+<ul>
+<li>will be exactly old vertexes if polygon was entirely inside the window</li>
+<li>will be only new vertexes if all vertexes were outside the window (but not necessarily all edges)</li>
+</ul></li>
+<li>process each side of the rectangular window separately
+<ul>
+<li>and also, process each edge in polygon iteratively</li>
+</ul></li>
+<li>4 cases for an edge from S to E:
+<ul>
+<li>S and E both outside: no output</li>
+<li>S and E both inside: output only E</li>
+<li>S inside, E outside: compute intersection with border, and output that</li>
+<li>S outside, E inside: output intersection with border, and output E</li>
+</ul></li>
+<li>output of one intersection is used as input for next intersection
+<ul>
+<li>you can kind of do these in parallel, with the partial output from the previous stage
+<ul>
+<li>pipeline</li>
+</ul></li>
+<li>then you need a end-of-polygon marker, and you need to use that along with the first edge to make the last edge</li>
+</ul></li>
+</ul></li>
+<li>weiler-atherton algorithm
+<ul>
+<li>general intersection between any two kinds of polygons</li>
+<li>handles non-convex polygons
+<ul>
+<li>thus can output more than one polygon for a single input polygon</li>
+</ul></li>
+<li>not as efficient as sutherland-hodgman
+<ul>
+<li>all those intersections are expensive</li>
+<li>difficult to parallelize</li>
+</ul></li>
+<li>algorithm
+<ul>
+<li>start at point on polygon</li>
+<li>follow polygon edges counterclockwise until an edge crosses out of the window</li>
+<li>follow window edges from the intersection point until the polygon intersects again</li>
+<li>now that part is a polygon. Go back to the first intersection point and follow the polygon until it re-enters the window, and find more polygons</li>
+</ul></li>
 </ul></li>
 </ul>
 <h1 id="transformations-in-2d">transformations in 2D</h1>
+<ul>
+<li>coordinates
+<ul>
+<li>need point of origin (0,0) and axes (x and y)</li>
+<li>we want to define transformations generally, without need for coordinates</li>
+<li>but hardware uses coordinates, so we must use them eventually</li>
+</ul></li>
+<li>dot product
+<ul>
+<li>product of magnitudes and cosine of angle between
+<ul>
+<li>or sum of product of coordinates along each axes</li>
+</ul></li>
+<li>when dot product is 0, vectors are perpendicular</li>
+</ul></li>
+<li>2d cross product
+<ul>
+<li>the cross product we normally think of only makes sense in 3d</li>
+<li>our 2d cross product is just a vector of same magnitude, perpendicular to original</li>
+<li>unary operation</li>
+<li>represented by <span class="math inline"><em>v</em></span> superscript perpendicular-sign</li>
+<li><span class="math inline"><em>v</em><em>p</em> = ( − <em>v</em>.<em>y</em>, <em>v</em>.<em>x</em>)</span></li>
+<li>v dot product with (v cross product) == 0</li>
+</ul></li>
+<li>there are two kinds of transformations
+<ul>
+<li>conformal:
+<ul>
+<li>preserves angles</li>
+<li>translation, rotation, uniform scaling</li>
+</ul></li>
+<li>affine
+<ul>
+<li>can be represented by matrix multiplication</li>
+<li>TODO is affine transform a superset of conformal transform?</li>
+<li>translation, rotation, uniform/non-uniform scaling, shear</li>
+</ul></li>
+</ul></li>
+<li>translation
+<ul>
+<li>add a vector to every point</li>
+</ul></li>
+<li>uniform scaling
+<ul>
+<li>scale about a point (about an origin) by a scale factor</li>
+<li>the point (origin) about which you scale will be unaffected by the scaling</li>
+<li>the farther something is from the point (origin), the more it's position will change</li>
+</ul></li>
+<li>non-uniform scaling
+<ul>
+<li>same as uniform scaling, but you now have a vector that you're scaling along</li>
+<li>so take the vector from transform-origin to point, find parallel to transform vector, and scale that</li>
+<li>scaling along a vector is not the same as scaling along the x and y components of that vector separately</li>
+</ul></li>
+<li>rotation
+<ul>
+<li>q = vector from transform-origin to p</li>
+<li>new point is transform-origin + linear combination of q and q-cross determined by sin and cos of theta</li>
+</ul></li>
+<li>shear
+<ul>
+<li>not the same as non-uniform scaling</li>
+<li>move point in direction of v, proportional to distance to o perpendicular to v</li>
+</ul></li>
+<li>reflection
+<ul>
+<li>TODO do we need to know this?</li>
+</ul></li>
+<li>matrix representation
+<ul>
+<li>compact</li>
+<li>allows multiple transforms to be composed to single matrix (efficient)</li>
+<li>if you have 3 points and those 3 points after some transformation, you can solve for the transformation
+<ul>
+<li>TODO assuming it is an affine transform?</li>
+<li>TODO do we need to know how to solve that on the exam?</li>
+</ul></li>
+</ul></li>
+<li>TODO how much of the transformation equations do we need to know?</li>
+</ul>
 <h1 id="fractals-and-iterated-function-systems">fractals and iterated function systems</h1>
+<ul>
+<li>affine transform fractal is defined by set of contractive transformations</li>
+<li>contractive transform: transform <span class="math inline"><em>F</em></span> is contractive if for any two compact sets <span class="math inline"><em>X</em>1, <em>X</em>2</span>, the distance between them is less after transforming them
+<ul>
+<li>that is, <span class="math inline"><em>D</em>(<em>F</em>(<em>X</em>1),<em>F</em>(<em>X</em>2)) &lt; <em>D</em>(<em>X</em>1, <em>X</em>2)</span></li>
+</ul></li>
+<li>hausdroff distance:
+<ul>
+<li>if two sets are equal, their distance is 0</li>
+<li>distance of a,b is same as distance b,a</li>
+<li>hausdroff distance is the maximum distance of a point in one set to the closest point in the other</li>
+</ul></li>
+<li>attractor: shape that fractal approaches after a large (ideally infinite) number of iterations
+<ul>
+<li>if transforms are contractive, attractor is independent of starting point(s)</li>
+</ul></li>
+<li>fractal tennis:
+<ul>
+<li>algorithm to draw fractal by randomly applying transforms to the same point
+<ul>
+<li>but need to iterate point for a few hundred iterations first to get it into the attractor</li>
+</ul></li>
+<li>resulting fractal is not perfect</li>
+<li>can be made better by weighting fractal transform random choice by area
+<ul>
+<li>difficult to calculate the area of a transform (TODO do you just guess?)</li>
+</ul></li>
+</ul></li>
+<li>condensation set: basically a thing you add in at every iteration
+<ul>
+<li>allows shape to build on itself</li>
+</ul></li>
+<li>fractal dimension
+<ul>
+<li>like spatial dimension, but for fractals</li>
+<li><span class="math inline"><em>d</em><em>i</em><em>m</em> = −<em>l</em><em>o</em><em>g</em>(#<em>t</em><em>r</em><em>a</em><em>n</em><em>s</em><em>f</em><em>o</em><em>r</em><em>m</em><em>a</em><em>t</em><em>i</em><em>o</em><em>n</em><em>s</em>)/<em>l</em><em>o</em><em>g</em>(<em>s</em><em>c</em><em>a</em><em>l</em><em>e</em><em>f</em><em>a</em><em>c</em><em>t</em><em>o</em><em>r</em>)</span></li>
+</ul></li>
+<li>fractal curves can have infinite length but enclose finite surface area
+<ul>
+<li>and that's fine</li>
+<li>fractal paint bucket would not work because paint atoms have finite size</li>
+</ul></li>
+</ul>
 <h1 id="transformations-in-3d">transformations in 3D</h1>
+<ul>
+<li>very similar to transformations in 2d</li>
+<li>things that are the same:
+<ul>
+<li>dot product, translation, uniform/non-uniform scaling</li>
+</ul></li>
+<li>cross product
+<ul>
+<li>now is binary operator</li>
+<li>produces third vector that is perpendicular to both input vectors</li>
+<li>magnitude: product of magnitudes and sine of angle between
+<ul>
+<li>mag represents area of 4-sided polygon formed by the two vectors</li>
+</ul></li>
+</ul></li>
+<li>rotation
+<ul>
+<li>input: axis to rotate about (specified as point and unit vector), theta to rotate</li>
+<li>thus you're rotating in the plane that is perpendicular to the axis</li>
+<li>component of q parallel to axis does not change, perpendicular component is rotated (in plane)</li>
+</ul></li>
+<li>mirror image
+<ul>
+<li></li>
+</ul></li>
+</ul>
 <h1 id="color">color</h1>
 <h1 id="lighting">lighting</h1>
 </body>
