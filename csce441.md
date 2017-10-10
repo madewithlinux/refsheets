@@ -330,7 +330,7 @@ $$
 	* not defined for vectors (depends on where the vector is how much it gets scaled by)
 	* **not an affine transformation!**
 	* therefore you need to use the bottom row of the matrix also
-	* the final 3d location is found by taking the normal 3d output and dividing by the 4th element (a scalar)
+	* the final 3d location is found by taking the normal 3d output and dividing by the 4th element (a scalar)l
 * hierarchical animation
 	* split body into components joined by joints
 	* each joint has a transformation associated with it, so you can apply the transformations corresponding to what position of components you want, and then render that
@@ -350,7 +350,95 @@ $$
 			* TODO looking down negative z axis?
 		* then you push a matrix for the models so that they're positioned correctly
 
-
 # color
+* human eye
+	* cornea, iris, lens, retina
+	* center of focus is fovea
+	* stuff not in fovea (center of focus) is out of focus
+		* this is different than blurry
+		* all of the computer screen is in focus, so it can't perfectly replicate out-of-focus things
+	* rods
+		* brightness only
+		* best response to blue-green light
+		* mostly in peripheral, not fovea
+		* more common than cones (100 million in retina)
+	* cones
+		* captures color
+		* mostly in fovea, few in peripheral
+		* far fewer overall than cones (6 million)
+	* also at the very middle of your eye, where the optic nerve connects, there is no rods or cones
+		* called blind spot
+		* brain smooths this out
+	* human vision
+		* center of focus is highly detailed and in color
+		* peripheral is black and white and less detail
+		* in general, we can distinguish change in intensity more than change in color
+* intensity/luminance: how much light there is
+	* like energy
+* brightness: perceived intensity
+<!-- TODO below -->
+	* color-dependent? TODO?
+	* human eye can notice about 1% change in intensity
+	* and it's logarithmic
+* gamma correction
+	* correct for how humans perceive color
+	* combining colors is not linear!
+* dynamic range
+* receptor response
+	* eye cones respond to 3 specific wavelengths of light
+* CIE XYZ system
+	* luminance
+	* chromaticism
+* chromaticity diagram
+	* spectral colors
+	* saturation
+	* hue
+	* non-spectral colors
+	* combining colors
+	* complimentary colors
+	* combining 3 colors
+* gamut
+	* differing gamuts
+	*  device gamuts
+* color models
+	* RGB
+	* CMY
+	* CMYK
+	* YIQ/YUV
+	* HSV
+	* Lab and Luv
+	* color representation
+
+## coloring with limited intensities
+* thresholding
+* halftone/dithering
+	* patterns
+* dithering
+* error diffusion
+
 
 # lighting
+* global illumination
+* local illumination
+* reflection models
+	* ideal specular
+	* ideal diffuse
+	* specular
+* illumination model
+	* ambient, diffuse, specular
+* ambient
+* diffuse
+* lambert's law
+* specular
+	* finding reflected vector
+	* n exponent
+* multiple sources
+* attenuation
+* spot lights
+* implementation considerations
+* openGL
+	* normals
+	* create/position lights
+	* specify material properties
+	* select lighting model
+

@@ -560,7 +560,7 @@ $$</span><br /></li>
 <li>not defined for vectors (depends on where the vector is how much it gets scaled by)</li>
 <li><strong>not an affine transformation!</strong></li>
 <li>therefore you need to use the bottom row of the matrix also</li>
-<li>the final 3d location is found by taking the normal 3d output and dividing by the 4th element (a scalar)</li>
+<li>the final 3d location is found by taking the normal 3d output and dividing by the 4th element (a scalar)l</li>
 </ul></li>
 <li>hierarchical animation
 <ul>
@@ -592,6 +592,135 @@ $$</span><br /></li>
 </ul></li>
 </ul>
 <h1 id="color">color</h1>
+<ul>
+<li>human eye
+<ul>
+<li>cornea, iris, lens, retina</li>
+<li>center of focus is fovea</li>
+<li>stuff not in fovea (center of focus) is out of focus
+<ul>
+<li>this is different than blurry</li>
+<li>all of the computer screen is in focus, so it can't perfectly replicate out-of-focus things</li>
+</ul></li>
+<li>rods
+<ul>
+<li>brightness only</li>
+<li>best response to blue-green light</li>
+<li>mostly in peripheral, not fovea</li>
+<li>more common than cones (100 million in retina)</li>
+</ul></li>
+<li>cones
+<ul>
+<li>captures color</li>
+<li>mostly in fovea, few in peripheral</li>
+<li>far fewer overall than cones (6 million)</li>
+</ul></li>
+<li>also at the very middle of your eye, where the optic nerve connects, there is no rods or cones
+<ul>
+<li>called blind spot</li>
+<li>brain smooths this out</li>
+</ul></li>
+<li>human vision
+<ul>
+<li>center of focus is highly detailed and in color</li>
+<li>peripheral is black and white and less detail</li>
+<li>in general, we can distinguish change in intensity more than change in color</li>
+</ul></li>
+</ul></li>
+<li>intensity/luminance: how much light there is
+<ul>
+<li>like energy</li>
+</ul></li>
+<li>brightness: perceived intensity <!-- TODO below -->
+<ul>
+<li>color-dependent? TODO?</li>
+<li>human eye can notice about 1% change in intensity</li>
+<li>and it's logarithmic</li>
+</ul></li>
+<li>gamma correction
+<ul>
+<li>correct for how humans perceive color</li>
+<li>combining colors is not linear!</li>
+</ul></li>
+<li>dynamic range</li>
+<li>receptor response
+<ul>
+<li>eye cones respond to 3 specific wavelengths of light</li>
+</ul></li>
+<li>CIE XYZ system
+<ul>
+<li>luminance</li>
+<li>chromaticism</li>
+</ul></li>
+<li>chromaticity diagram
+<ul>
+<li>spectral colors</li>
+<li>saturation</li>
+<li>hue</li>
+<li>non-spectral colors</li>
+<li>combining colors</li>
+<li>complimentary colors</li>
+<li>combining 3 colors</li>
+</ul></li>
+<li>gamut
+<ul>
+<li>differing gamuts</li>
+<li>device gamuts</li>
+</ul></li>
+<li>color models
+<ul>
+<li>RGB</li>
+<li>CMY</li>
+<li>CMYK</li>
+<li>YIQ/YUV</li>
+<li>HSV</li>
+<li>Lab and Luv</li>
+<li>color representation</li>
+</ul></li>
+</ul>
+<h2 id="coloring-with-limited-intensities">coloring with limited intensities</h2>
+<ul>
+<li>thresholding</li>
+<li>halftone/dithering
+<ul>
+<li>patterns</li>
+</ul></li>
+<li>dithering</li>
+<li>error diffusion</li>
+</ul>
 <h1 id="lighting">lighting</h1>
+<ul>
+<li>global illumination</li>
+<li>local illumination</li>
+<li>reflection models
+<ul>
+<li>ideal specular</li>
+<li>ideal diffuse</li>
+<li>specular</li>
+</ul></li>
+<li>illumination model
+<ul>
+<li>ambient, diffuse, specular</li>
+</ul></li>
+<li>ambient</li>
+<li>diffuse</li>
+<li>lambert's law</li>
+<li>specular
+<ul>
+<li>finding reflected vector</li>
+<li>n exponent</li>
+</ul></li>
+<li>multiple sources</li>
+<li>attenuation</li>
+<li>spot lights</li>
+<li>implementation considerations</li>
+<li>openGL
+<ul>
+<li>normals</li>
+<li>create/position lights</li>
+<li>specify material properties</li>
+<li>select lighting model</li>
+</ul></li>
+</ul>
 </body>
 </html>
