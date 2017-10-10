@@ -533,6 +533,11 @@ $$</span><br /></li>
 <ul>
 <li>mag represents area of 4-sided polygon formed by the two vectors</li>
 </ul></li>
+<li>uses special matrix called _ (underscore)
+<ul>
+<li><span class="math inline"><em>v</em></span> cross _ = put components of <span class="math inline"><em>v</em></span> in special places</li>
+<li>then (<span class="math inline"><em>v</em></span> cross _ ) cross <span class="math inline"><em>w</em></span> == <span class="math inline"><em>v</em></span> cross <span class="math inline"><em>w</em></span></li>
+</ul></li>
 </ul></li>
 <li>rotation
 <ul>
@@ -542,7 +547,48 @@ $$</span><br /></li>
 </ul></li>
 <li>mirror image
 <ul>
-<li></li>
+<li>the same as non-uniform scaling with <span class="math inline"><em>a</em> = −1</span></li>
+<li>reflect about plane formed by normal vector <span class="math inline"><em>v</em></span> and point <span class="math inline"><em>o</em></span></li>
+</ul></li>
+<li>orthogonal projection
+<ul>
+<li>flatten things straight down onto plane</li>
+</ul></li>
+<li>perspective transformation
+<ul>
+<li>flatten things onto plane, but as if seen by an observation point <span class="math inline"><em>e</em></span> (an eye)</li>
+<li>not defined for vectors (depends on where the vector is how much it gets scaled by)</li>
+<li><strong>not an affine transformation!</strong></li>
+<li>therefore you need to use the bottom row of the matrix also</li>
+<li>the final 3d location is found by taking the normal 3d output and dividing by the 4th element (a scalar)</li>
+</ul></li>
+<li>hierarchical animation
+<ul>
+<li>split body into components joined by joints</li>
+<li>each joint has a transformation associated with it, so you can apply the transformations corresponding to what position of components you want, and then render that</li>
+</ul></li>
+<li>skeletal animation
+<ul>
+<li>skeleton inside model mesh has hierarchical animation stuff</li>
+<li>every vertex on mesh has a list of weights of how it's position depends on transformations of bones</li>
+<li>thus allowing mesh to deform like the skeleton does</li>
+</ul></li>
+<li>OpenGL matrices
+<ul>
+<li>view, model, projection, viewport</li>
+<li>view: position the camera</li>
+<li>model: position model in world</li>
+<li>projection: flatten world into 2d plane</li>
+<li>viewport: transform projection into window pixel coordinates</li>
+<li>opengl uses ModelView matrix
+<ul>
+<li><span class="math inline"><em>M</em><em>o</em><em>d</em><em>e</em><em>l</em><em>V</em><em>i</em><em>e</em><em>w</em> = <em>V</em><sup>−1</sup><em>M</em> = <em>T</em><sup>−1</sup><em>R</em><sup>−1</sup><em>M</em></span></li>
+<li>viewer always views from origin
+<ul>
+<li>TODO looking down negative z axis?</li>
+</ul></li>
+<li>then you push a matrix for the models so that they're positioned correctly</li>
+</ul></li>
 </ul></li>
 </ul>
 <h1 id="color">color</h1>

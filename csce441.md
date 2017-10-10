@@ -313,12 +313,43 @@ $$
 	* produces third vector that is perpendicular to both input vectors
 	* magnitude: product of magnitudes and sine of angle between
 		* mag represents area of 4-sided polygon formed by the two vectors
+	* uses special matrix called _ (underscore)
+		* $v$ cross _ = put components of $v$ in special places
+		* then ($v$ cross _ ) cross $w$ == $v$ cross $w$
 * rotation
 	* input: axis to rotate about (specified as point and unit vector), theta to rotate
 	* thus you're rotating in the plane that is perpendicular to the axis
 	* component of q parallel to axis does not change, perpendicular component is rotated (in plane)
 * mirror image
-	* 
+	* the same as non-uniform scaling with $a=-1$
+	* reflect about plane formed by normal vector $v$ and point $o$
+* orthogonal projection
+	* flatten things straight down onto plane
+* perspective transformation
+	* flatten things onto plane, but as if seen by an observation point $e$ (an eye)
+	* not defined for vectors (depends on where the vector is how much it gets scaled by)
+	* **not an affine transformation!**
+	* therefore you need to use the bottom row of the matrix also
+	* the final 3d location is found by taking the normal 3d output and dividing by the 4th element (a scalar)
+* hierarchical animation
+	* split body into components joined by joints
+	* each joint has a transformation associated with it, so you can apply the transformations corresponding to what position of components you want, and then render that
+* skeletal animation
+	* skeleton inside model mesh has hierarchical animation stuff
+	* every vertex on mesh has a list of weights of how it's position depends on transformations of bones
+	* thus allowing mesh to deform like the skeleton does
+* OpenGL matrices
+	* view, model, projection, viewport
+	* view: position the camera
+	* model: position model in world
+	* projection: flatten world into 2d plane
+	* viewport: transform projection into window pixel coordinates
+	* opengl uses ModelView matrix
+		* $ModelView = V^{-1}M = T^{-1}R^{-1}M$
+		* viewer always views from origin
+			* TODO looking down negative z axis?
+		* then you push a matrix for the models so that they're positioned correctly
+
 
 # color
 
