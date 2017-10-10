@@ -640,9 +640,24 @@ $$</span><br /></li>
 <li>gamma correction
 <ul>
 <li>correct for how humans perceive color</li>
-<li>combining colors is not linear!</li>
+<li>combining colors is not linear!
+<ul>
+<li>you need to convert to linear space, mix colors, then convert back</li>
 </ul></li>
-<li>dynamic range</li>
+<li>gamma correction is meant to model old CRT displays
+<ul>
+<li>new displays do the same thing just for compatibility</li>
+</ul></li>
+</ul></li>
+<li>dynamic range
+<ul>
+<li>dynamic range = 1/(max intensity), where minimum intensity == 1</li>
+<li>different than contrast</li>
+</ul></li>
+<li>contrast
+<ul>
+<li>maximum vs minimum brightness a display can do <em>at the same time</em></li>
+</ul></li>
 <li>receptor response
 <ul>
 <li>eye cones respond to 3 specific wavelengths of light</li>

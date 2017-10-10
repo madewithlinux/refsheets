@@ -383,7 +383,14 @@ $$
 * gamma correction
 	* correct for how humans perceive color
 	* combining colors is not linear!
+		* you need to convert to linear space, mix colors, then convert back
+	* gamma correction is meant to model old CRT displays
+		* new displays do the same thing just for compatibility
 * dynamic range
+	* dynamic range = 1/(max intensity), where minimum intensity == 1
+	* different than contrast
+* contrast
+	* maximum vs minimum brightness a display can do *at the same time*
 * receptor response
 	* eye cones respond to 3 specific wavelengths of light
 * CIE XYZ system
