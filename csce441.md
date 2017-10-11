@@ -137,21 +137,21 @@ $$
 		* we would like to efficiently handle trivial accepts and trivial rejects
 * cohen-sutherland algorithm
 	* classify two points $p_1, p_2$ using 4-bit codes `c0` and `c1`
-    * if `c0 & c1 != 0`: trivial reject
-    	* bitwise AND
-    	* both points are outside one of the boundaries
-    * if `c0 | c1 == 0`: trivial accept
-    	* bitwise OR
-    	* none of the coordinates of either point is outside any boundary => line is entirely within window
-    * otherwise split line until it is a trivial case
-    * bits: `| top | bottom | right | left`
-    	* doesn't matter as long as you're consistent? TODO
-    	* you can determine each of these by just comparing one coordinate with the axes
-    	* thus the comparison is fast
-    * disadvantages
-    	* repeated clipping is expensive
-    * advantages
-    	* considers all possible trivial accept/reject
+	* if `c0 & c1 != 0`: trivial reject
+		* bitwise AND
+		* both points are outside one of the boundaries
+	* if `c0 | c1 == 0`: trivial accept
+		* bitwise OR
+		* none of the coordinates of either point is outside any boundary => line is entirely within window
+	* otherwise split line until it is a trivial case
+	* bits: `| top | bottom | right | left`
+		* doesn't matter as long as you're consistent? TODO
+		* you can determine each of these by just comparing one coordinate with the axes
+		* thus the comparison is fast
+	* disadvantages
+		* repeated clipping is expensive
+	* advantages
+		* considers all possible trivial accept/reject
 * laing-barsky algorithm
 	* use parametric form of line for clipping
 		* means that lines are oriented (have a direction)
@@ -523,26 +523,82 @@ $$
 
 # lighting
 * global illumination
+	* light from all sources, no matter how many times it had to bounce around the environment to get to your eye
 * local illumination
+	* light must go directly from light source to object to eye
+* when calculating lighting, basically everything is a unit vector
 * reflection models
+	* how light interacts with a surface (without changing frequency)
 	* ideal specular
+		* reflection law
+		* metallic, mirror
 	* ideal diffuse
+		* lambert's law
+		* matte
 	* specular
+		* directional diffuse
+		* glossy
 * illumination model
 	* ambient, diffuse, specular
+	* each of these is really 3 equations, one for each color channel (RGB)
 * ambient
+	* $I = ka * A$
+		* $ka$ = ambient reflection coefficient (material specific)
+		* $A$ = intensity of ambient light (constant)
+	* uniform light caused by secondary reflections
+	* lights up everything the same
+	* accounts for all indirect illumination
+		* which means it determines the color of the shadows
 * diffuse
+	* light reflects equally in all directions
+	* I = C * kd * cos(theta)
+		* I = intensity
+		* kd = diffuse reflection coefficient
+		* cos(theta) = L dot N
+			* theta = angle between (vector pointing from point to light source) and surface normal
+		* N = normal to surface
+	* if light source is infinitely far away, you can assume the vector pointing toward it is constant. Otherwise, you must calculate the vector pointing toward it for every point on the surface.
 * lambert's law
+	* TODO what?
 * specular
+	* mirror-like reflection. forms highlights on shiny objects
+	* I = C * ks * cos^n(alpha) = C * ks * (R dot E)^n
+		* R = direction of reflection
+		* E = vector pointing toward eye
+		* n = specular component
+			(controls size of hilights)
+	* calculate R:
+		* flip L around N
+		* R = 2(L dot N) * N - L
 	* finding reflected vector
 	* n exponent
+		* larger n => smaller reflection thing
 * multiple sources
+	* only ever one ambient term
+	* diffuse and specular are per-source
+		* light is additive, so add light
 * attenuation
+	* light decreases the further from the source you are
+	* various formulas to compute how much it attenuates
+		* impacts performance depending on how complicated function is
 * spot lights
+	* light shines in a specific direction
+	* so when you calculate light, you need to take the angle into account
 * implementation considerations
+	* if angle greater than 90, it's on the backside of the object
+	* you need to negate the normal vector then
+	* if you're only considering one-sided light, ignore the backside of the object
+	* you want ka+kd+ks<=1, or else you get saturation of colors
 * openGL
-	* normals
+	* set normals for surface
+		* using `glNormal()`. Set until changed (so can be for multiple vertexes)
 	* create/position lights
+		* you can have different ambient/diffuse/specular for each light
+		* must enable each light manually, and enable lighting in general
 	* specify material properties
+		* ambient, diffuse, specular
+		* shiny is the n exponent
 	* select lighting model
+		* is viewer local?
+		* is light two sided?
 

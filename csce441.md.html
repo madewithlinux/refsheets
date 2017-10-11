@@ -863,36 +863,141 @@ Y = Y-K</code></pre></li>
 </ul>
 <h1 id="lighting">lighting</h1>
 <ul>
-<li>global illumination</li>
-<li>local illumination</li>
+<li>global illumination
+<ul>
+<li>light from all sources, no matter how many times it had to bounce around the environment to get to your eye</li>
+</ul></li>
+<li>local illumination
+<ul>
+<li>light must go directly from light source to object to eye</li>
+</ul></li>
+<li>when calculating lighting, basically everything is a unit vector</li>
 <li>reflection models
 <ul>
-<li>ideal specular</li>
-<li>ideal diffuse</li>
-<li>specular</li>
+<li>how light interacts with a surface (without changing frequency)</li>
+<li>ideal specular
+<ul>
+<li>reflection law</li>
+<li>metallic, mirror</li>
+</ul></li>
+<li>ideal diffuse
+<ul>
+<li>lambert's law</li>
+<li>matte</li>
+</ul></li>
+<li>specular
+<ul>
+<li>directional diffuse</li>
+<li>glossy</li>
+</ul></li>
 </ul></li>
 <li>illumination model
 <ul>
 <li>ambient, diffuse, specular</li>
+<li>each of these is really 3 equations, one for each color channel (RGB)</li>
 </ul></li>
-<li>ambient</li>
-<li>diffuse</li>
-<li>lambert's law</li>
+<li>ambient
+<ul>
+<li><span class="math inline"><em>I</em> = <em>k</em><em>a</em> * <em>A</em></span>
+<ul>
+<li><span class="math inline"><em>k</em><em>a</em></span> = ambient reflection coefficient (material specific)</li>
+<li><span class="math inline"><em>A</em></span> = intensity of ambient light (constant)</li>
+</ul></li>
+<li>uniform light caused by secondary reflections</li>
+<li>lights up everything the same</li>
+<li>accounts for all indirect illumination
+<ul>
+<li>which means it determines the color of the shadows</li>
+</ul></li>
+</ul></li>
+<li>diffuse
+<ul>
+<li>light reflects equally in all directions</li>
+<li>I = C * kd * cos(theta)
+<ul>
+<li>I = intensity</li>
+<li>kd = diffuse reflection coefficient</li>
+<li>cos(theta) = L dot N
+<ul>
+<li>theta = angle between (vector pointing from point to light source) and surface normal</li>
+</ul></li>
+<li>N = normal to surface</li>
+</ul></li>
+<li>if light source is infinitely far away, you can assume the vector pointing toward it is constant. Otherwise, you must calculate the vector pointing toward it for every point on the surface.</li>
+</ul></li>
+<li>lambert's law
+<ul>
+<li>TODO what?</li>
+</ul></li>
 <li>specular
 <ul>
-<li>finding reflected vector</li>
-<li>n exponent</li>
+<li>mirror-like reflection. forms highlights on shiny objects</li>
+<li>I = C * ks * cos^n(alpha) = C * ks * (R dot E)^n
+<ul>
+<li>R = direction of reflection</li>
+<li>E = vector pointing toward eye</li>
+<li>n = specular component (controls size of hilights)</li>
 </ul></li>
-<li>multiple sources</li>
-<li>attenuation</li>
-<li>spot lights</li>
-<li>implementation considerations</li>
+<li>calculate R:
+<ul>
+<li>flip L around N</li>
+<li>R = 2(L dot N) * N - L</li>
+</ul></li>
+<li>finding reflected vector</li>
+<li>n exponent
+<ul>
+<li>larger n =&gt; smaller reflection thing</li>
+</ul></li>
+</ul></li>
+<li>multiple sources
+<ul>
+<li>only ever one ambient term</li>
+<li>diffuse and specular are per-source
+<ul>
+<li>light is additive, so add light</li>
+</ul></li>
+</ul></li>
+<li>attenuation
+<ul>
+<li>light decreases the further from the source you are</li>
+<li>various formulas to compute how much it attenuates
+<ul>
+<li>impacts performance depending on how complicated function is</li>
+</ul></li>
+</ul></li>
+<li>spot lights
+<ul>
+<li>light shines in a specific direction</li>
+<li>so when you calculate light, you need to take the angle into account</li>
+</ul></li>
+<li>implementation considerations
+<ul>
+<li>if angle greater than 90, it's on the backside of the object</li>
+<li>you need to negate the normal vector then</li>
+<li>if you're only considering one-sided light, ignore the backside of the object</li>
+<li>you want ka+kd+ks&lt;=1, or else you get saturation of colors</li>
+</ul></li>
 <li>openGL
 <ul>
-<li>normals</li>
-<li>create/position lights</li>
-<li>specify material properties</li>
-<li>select lighting model</li>
+<li>set normals for surface
+<ul>
+<li>using <code>glNormal()</code>. Set until changed (so can be for multiple vertexes)</li>
+</ul></li>
+<li>create/position lights
+<ul>
+<li>you can have different ambient/diffuse/specular for each light</li>
+<li>must enable each light manually, and enable lighting in general</li>
+</ul></li>
+<li>specify material properties
+<ul>
+<li>ambient, diffuse, specular</li>
+<li>shiny is the n exponent</li>
+</ul></li>
+<li>select lighting model
+<ul>
+<li>is viewer local?</li>
+<li>is light two sided?</li>
+</ul></li>
 </ul></li>
 </ul>
 </body>
