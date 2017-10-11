@@ -33,7 +33,7 @@ $$
 		* so we derive formula from $y = m * x + b$
 	* formula: $f(x, y) = c * x + d * y + e$
 		* $c = yL - yH$
-		* $d = xL - xH$
+		* $d = xH - xL$
 		* $e = b * (xL - xH)$
 		* $f(x, y) = 0$: $(x,y)$ is on the line
 		* $f(x, y) < 0$: $(x,y)$ below line
