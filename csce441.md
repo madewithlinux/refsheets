@@ -195,7 +195,7 @@ $$
 * when clipping convex polygons, you could end up with multiple polygons
 * sutherland-hodgman clipping
 	* clip polygon vs each edge of window individually
-	* TODO can this algorithm handle non-rectangular windows?
+		* thus can handle non-rectangular window, as long as the window is convex
 	* is not guaranteed to handle convex polygons correctly
 		* does not split into multiple polygons
 		* but usually looks about right
@@ -247,10 +247,11 @@ $$
 	* conformal:
 		* preserves angles
 		* translation, rotation, uniform scaling
-	* affine
-		* can be represented by matrix multiplication
-		* TODO is affine transform a superset of conformal transform?
+	* affine (aff-ine)
+		* can be represented by multiplication by some matrix
 		* translation, rotation, uniform/non-uniform scaling, shear
+	* some conformal transforms are affine, but not all
+		* conformal is affine if it can be represented as matrix
 * translation
 	* add a vector to every point
 * uniform scaling
@@ -273,7 +274,8 @@ $$
 	* compact
 	* allows multiple transforms to be composed to single matrix (efficient)
 	* if you have 3 points and those 3 points after some transformation, you can solve for the transformation
-		* TODO assuming it is an affine transform?
+		* result is matrix
+			* means that you can only sovle for affine transforms
 		* TODO do we need to know how to solve that on the exam?
 * TODO how much of the transformation equations do we need to know?
 
@@ -293,7 +295,10 @@ $$
 		* but need to iterate point for a few hundred iterations first to get it into the attractor
 	* resulting fractal is not perfect
 	* can be made better by weighting fractal transform random choice by area
-		* difficult to calculate the area of a transform (TODO do you just guess?)
+		* difficult to calculate the area of a transform
+			* singular value decomposition
+			* get eigenvecgtors (or eigenvalues?)
+			* are of eigenvectors is relative area of transform
 * condensation set: basically a thing you add in at every iteration
 	* allows shape to build on itself
 * fractal dimension
@@ -376,7 +381,8 @@ $$
 * intensity/luminance: how much light there is
 	* like energy
 * brightness: perceived intensity
-	* TODO color-dependent?
+	* color-dependent: because the rods respond differently to different wavelengths
+		* not as much due to intensity dependence of cones
 	* human eye can notice about 1% change in intensity
 	* eyes more easily notice ratio between intensities than absolute intensities
 		* so changes 1->2, 2->4, 4->8 all look about the same
@@ -425,7 +431,7 @@ $$
 	* each time you round a pixel value, propagate that pixel's round-off-error to the adjacent pixels
 		* but only pixels that have not been visited yet
 	* can be combined with halftone/dithering
-		* TODO how?
+		* diffuse errors on block-by-block basis to next block
 	* looks better than halftone/dithering
 
 ## color/light

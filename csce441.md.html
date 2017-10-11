@@ -70,7 +70,7 @@ $$</span><br /></li>
 <li><p>where <span class="math inline"><em>x</em><em>L</em> &lt; <em>x</em><em>H</em></span></p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> draw_line(xL, yL, xH, yH):
     x, y <span class="op">=</span> (xL, yL)
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, xH <span class="op">-</span> xL):
+    <span class="cf">for</span> i <span class="op">in</span> <span class="bu">range</span>(<span class="dv">0</span>, xH <span class="op">-</span> xL):
         draw_pixel(x, <span class="bu">round</span>(y))
         x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span>
         y <span class="op">=</span> m <span class="op">*</span> x <span class="op">+</span> b <span class="co"># simplifies to</span>
@@ -340,8 +340,10 @@ $$</span><br /></li>
 <li>when clipping convex polygons, you could end up with multiple polygons</li>
 <li>sutherland-hodgman clipping
 <ul>
-<li>clip polygon vs each edge of window individually</li>
-<li>TODO can this algorithm handle non-rectangular windows?</li>
+<li>clip polygon vs each edge of window individually
+<ul>
+<li>thus can handle non-rectangular window, as long as the window is convex</li>
+</ul></li>
 <li>is not guaranteed to handle convex polygons correctly
 <ul>
 <li>does not split into multiple polygons</li>
@@ -425,11 +427,14 @@ $$</span><br /></li>
 <li>preserves angles</li>
 <li>translation, rotation, uniform scaling</li>
 </ul></li>
-<li>affine
+<li>affine (aff-ine)
 <ul>
-<li>can be represented by matrix multiplication</li>
-<li>TODO is affine transform a superset of conformal transform?</li>
+<li>can be represented by multiplication by some matrix</li>
 <li>translation, rotation, uniform/non-uniform scaling, shear</li>
+</ul></li>
+<li>some conformal transforms are affine, but not all
+<ul>
+<li>conformal is affine if it can be represented as matrix</li>
 </ul></li>
 </ul></li>
 <li>translation
@@ -468,7 +473,10 @@ $$</span><br /></li>
 <li>allows multiple transforms to be composed to single matrix (efficient)</li>
 <li>if you have 3 points and those 3 points after some transformation, you can solve for the transformation
 <ul>
-<li>TODO assuming it is an affine transform?</li>
+<li>result is matrix
+<ul>
+<li>means that you can only sovle for affine transforms</li>
+</ul></li>
 <li>TODO do we need to know how to solve that on the exam?</li>
 </ul></li>
 </ul></li>
@@ -500,7 +508,12 @@ $$</span><br /></li>
 <li>resulting fractal is not perfect</li>
 <li>can be made better by weighting fractal transform random choice by area
 <ul>
-<li>difficult to calculate the area of a transform (TODO do you just guess?)</li>
+<li>difficult to calculate the area of a transform
+<ul>
+<li>singular value decomposition</li>
+<li>get eigenvecgtors (or eigenvalues?)</li>
+<li>are of eigenvectors is relative area of transform</li>
+</ul></li>
 </ul></li>
 </ul></li>
 <li>condensation set: basically a thing you add in at every iteration
@@ -633,7 +646,10 @@ $$</span><br /></li>
 </ul></li>
 <li>brightness: perceived intensity
 <ul>
-<li>TODO color-dependent?</li>
+<li>color-dependent: because the rods respond differently to different wavelengths
+<ul>
+<li>not as much due to intensity dependence of cones</li>
+</ul></li>
 <li>human eye can notice about 1% change in intensity</li>
 <li>eyes more easily notice ratio between intensities than absolute intensities
 <ul>
@@ -713,7 +729,7 @@ $$</span><br /></li>
 </ul></li>
 <li>can be combined with halftone/dithering
 <ul>
-<li>TODO how?</li>
+<li>diffuse errors on block-by-block basis to next block</li>
 </ul></li>
 <li>looks better than halftone/dithering</li>
 </ul></li>
