@@ -376,10 +376,15 @@ $$
 * intensity/luminance: how much light there is
 	* like energy
 * brightness: perceived intensity
-<!-- TODO below -->
-	* color-dependent? TODO?
+	* TODO color-dependent?
 	* human eye can notice about 1% change in intensity
-	* and it's logarithmic
+	* eyes more easily notice ratio between intensities than absolute intensities
+		* so changes 1->2, 2->4, 4->8 all look about the same
+		* to get equal-looking brightness increments, you need a power series:
+			* minimum: $I_0$
+			* maximum: 1.0
+			* series: $I_0, rI_0, r^2I_0 ... r^nI_0 = 1.0$
+			* n = $-log_{1.01}(I_0)$
 * gamma correction
 	* correct for how humans perceive color
 	* combining colors is not linear!
@@ -391,37 +396,129 @@ $$
 	* different than contrast
 * contrast
 	* maximum vs minimum brightness a display can do *at the same time*
-* receptor response
-	* eye cones respond to 3 specific wavelengths of light
-* CIE XYZ system
-	* luminance
-	* chromaticism
-* chromaticity diagram
-	* spectral colors
-	* saturation
-	* hue
-	* non-spectral colors
-	* combining colors
-	* complimentary colors
-	* combining 3 colors
-* gamut
-	* differing gamuts
-	*  device gamuts
-* color models
-	* RGB
-	* CMY
-	* CMYK
-	* YIQ/YUV
-	* HSV
-	* Lab and Luv
-	* color representation
 
 ## coloring with limited intensities
+* most displays are limited to 256 intensities (8 bits per channel)
 * thresholding
-* halftone/dithering
+	* naive approach
+	* just round to nearest integer
+	* does not usually look good, but is fast
+* halftone
+	* eyes integrate over area, so get varying intensity by having different intensities in an area
+	* split image into blocks of pixels
+		* e.g. like 4-pixel blocks
+		* will lose resolution!
+		* $n * n$ block => $n^2+1$ intensity levels
+			(+1 because includes both endpoints of all-on and all-off)
+	* you then make one pattern per each intensity level
+		* assign based on average intensity level of block
 	* patterns
+		* brain will recognize any pattern that exists
+		* so make blocks random and uncorrelated so there is no pattern
 * dithering
+	* like halftone but we don't want to lose resolution
+	* instead of using pattern to fill blocks, use pattern as threshold
+	* fill in a pixel iff its intensity is greater than the threshold 
+	* preserves more fine details than halftone does (thanks to not losing resolution)
 * error diffusion
+	* visit pixels in a specific order (e.g. scanline order)
+	* each time you round a pixel value, propagate that pixel's round-off-error to the adjacent pixels
+		* but only pixels that have not been visited yet
+	* can be combined with halftone/dithering
+		* TODO how?
+	* looks better than halftone/dithering
+
+## color/light
+* if all light entering eye is one wavelength, we see that color
+	* but light is usually a spectrum of many colors
+* receptor response
+	* eye has 3 kinds of cones that respond to different kinds of light differently
+	* not exactly one wavelength for each kind of cone
+		* not actually all that close to RGB either
+		* most response to yellow/green
+	* just need to stimulate these 3 kinds of cones in the same way some wavelength of light would
+		* don't actually need to produce that wavelength of light
+	* the 3 types of cones in the eye makes the color space 3d
+* CIE XYZ system
+	* X,Y,Z are 3 primary colors. All colors can be made of linear combination of these
+		* 3d color space
+		* determine xyz coordinates for color using color matching function (using integration)
+	* for all visible colors, x,y,z are positive
+	* x,y,z are **not** visible colors by themselves!
+	* visible light forms cone-ish shape pointing out from origin
+	* luminance
+		* intensity
+		* 1-dimensional scalar
+		* $x+y+z$
+	* chromaticity
+		* 2d quantity
+* chromaticity diagram
+	* is the $x+y+z=1$ plane for visible light
+	* spectral colors
+		* colors of rainbow, correspond to real wavelength of light
+		* along the top curve of diagram
+	* non-spectral colors
+		* colors along the bottom edge of diagram
+		* do not correspond to real single wavelength of light
+			(but we still perceive them)
+	* saturation: distance from white center point of diagram
+	* hue: direction that from white center point
+		* hue + saturation are another way to describe color
+		* AKA dominant wavelength
+	* complimentary colors
+		* two colors that sum to white
+		* e.g. white is halfway between them on the diagram
+	* combining 2 colors
+		* if you can produce two colors on the diagram, you can vary the intensity to get any two colors on the straight line between them
+	* combining 3 colors
+		* same as 2 colors, but you can now make any color inside the triangle they form
+		* triangle forms a gamut
+* gamut
+	* range of colors that a device can make
+	* represented as triangle on the chromaticity diagram
+	* red,greeen,blue (RGB) allows you to cover most of the visible spectrum
+		* nowhere near all though
+	* different devices have different devices, so the same image might look different
+		* need calibration
+
+### color models
+* RGB
+	* red, green, blue
+	* additive system
+	* typical for monitors, because tells you what value for each pixel to use
+* CMY
+	* cyan, magenta, yellow
+	* used in printing
+	* subtractive
+	* complimentary to RGB: $CMY = (1,1,1) - RGB$
+* CMYK
+	* cyan, magenta, yellow, black
+	* best for printing, because you mostly print black
+		```
+		K = min(c,m,y)
+		C = C-K
+		M = M-K
+		Y = Y-K
+		```
+	* use as much black as you can, because black is cheap
+* YIQ/YUV
+	* NSTC, PAL
+	* backward compatible with black and white because intensity is completely separate
+	* also luminance is given more bandwidth because more important to eye
+* HSV
+	* hue, saturation, value
+	* user-friendly way to specify color
+	* value: like lightness of color
+* Lab and Luv
+	* perceptual-based model for color
+	* not perfect because perception is not uniform among humans
+	* better than RGB or XYZ though
+* color representation
+	* usually some number of bits per color channel
+	* alternative: color indexing
+		* store all colors in a table and index into the table for each pixel
+		* good for limited palette
+		* can then use dithering stuff to get more detail
 
 
 # lighting

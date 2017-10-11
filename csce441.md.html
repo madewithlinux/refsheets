@@ -631,11 +631,21 @@ $$</span><br /></li>
 <ul>
 <li>like energy</li>
 </ul></li>
-<li>brightness: perceived intensity <!-- TODO below -->
+<li>brightness: perceived intensity
 <ul>
-<li>color-dependent? TODO?</li>
+<li>TODO color-dependent?</li>
 <li>human eye can notice about 1% change in intensity</li>
-<li>and it's logarithmic</li>
+<li>eyes more easily notice ratio between intensities than absolute intensities
+<ul>
+<li>so changes 1-&gt;2, 2-&gt;4, 4-&gt;8 all look about the same</li>
+<li>to get equal-looking brightness increments, you need a power series:
+<ul>
+<li>minimum: <span class="math inline"><em>I</em><sub>0</sub></span></li>
+<li>maximum: 1.0</li>
+<li>series: <span class="math inline"><em>I</em><sub>0</sub>, <em>r</em><em>I</em><sub>0</sub>, <em>r</em><sup>2</sup><em>I</em><sub>0</sub>...<em>r</em><sup><em>n</em></sup><em>I</em><sub>0</sub> = 1.0</span></li>
+<li>n = <span class="math inline">−<em>l</em><em>o</em><em>g</em><sub>1.01</sub>(<em>I</em><sub>0</sub>)</span></li>
+</ul></li>
+</ul></li>
 </ul></li>
 <li>gamma correction
 <ul>
@@ -658,50 +668,198 @@ $$</span><br /></li>
 <ul>
 <li>maximum vs minimum brightness a display can do <em>at the same time</em></li>
 </ul></li>
-<li>receptor response
-<ul>
-<li>eye cones respond to 3 specific wavelengths of light</li>
-</ul></li>
-<li>CIE XYZ system
-<ul>
-<li>luminance</li>
-<li>chromaticism</li>
-</ul></li>
-<li>chromaticity diagram
-<ul>
-<li>spectral colors</li>
-<li>saturation</li>
-<li>hue</li>
-<li>non-spectral colors</li>
-<li>combining colors</li>
-<li>complimentary colors</li>
-<li>combining 3 colors</li>
-</ul></li>
-<li>gamut
-<ul>
-<li>differing gamuts</li>
-<li>device gamuts</li>
-</ul></li>
-<li>color models
-<ul>
-<li>RGB</li>
-<li>CMY</li>
-<li>CMYK</li>
-<li>YIQ/YUV</li>
-<li>HSV</li>
-<li>Lab and Luv</li>
-<li>color representation</li>
-</ul></li>
 </ul>
 <h2 id="coloring-with-limited-intensities">coloring with limited intensities</h2>
 <ul>
-<li>thresholding</li>
-<li>halftone/dithering
+<li>most displays are limited to 256 intensities (8 bits per channel)</li>
+<li>thresholding
 <ul>
-<li>patterns</li>
+<li>naive approach</li>
+<li>just round to nearest integer</li>
+<li>does not usually look good, but is fast</li>
 </ul></li>
-<li>dithering</li>
-<li>error diffusion</li>
+<li>halftone
+<ul>
+<li>eyes integrate over area, so get varying intensity by having different intensities in an area</li>
+<li>split image into blocks of pixels
+<ul>
+<li>e.g. like 4-pixel blocks</li>
+<li>will lose resolution!</li>
+<li><span class="math inline"><em>n</em> * <em>n</em></span> block =&gt; <span class="math inline"><em>n</em><sup>2</sup> + 1</span> intensity levels (+1 because includes both endpoints of all-on and all-off)</li>
+</ul></li>
+<li>you then make one pattern per each intensity level
+<ul>
+<li>assign based on average intensity level of block</li>
+</ul></li>
+<li>patterns
+<ul>
+<li>brain will recognize any pattern that exists</li>
+<li>so make blocks random and uncorrelated so there is no pattern</li>
+</ul></li>
+</ul></li>
+<li>dithering
+<ul>
+<li>like halftone but we don't want to lose resolution</li>
+<li>instead of using pattern to fill blocks, use pattern as threshold</li>
+<li>fill in a pixel iff its intensity is greater than the threshold</li>
+<li>preserves more fine details than halftone does (thanks to not losing resolution)</li>
+</ul></li>
+<li>error diffusion
+<ul>
+<li>visit pixels in a specific order (e.g. scanline order)</li>
+<li>each time you round a pixel value, propagate that pixel's round-off-error to the adjacent pixels
+<ul>
+<li>but only pixels that have not been visited yet</li>
+</ul></li>
+<li>can be combined with halftone/dithering
+<ul>
+<li>TODO how?</li>
+</ul></li>
+<li>looks better than halftone/dithering</li>
+</ul></li>
+</ul>
+<h2 id="colorlight">color/light</h2>
+<ul>
+<li>if all light entering eye is one wavelength, we see that color
+<ul>
+<li>but light is usually a spectrum of many colors</li>
+</ul></li>
+<li>receptor response
+<ul>
+<li>eye has 3 kinds of cones that respond to different kinds of light differently</li>
+<li>not exactly one wavelength for each kind of cone
+<ul>
+<li>not actually all that close to RGB either</li>
+<li>most response to yellow/green</li>
+</ul></li>
+<li>just need to stimulate these 3 kinds of cones in the same way some wavelength of light would
+<ul>
+<li>don't actually need to produce that wavelength of light</li>
+</ul></li>
+<li>the 3 types of cones in the eye makes the color space 3d</li>
+</ul></li>
+<li>CIE XYZ system
+<ul>
+<li>X,Y,Z are 3 primary colors. All colors can be made of linear combination of these
+<ul>
+<li>3d color space</li>
+<li>determine xyz coordinates for color using color matching function (using integration)</li>
+</ul></li>
+<li>for all visible colors, x,y,z are positive</li>
+<li>x,y,z are <strong>not</strong> visible colors by themselves!</li>
+<li>visible light forms cone-ish shape pointing out from origin</li>
+<li>luminance
+<ul>
+<li>intensity</li>
+<li>1-dimensional scalar</li>
+<li><span class="math inline"><em>x</em> + <em>y</em> + <em>z</em></span></li>
+</ul></li>
+<li>chromaticity
+<ul>
+<li>2d quantity</li>
+</ul></li>
+</ul></li>
+<li>chromaticity diagram
+<ul>
+<li>is the <span class="math inline"><em>x</em> + <em>y</em> + <em>z</em> = 1</span> plane for visible light</li>
+<li>spectral colors
+<ul>
+<li>colors of rainbow, correspond to real wavelength of light</li>
+<li>along the top curve of diagram</li>
+</ul></li>
+<li>non-spectral colors
+<ul>
+<li>colors along the bottom edge of diagram</li>
+<li>do not correspond to real single wavelength of light (but we still perceive them)</li>
+</ul></li>
+<li>saturation: distance from white center point of diagram</li>
+<li>hue: direction that from white center point
+<ul>
+<li>hue + saturation are another way to describe color</li>
+<li>AKA dominant wavelength</li>
+</ul></li>
+<li>complimentary colors
+<ul>
+<li>two colors that sum to white</li>
+<li>e.g. white is halfway between them on the diagram</li>
+</ul></li>
+<li>combining 2 colors
+<ul>
+<li>if you can produce two colors on the diagram, you can vary the intensity to get any two colors on the straight line between them</li>
+</ul></li>
+<li>combining 3 colors
+<ul>
+<li>same as 2 colors, but you can now make any color inside the triangle they form</li>
+<li>triangle forms a gamut</li>
+</ul></li>
+</ul></li>
+<li>gamut
+<ul>
+<li>range of colors that a device can make</li>
+<li>represented as triangle on the chromaticity diagram</li>
+<li>red,greeen,blue (RGB) allows you to cover most of the visible spectrum
+<ul>
+<li>nowhere near all though</li>
+</ul></li>
+<li>different devices have different devices, so the same image might look different
+<ul>
+<li>need calibration</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="color-models">color models</h3>
+<ul>
+<li>RGB
+<ul>
+<li>red, green, blue</li>
+<li>additive system</li>
+<li>typical for monitors, because tells you what value for each pixel to use</li>
+</ul></li>
+<li>CMY
+<ul>
+<li>cyan, magenta, yellow</li>
+<li>used in printing</li>
+<li>subtractive</li>
+<li>complimentary to RGB: <span class="math inline"><em>C</em><em>M</em><em>Y</em> = (1, 1, 1)−<em>R</em><em>G</em><em>B</em></span></li>
+</ul></li>
+<li>CMYK
+<ul>
+<li>cyan, magenta, yellow, black</li>
+<li><p>best for printing, because you mostly print black</p>
+<pre><code>K = min(c,m,y)
+C = C-K
+M = M-K
+Y = Y-K</code></pre></li>
+<li>use as much black as you can, because black is cheap</li>
+</ul></li>
+<li>YIQ/YUV
+<ul>
+<li>NSTC, PAL</li>
+<li>backward compatible with black and white because intensity is completely separate</li>
+<li>also luminance is given more bandwidth because more important to eye</li>
+</ul></li>
+<li>HSV
+<ul>
+<li>hue, saturation, value</li>
+<li>user-friendly way to specify color</li>
+<li>value: like lightness of color</li>
+</ul></li>
+<li>Lab and Luv
+<ul>
+<li>perceptual-based model for color</li>
+<li>not perfect because perception is not uniform among humans</li>
+<li>better than RGB or XYZ though</li>
+</ul></li>
+<li>color representation
+<ul>
+<li>usually some number of bits per color channel</li>
+<li>alternative: color indexing
+<ul>
+<li>store all colors in a table and index into the table for each pixel</li>
+<li>good for limited palette</li>
+<li>can then use dithering stuff to get more detail</li>
+</ul></li>
+</ul></li>
 </ul>
 <h1 id="lighting">lighting</h1>
 <ul>
