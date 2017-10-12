@@ -565,7 +565,13 @@ $$
 		* N = normal to surface
 	* if light source is infinitely far away, you can assume the vector pointing toward it is constant. Otherwise, you must calculate the vector pointing toward it for every point on the surface.
 * lambert's law
-	* TODO what?
+	* brightness of surface depends only on the angle that the light source makes with the surface
+		* specifically, depends on cosine of angle that light vector makes with surface normal
+		* or when they're both unit vectors, just use dot product
+	* does not depend on viewer angle
+	* thus, the object appears the same no matter where you view it from, as long as the object and light source do not change location
+	* also implies light is reflected equally from the point of intersection in every direction
+		* makes for a matte appearance
 * specular
 	* mirror-like reflection. forms highlights on shiny objects
 	* I = C * ks * cos^n(alpha) = C * ks * (R dot E)^n

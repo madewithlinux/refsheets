@@ -70,7 +70,7 @@ $$</span><br /></li>
 <li><p>where <span class="math inline"><em>x</em><em>L</em> &lt; <em>x</em><em>H</em></span></p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> draw_line(xL, yL, xH, yH):
     x, y <span class="op">=</span> (xL, yL)
-    <span class="cf">for</span> i <span class="op">in</span> <span class="bu">range</span>(<span class="dv">0</span>, xH <span class="op">-</span> xL):
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, xH <span class="op">-</span> xL):
         draw_pixel(x, <span class="bu">round</span>(y))
         x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span>
         y <span class="op">=</span> m <span class="op">*</span> x <span class="op">+</span> b <span class="co"># simplifies to</span>
@@ -943,7 +943,17 @@ Y = Y-K</code></pre></li>
 </ul></li>
 <li>lambert's law
 <ul>
-<li>TODO what?</li>
+<li>brightness of surface depends only on the angle that the light source makes with the surface
+<ul>
+<li>specifically, depends on cosine of angle that light vector makes with surface normal</li>
+<li>or when they're both unit vectors, just use dot product</li>
+</ul></li>
+<li>does not depend on viewer angle</li>
+<li>thus, the object appears the same no matter where you view it from, as long as the object and light source do not change location</li>
+<li>also implies light is reflected equally from the point of intersection in every direction
+<ul>
+<li>makes for a matte appearance</li>
+</ul></li>
 </ul></li>
 <li>specular
 <ul>
