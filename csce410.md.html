@@ -100,21 +100,21 @@
 </ul></li>
 </ul></li>
 </ul>
+<h1 id="kernel-types">kernel types</h1>
+<ul>
+<li>unikernel, microkernel, exokernel</li>
+<li>TODO</li>
+</ul>
 <h1 id="os-structure-1-3">OS structure (1-3)</h1>
 <ul>
 <li>TODO</li>
 </ul>
 <h1 id="system-calls-1-4">system calls (1-4)</h1>
 <ul>
-<li>TODO</li>
+<li>skipped</li>
 </ul>
-<h1 id="interrupts-and-exceptions-1-5">interrupts and exceptions (1-5)</h1>
+<h1 id="interrupts-and-exceptions-9-1-5">interrupts and exceptions (9, 1-5)</h1>
 <ul>
-<li>TODO</li>
-</ul>
-<h1 id="kernel-types">kernel types</h1>
-<ul>
-<li>unikernel, microkernel, exokernel</li>
 <li>TODO</li>
 </ul>
 <h1 id="allocation-2-1">allocation (2-1)</h1>
@@ -167,19 +167,71 @@
 <li><code>alloc_pages()</code>, <code>__get_free_pages()</code>: contiguous frames/pages, kernel, buddy allocator</li>
 </ul></li>
 </ul>
-<h1 id="interruptsexceptions">interrupts/exceptions</h1>
+<h1 id="paging-7-2-3-8-2-4">paging (7, 2-3) (8, 2-4)</h1>
+<ul>
+<li>page size:
+<ul>
+<li>large pages =&gt; more fragmentation</li>
+<li>small pages =&gt; more overhead</li>
+</ul></li>
+<li>paging allows for address spaces</li>
+<li>cost of page fault
 <ul>
 <li>TODO</li>
+</ul></li>
+<li>locality of reference
+<ul>
+<li>TODO</li>
+</ul></li>
+<li>page table lookup in hardware
+<ul>
+<li>MMU hardware</li>
+<li>hardware uses top few bits of address as index into page table</li>
+<li>then get that entry from the page table, add the lower bits of the virtual address (the offset), and go there in memory</li>
+</ul></li>
+<li>multi-level
+<ul>
+<li>split the virtual address into multiple indexes</li>
+<li>this way you have a hierarchy of page tables, so all page tables below the top level can be lazily allocated
+<ul>
+<li>saves memory (reduces overhead)</li>
+</ul></li>
+<li>page table level <span class="math inline"><em>n</em></span> at index contains physical address of the page table <span class="math inline"><em>n</em> + 1</span> for use with <span class="math inline"><em>n</em> + 1</span>th index</li>
+</ul></li>
+<li>inverted
+<ul>
+<li>linear array indexed by frame number</li>
+<li>one table per entire system</li>
+<li>maps frame number to (PID, page number)</li>
+<li>saves space because there is always exactly one entry per physical frame</li>
+<li>very slow because you have to search the entire thing for the PID and virtual address you're looking for</li>
+<li>also you cannot have shared memory between processes</li>
+</ul></li>
+<li>hash page tables
+<ul>
+<li>one per system</li>
+<li>indexed by (PID, page number)</li>
+<li>typically collisions are handled with chaining</li>
+<li>scales well with physical memory</li>
+<li>does not allow for shared memory?</li>
+</ul></li>
 </ul>
-<h1 id="virtual-memory">virtual memory</h1>
+<h1 id="segmentation-10-2-6">segmentation (10, 2-6)</h1>
 <ul>
-<li>TODO</li>
-</ul>
-<h1 id="paging">paging</h1>
+<li>segments are logical for programming (code, data, stack, heap)
 <ul>
-<li>cost of page fault</li>
-<li>locality of reference</li>
-<li>TODO</li>
+<li>stuff in segment is semantically related</li>
+</ul></li>
+<li>segmentation allows for easy data sharing between processes
+<ul>
+<li>e.g. forked process or shared dynamic library</li>
+</ul></li>
+<li>can lead to more external fragmentation because segments are larger than pages</li>
+<li>segmented paging:
+<ul>
+<li>split virtual address into segment number, page number, and offset</li>
+<li>reduces fragmentation</li>
+</ul></li>
 </ul>
 <h1 id="page-replacement-policies-2-10">page replacement policies (2-10)</h1>
 <ul>

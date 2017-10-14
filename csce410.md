@@ -50,17 +50,17 @@
 	* hardware-provided timers allow OS to regain control from user programs at a regular interval
 		* needed for reliable scheduling
 
+# kernel types
+* unikernel, microkernel, exokernel
+* TODO
+
 # OS structure (1-3)
 * TODO
 
 # system calls (1-4)
-* TODO
+* skipped
 
-# interrupts and exceptions (1-5)
-* TODO
-
-# kernel types
-* unikernel, microkernel, exokernel
+# interrupts and exceptions (9, 1-5)
 * TODO
 
 # allocation (2-1)
@@ -94,16 +94,50 @@
 	* `vmalloc()`: virtually contiguous, bytes, kernel, slab allocator
 	* `alloc_pages()`, `__get_free_pages()`: contiguous frames/pages, kernel, buddy allocator
 
-# interrupts/exceptions
-* TODO
 
-# virtual memory
-* TODO
-
-# paging
+# paging (7, 2-3) (8, 2-4)
+* page size:
+	* large pages => more fragmentation
+	* small pages => more overhead
+* paging allows for address spaces
 * cost of page fault
+	* TODO
 * locality of reference
-* TODO
+	* TODO
+* page table lookup in hardware
+	* MMU hardware
+	* hardware uses top few bits of address as index into page table
+	* then get that entry from the page table, add the lower bits of the virtual address (the offset), and go there in memory
+* multi-level
+	* split the virtual address into multiple indexes
+	* this way you have a hierarchy of page tables, so all page tables below the top level can be lazily allocated
+		* saves memory (reduces overhead)
+	* page table level $n$ at index contains physical address of the page table $n+1$ for use with $n+1$th index
+* inverted
+	* linear array indexed by frame number
+	* one table per entire system
+	* maps frame number to (PID, page number)
+	* saves space because there is always exactly one entry per physical frame
+	* very slow because you have to search the entire thing for the PID and virtual address you're looking for
+	* also you cannot have shared memory between processes
+* hash page tables
+	* one per system
+	* indexed by (PID, page number)
+	* typically collisions are handled with chaining
+	* scales well with physical memory
+	* does not allow for shared memory?
+
+
+
+# segmentation (10, 2-6)
+* segments are logical for programming (code, data, stack, heap)
+	* stuff in segment is semantically related
+* segmentation allows for easy data sharing between processes
+	* e.g. forked process or shared dynamic library
+* can lead to more external fragmentation because segments are larger than pages
+* segmented paging:
+	* split virtual address into segment number, page number, and offset
+	* reduces fragmentation
 
 
 # page replacement policies (2-10)
