@@ -100,14 +100,42 @@
 </ul></li>
 </ul></li>
 </ul>
-<h1 id="kernel-types">kernel types</h1>
-<ul>
-<li>unikernel, microkernel, exokernel</li>
-<li>TODO</li>
-</ul>
 <h1 id="os-structure-1-3">OS structure (1-3)</h1>
 <ul>
-<li>TODO</li>
+<li>onion view of OS
+<ul>
+<li>view kernel as layered like an onion</li>
+<li>innermost layer is lowest level hardware handling code</li>
+<li>outermost layer is user programs</li>
+<li>each layer can't be any closer to core than it is, due to dependencies on lower layers</li>
+<li>from inside to out: hardware, memory, process manger, process coordinator, IPC, RTC, device manager, networking, filesystem, user programs</li>
+<li>monolithic</li>
+</ul></li>
+<li>layering, monolithic kernels
+<ul>
+<li>monolithic kernel has layers that are all in kernel space and all equally trusted and important</li>
+<li>layers are hierarchical</li>
+</ul></li>
+<li>microkernel
+<ul>
+<li>kernel has only very most core parts of OS</li>
+<li>other stuff (like filesystems, scheduling...) is in user space server processes</li>
+<li>more overhead because of context switching</li>
+<li>benefits
+<ul>
+<li>server processes could be in different machines, communicating over a network (distributed system)</li>
+<li>portable: kernel is easier to port because kernel core is smaller</li>
+<li>robust: server process can fail without crashing the whole kernel</li>
+</ul></li>
+</ul></li>
+<li>exokernel
+<ul>
+<li>do not abstract/emulate hardware, instead, export hardware securely</li>
+<li>library operating system
+<ul>
+<li>used by apps to abstract the hardware</li>
+</ul></li>
+</ul></li>
 </ul>
 <h1 id="system-calls-1-4">system calls (1-4)</h1>
 <ul>
@@ -115,7 +143,44 @@
 </ul>
 <h1 id="interrupts-and-exceptions-9-1-5">interrupts and exceptions (9, 1-5)</h1>
 <ul>
-<li>TODO</li>
+<li>hardware interrupts
+<ul>
+<li>usually some kind of I/O: keyboard input, HDD ready, etc...</li>
+</ul></li>
+<li>there's an interrupt for periodic hardware timer
+<ul>
+<li>allows kernel to recover control from user program periodically</li>
+</ul></li>
+<li>exception: interrupt due to an error
+<ul>
+<li>may have an error code associated with it</li>
+</ul></li>
+<li>interrupt descriptor table (IDT)
+<ul>
+<li>256 elements large</li>
+<li>first 32 entries are for exceptions</li>
+<li>hardware interrupts can then map to any other interrupt using PIC</li>
+</ul></li>
+<li>handling interrupt
+<ul>
+<li>save sate of the calling program</li>
+<li>handle interrupt</li>
+<li>restore calling program state, return with <code>iret</code></li>
+</ul></li>
+<li>typical interrupt handling is to have the IDT just be stubs that just push to stack the type of interrupt and call common handling code
+<ul>
+<li>in our MPs, that common handling code then calls virtual methods of proper handling class</li>
+<li>reduces code bloat?</li>
+</ul></li>
+<li>interrupts are prioritized (somehow)
+<ul>
+<li>if a higher priority interrupt comes in while handling a lower priority one, the lower priority interrupt is interrupted by the higher priority one</li>
+<li>for equal priority, it's FIFO</li>
+</ul></li>
+<li>8259 programmable interrupt controller (PIC)
+<ul>
+<li>just need to know that this exists, and is necessary for handling interrupts</li>
+</ul></li>
 </ul>
 <h1 id="allocation-2-1">allocation (2-1)</h1>
 <ul>
@@ -175,14 +240,6 @@
 <li>small pages =&gt; more overhead</li>
 </ul></li>
 <li>paging allows for address spaces</li>
-<li>cost of page fault
-<ul>
-<li>TODO</li>
-</ul></li>
-<li>locality of reference
-<ul>
-<li>TODO</li>
-</ul></li>
 <li>page table lookup in hardware
 <ul>
 <li>MMU hardware</li>
@@ -233,8 +290,46 @@
 <li>reduces fragmentation</li>
 </ul></li>
 </ul>
-<h1 id="page-replacement-policies-2-10">page replacement policies (2-10)</h1>
+<h1 id="tlb">TLB</h1>
 <ul>
+<li>translation look-aside buffer</li>
+<li>caches page table lookups</li>
+<li>you must clear entries when
+<ul>
+<li>pages are freed/unmapped</li>
+<li>context switch happens</li>
+</ul></li>
+<li>in x86, it is managed by hardware</li>
+<li>indexed by page table number and page table index
+<ul>
+<li>e.g. just 20 bits, not by the full address</li>
+</ul></li>
+<li>parameters
+<ul>
+<li>size</li>
+<li>lookup latency</li>
+<li>miss penalty (depends on MMU and memory speed)</li>
+<li>target miss rate (depends on application)</li>
+</ul></li>
+<li>MIPS software managed TLB
+<ul>
+<li>TLB is the only cache</li>
+<li>filling the TLB is done in software</li>
+<li>TLB miss triggers special TLB refill exception</li>
+</ul></li>
+</ul>
+<h1 id="page-replacement-policies-15-2-10">page replacement policies (15, 2-10)</h1>
+<ul>
+<li>cost of page fault, or effective memory access time (ema)
+<ul>
+<li>ema = (1-p) * ma + p * PageFaultTime</li>
+<li>p = probability of a page fault</li>
+<li>ma = memory access time</li>
+</ul></li>
+<li>locality of reference
+<ul>
+<li>if a program references location <span class="math inline"><em>n</em></span>, it is likely to reference <span class="math inline"><em>n</em></span> and locations near <span class="math inline"><em>n</em></span> in the near future</li>
+</ul></li>
 <li>when you need more memory, how do you decide which pages to evict (and possibly writ to disk)?</li>
 <li>FIFO
 <ul>
@@ -375,9 +470,19 @@
 <li>for when you don't have a hardware-managed valid bit?</li>
 </ul></li>
 </ul>
-<h1 id="recursive-paging">recursive paging</h1>
+<h1 id="recursive-paging-17-2-12">recursive paging (17, 2-12)</h1>
 <ul>
-<li>TODO</li>
+<li>in x86</li>
+<li>allows you to modify page directory and page table entries without mapping them into virtual memory</li>
+<li>set the last entry of the page directory to the physical address of the page directory</li>
+<li>access <code>n</code>th entry of page directory: use address <code>| 1023 | 1023 | n | 00 |</code>
+<ul>
+<li><code>1023</code> and <code>n</code> are both 10 bits</li>
+</ul></li>
+<li>access <code>a</code>th entry of <code>b</code>th page table: use address <code>| 1023 | b | a | 00 |</code>
+<ul>
+<li><code>1023</code>, <code>a</code>, and <code>b</code> are all 10 bits</li>
+</ul></li>
 </ul>
 </body>
 </html>
