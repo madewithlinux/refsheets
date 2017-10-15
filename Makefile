@@ -3,8 +3,8 @@ TEX     := pdflatex
 TEX_OPTS    := --halt-on-error -shell-escape
 PANDOC_OPTS := -s -f markdown+grid_tables+pipe_tables \
 	--self-contained --css pandoc.css \
-	# --mathjax=https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML \
-	-H header.html
+	-H header.html \
+	--mathjax=https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 TEX_SOURCES := $(wildcard *.tex)
 MD_SOURCES  := $(filter-out index.md README.md, $(wildcard *.md))
 OUTPUTS     := \
@@ -18,6 +18,7 @@ all: $(OUTPUTS)
 
 clean:
 	rm  -f *.pdf
+	rm  -f *.md.html
 	rm -rf .latex
 	mkdir -p .latex
 
@@ -37,12 +38,11 @@ clean:
 		-sOutputFile=$@ .latex/$@
 	# cp .latex/$@ $@
 
-%.md.pdf: %.md
-	pandoc $< -o $@
-
 %.md.html: %.md pandoc.css header.html
 	pandoc $(PANDOC_OPTS) $< -o $@
 
+%.md.pdf: %.md
+	pandoc $< -o $@
 
 csce314_reference_sheet.pdf: csce314_reference_sheet.tex
 	# special case to use xelatex for custom fonts
