@@ -138,6 +138,9 @@
 	* easier to change
 
 
+# exam 2 material
+
+
 <!-- stuff not on exam 1 -->
 <!-- 
 # interrupts
@@ -157,3 +160,29 @@
 * interrupt service routine ISR: called by CPU when interrupt happens
 	* TODO is there a separate one per interrupt?
  -->
+
+# ADC: Analog to Digital Converter
+* 4 limitations
+	* finite precision
+	* finite voltage range
+	* discrete sampling frequency
+	* finite number of samples
+
+# UART
+* Universal asynchronous receiver-transmitter
+* has a FIFO buffer in case software doesn't read it fast enough
+* UART can generate interrupts at various levels of buffer filled on receive
+
+# SPI
+* multiple slaves, single master
+* synchronized (has a clock)
+* always full duplex
+* daisy chain-able
+* pins
+	* **MOSI:** master out slave in
+	* **MISO:** master in slave out
+	* **SCLK:** master clock
+	* **SS_BAR:** unique line to select slave
+
+# I2C
+* half duplex

@@ -212,6 +212,7 @@ pop {sp, lr, ip}</code></pre></li>
 <li>easier to change</li>
 </ul></li>
 </ul>
+<h1 id="exam-2-material">exam 2 material</h1>
 <!-- stuff not on exam 1 -->
 <!-- 
 # interrupts
@@ -231,5 +232,39 @@ pop {sp, lr, ip}</code></pre></li>
 * interrupt service routine ISR: called by CPU when interrupt happens
     * TODO is there a separate one per interrupt?
  -->
+<h1 id="adc-analog-to-digital-converter">ADC: Analog to Digital Converter</h1>
+<ul>
+<li>4 limitations
+<ul>
+<li>finite precision</li>
+<li>finite voltage range</li>
+<li>discrete sampling frequency</li>
+<li>finite number of samples</li>
+</ul></li>
+</ul>
+<h1 id="uart">UART</h1>
+<ul>
+<li>Universal asynchronous receiver-transmitter</li>
+<li>has a FIFO buffer in case software doesn't read it fast enough</li>
+<li>UART can generate interrupts at various levels of buffer filled on receive</li>
+</ul>
+<h1 id="spi">SPI</h1>
+<ul>
+<li>multiple slaves, single master</li>
+<li>synchronized (has a clock)</li>
+<li>always full duplex</li>
+<li>daisy chain-able</li>
+<li>pins
+<ul>
+<li><strong>MOSI:</strong> master out slave in</li>
+<li><strong>MISO:</strong> master in slave out</li>
+<li><strong>SCLK:</strong> master clock</li>
+<li><strong>SS_BAR:</strong> unique line to select slave</li>
+</ul></li>
+</ul>
+<h1 id="i2c">I2C</h1>
+<ul>
+<li>half duplex</li>
+</ul>
 </body>
 </html>
